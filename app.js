@@ -21,6 +21,19 @@
   const probe = u => cache.get(u) || (cache.set(u, new Promise(res => { const i = new Image(); i.onload = () => res(true); i.onerror = () => res(false); i.src = u; })), cache.get(u));
   const firstLoadable = async list => { for (const u of [].concat(list).flatMap(expand)) if (await probe(u)) return u; return null; };
 
+  /* ───── أيقونات SVG مدمجة (بدل أيقونات الخط) ───── */
+  const hydrateIcons = (scope = document) => $$('i[class*="ph-"]', scope).forEach(el => {
+    const cls = [...el.classList], fill = cls.includes('ph-fill');
+    const name = (cls.find(c => /^ph-/.test(c) && c !== 'ph-fill' && c !== 'ph-bold') || '').slice(3);
+    const body = (window.ICONS || {})[(fill ? 'fill/' : 'bold/') + name];
+    if (!body) return;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    svg.setAttribute('viewBox', '0 0 256 256'); svg.setAttribute('fill', 'currentColor'); svg.setAttribute('aria-hidden', 'true'); svg.setAttribute('focusable', 'false');
+    svg.setAttribute('class', 'ph-svg ' + cls.filter(c => !/^ph-/.test(c)).concat(cls.filter(c => c === 'ph-sun' || c === 'ph-moon' || c === 'ph-fill')).join(' '));
+    if (el.getAttribute('style')) svg.setAttribute('style', el.getAttribute('style'));
+    svg.innerHTML = body; el.replaceWith(svg);
+  });
+
   /* ───── الثيم واللغة ───── */
   const applyTheme = () => {
     root.setAttribute('data-theme', state.theme);
@@ -133,7 +146,7 @@
   const renderSocials = () => {
     $('#socials').innerHTML = C.socials.map(s => `<a ${linkProps(s.href)} aria-label="${esc(s.label)}" title="${esc(s.label)}"><i class="ph-fill ${s.icon}"></i></a>`).join('');
   };
-  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); observe($$('.reveal:not(.in)')); }
+  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); hydrateIcons(); observe($$('.reveal:not(.in)')); }
 
   /* ───── Reveal + بدء العداد ───── */
   const io = new IntersectionObserver(entries => entries.forEach(en => {
@@ -181,5 +194,5 @@
   addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
   /* ───── تشغيل ───── */
-  setLogos(); setBackgrounds(); makeLeaves(); applyTheme(); applyLang(); onScroll();
+  setLogos(); setBackgrounds(); makeLeaves(); hydrateIcons(); applyTheme(); applyLang(); onScroll();
 })();

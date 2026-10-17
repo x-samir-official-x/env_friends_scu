@@ -146,6 +146,7 @@ const CONFIG = {
     footJoinSub:   { ar: 'سجّل الآن وكن جزءًا من الفريق.', en: 'Register now and be part of the team.' },
     rights:     { ar: '© 2026 أصدقاء البيئة — كلية التجارة، جامعة قناة السويس. جميع الحقوق محفوظة.', en: '© 2026 Environment Friends — Faculty of Commerce, Suez Canal University. All rights reserved.' },
     toastSoon:  { ar: 'هذا الرابط سيكون متاحًا قريبًا', en: 'This link will be available soon' },
+    skip:       { ar: 'تخطَّ إلى المحتوى', en: 'Skip to content' },
     menu:       { ar: 'القائمة', en: 'Menu' },
     themeLabel: { ar: 'تبديل الوضع الداكن', en: 'Toggle dark mode' },
     langLabel:  { ar: 'تغيير اللغة', en: 'Change language' },
