@@ -1,147 +1,154 @@
 /* ════════════════════════════════════════════════════════════════════
-   ENVIRONMENT FRIENDS — Faculty of Commerce, Suez Canal University
-   Smart Config — Edit paths/URLs here. Brand logos NEVER used as faces.
-   All people = Unsplash portrait URLs (replace paths as needed).
+   أصدقاء البيئة — كلية التجارة، جامعة قناة السويس
+   ملف الإعدادات: كل النصوص والروابط والصور تتعدل من هنا فقط.
+   - الصور: حط الصورة في فولدر assets/ واكتب مسارها (بدون امتداد يشتغل مع jpg/jpeg/png/webp)
+   - الروابط: اللي فاضي ('') بيظهر للزائر رسالة "قريبًا" بدل ما يوديه لمكان غلط
 ════════════════════════════════════════════════════════════════════ */
-
 const CONFIG = {
-  site: {
-    nameAr: 'أصدقاء البيئة — كلية التجارة',
-    nameEn: 'Environment Friends — Faculty of Commerce',
-    universityAr: 'جامعة قناة السويس',
-    universityEn: 'Suez Canal University',
-    facultyAr: 'كلية التجارة',
-    facultyEn: 'Faculty of Commerce',
-    handle: '@env_friends_scu',
-    taglineAr: 'معاً من أجل بيئة أفضل',
-    taglineEn: 'Together for a Better Environment',
-  },
-
   images: {
-    /* Brand logos ONLY — never people faces */
-    facultyEmblem: './photo_2026-10-16_03-11-22-removebg-preview.png',
-    ecoLogo: './Gemini_Generated_Image_sizaexsizaexsiza-removebg-preview.png',
-    /* Hero background — real campus/nature photography */
-    heroBackground: 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&h=1080&fit=crop',
-    /* All people = Unsplash portraits (replace filenames when you drop new images) */
-    defaultPortrait: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&h=800&fit=crop&crop=faces',
-    gallery: [
-      'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=900&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1532924131367-7f9517d4f001?w=900&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=900&h=600&fit=crop',
-      'https://images.unsplash.com/photo-1505128773770-3092a61c1b8c?w=900&h=600&fit=crop',
-    ],
-    qrCode: null,
-  },
-
-  colors: {
-    'color-navy': '#052549',
-    'color-emerald': '#1A6929',
-    'color-leaf': '#89C54A',
-    'color-bg': '#FCFCF9',
+    facultyEmblem: './Gemini_Generated_Image_sizaexsizaexsiza-removebg-preview.png',   // شعار الكلية
+    ecoLogo: './photo_2026-10-16_03-11-22-removebg-preview.png',                       // لوجو الفريق
+    /* كل قايمة بتجرب الأول صورتك المحلية، ولو مش موجودة بتستخدم الصورة الاحتياطية */
+    hero: ['assets/hero', 'https://images.unsplash.com/photo-1523050854058-8df90110c9f1?w=1920&h=1080&fit=crop'],
+    join: ['assets/join', 'https://images.unsplash.com/photo-1441974231531-c6227db76b6e?w=1920&h=1080&fit=crop'],
+    footer: ['assets/footer', 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1920&h=1080&fit=crop'],
   },
 
   links: {
-    registrationForm: '#registration-form',
-    ecoPage: 'https://www.facebook.com/env_friends_scu',
+    registrationForm: '',            // ← حط لينك فورم التقديم هنا
+    facebook: 'https://www.facebook.com/env_friends_scu',
     facultyPage: 'https://www.suez.edu.eg',
-    whatsapp: 'https://wa.me/201000000000',
-    email: 'env.friends@suez.edu.eg',
-    instagram: 'https://www.instagram.com/env_friends_scu',
+    teamPage: 'https://www.facebook.com/env_friends_scu',
   },
 
-  nav: {
-    ar: [
-      { key: 'home', label: 'الرئيسية', href: '#hero' },
-      { key: 'about', label: 'عن الفريق', href: '#about' },
-      { key: 'supervision', label: 'الإشراف الأكاديمي', href: '#supervision' },
-      { key: 'leadership', label: 'الهيكل القيادي', href: '#leadership' },
-      { key: 'committees', label: 'اللجان', href: '#committees' },
-      { key: 'initiatives', label: 'فعالياتنا', href: '#initiatives' },
-      { key: 'contact', label: 'تواصل معنا', href: '#contact' },
-    ],
-    en: [
-      { key: 'home', label: 'Home', href: '#hero' },
-      { key: 'about', label: 'About Us', href: '#about' },
-      { key: 'supervision', label: 'Academic Supervision', href: '#supervision' },
-      { key: 'leadership', label: 'Leadership', href: '#leadership' },
-      { key: 'committees', label: 'Committees', href: '#committees' },
-      { key: 'initiatives', label: 'Initiatives', href: '#initiatives' },
-      { key: 'contact', label: 'Contact', href: '#contact' },
-    ],
-  },
+  /* أيقونات السوشيال في الفوتر — الفاضي بيظهر "قريبًا" */
+  socials: [
+    { key: 'facebook',  icon: 'ph-facebook-logo',  label: 'Facebook',  href: 'https://www.facebook.com/env_friends_scu' },
+    { key: 'instagram', icon: 'ph-instagram-logo', label: 'Instagram', href: '' },
+    { key: 'tiktok',    icon: 'ph-tiktok-logo',    label: 'TikTok',    href: '' },
+    { key: 'youtube',   icon: 'ph-youtube-logo',   label: 'YouTube',   href: '' },
+    { key: 'whatsapp',  icon: 'ph-whatsapp-logo',  label: 'WhatsApp',  href: '' },
+  ],
 
+  nav: [
+    { href: '#hero',        ar: 'الرئيسية',          en: 'Home' },
+    { href: '#about',       ar: 'عن الفريق',         en: 'About' },
+    { href: '#supervision', ar: 'الإشراف الأكاديمي', en: 'Supervision' },
+    { href: '#leadership',  ar: 'الهيكل الإداري',    en: 'Leadership' },
+    { href: '#campaigns',   ar: 'حملاتنا',           en: 'Campaigns' },
+    { href: '#join',        ar: 'انضم إلينا',        en: 'Join' },
+    { href: '#contact',     ar: 'تواصل معنا',        en: 'Contact' },
+  ],
+
+  /* الأرقام — كلها صفر دلوقتي، عدّل value مع الوقت */
   stats: [
-    { value: '+24', labelAr: 'مبادرة بيئية', labelEn: 'Environmental Initiatives' },
-    { value: '+180', labelAr: 'عضو فاعل', labelEn: 'Active Members' },
-    { value: '+350', labelAr: 'شجرة مزروعة', labelEn: 'Trees Planted' },
-    { value: '+42', labelAr: 'ورشة توعية', labelEn: 'Awareness Workshops' },
+    { value: 0, icon: 'ph-calendar-check', ar: 'حملة منفّذة',  en: 'Campaigns Done' },
+    { value: 0, icon: 'ph-users-three',    ar: 'عضو متطوع',    en: 'Volunteers' },
+    { value: 0, icon: 'ph-clock',          ar: 'ساعة تطوع',    en: 'Volunteer Hours' },
+    { value: 0, icon: 'ph-heart',          ar: 'مستفيد',       en: 'Beneficiaries' },
   ],
 
-  about: {
-    visionAr: 'أن نكون نموذجًا رائدًا للعمل البيئي التطوعي في الجامعات المصرية، ونغرس ثقافة الاستدامة في نفوس الطلاب والمجتمع.',
-    visionEn: 'To be a leading model for environmental volunteer work in Egyptian universities, and to instill a culture of sustainability in students and the community.',
-    missionAr: 'تنمية الوعي البيئي لدى طلاب كلية التجارة من خلال مبادرات عملية، حملات تشجير، وورش عمل تساهم في الحفاظ على البيئة وتحقيق التنمية المستدامة.',
-    missionEn: 'To develop environmental awareness among Faculty of Commerce students through practical initiatives, tree-planting campaigns, and workshops that contribute to environmental preservation and sustainable development.',
-  },
+  about: [
+    { icon: 'ph-eye', ar: 'رؤيتنا', en: 'Our Vision',
+      textAr: 'أن نكون نموذجًا رائدًا للعمل البيئي التطوعي في الجامعات المصرية، ونغرس ثقافة الاستدامة في نفوس الطلاب والمجتمع.',
+      textEn: 'To be a leading model of environmental volunteering in Egyptian universities, instilling a culture of sustainability in students and the community.' },
+    { icon: 'ph-target', ar: 'رسالتنا', en: 'Our Mission',
+      textAr: 'تنمية الوعي البيئي لدى طلاب كلية التجارة من خلال مبادرات عملية وحملات تشجير وورش عمل تخدم البيئة والتنمية المستدامة.',
+      textEn: 'To raise environmental awareness among Faculty of Commerce students through practical initiatives, tree-planting campaigns and workshops that serve sustainable development.' },
+  ],
 
+  /* لينكات "اقرأ المزيد" — خد بالك: الفاضي بيظهر "قريبًا" */
   officialLinks: [
-    {
-      titleAr: 'فورم الانضمام للفريق', titleEn: 'Team Registration Form',
-      descAr: 'انضم إلى فريق أصدقاء البيئة وابدأ مسيرتك في العمل البيئي التطوعي.',
-      descEn: 'Join the Environment Friends team and start your journey in environmental volunteer work.',
-      badgeAr: 'التقديم متاح الآن', badgeEn: 'Applications Open Now',
-      href: '#registration-form',
-    },
-    {
-      titleAr: 'الصفحة الرسمية لفريق أصدقاء البيئة', titleEn: 'Environment Friends Official Page',
-      descAr: 'تابع آخر أخبار الفريق، الحملات، والفعاليات على صفحة الفريق الرسمية.',
-      descEn: 'Follow the team\'s latest news, campaigns, and events on the official page.',
-      badgeAr: '@env_friends_scu', badgeEn: '@env_friends_scu',
-      href: 'https://www.facebook.com/env_friends_scu',
-    },
-    {
-      titleAr: 'الصفحة الرسمية لكلية التجارة - جامعة قناة السويس', titleEn: 'Faculty of Commerce - Suez Canal University',
-      descAr: 'الصفحة الرسمية للكلية لمعرفة الأخبار الأكاديمية والفعاليات الجامعية.',
-      descEn: 'The official faculty page for academic news and university events.',
-      badgeAr: 'كلية التجارة', badgeEn: 'Faculty of Commerce',
-      href: 'https://www.suez.edu.eg',
-    },
+    { icon: 'ph-user-plus', ar: 'فورم الانضمام للفريق', en: 'Team Registration Form',
+      descAr: 'انضم لأصدقاء البيئة وابدأ رحلتك في العمل التطوعي.', descEn: 'Join Environment Friends and start your volunteering journey.',
+      linkKey: 'registrationForm' },
+    { icon: 'ph-facebook-logo', ar: 'صفحة الفريق الرسمية', en: 'Official Team Page',
+      descAr: 'تابع أخبار الفريق وحملاته أولًا بأول.', descEn: 'Follow the team’s news and campaigns as they happen.',
+      linkKey: 'teamPage' },
+    { icon: 'ph-buildings', ar: 'صفحة كلية التجارة', en: 'Faculty of Commerce',
+      descAr: 'الصفحة الرسمية للكلية — أخبار أكاديمية وفعاليات.', descEn: 'The faculty’s official page — academic news and events.',
+      linkKey: 'facultyPage' },
   ],
 
+  /* photo: مسار الصورة في assets (بدون امتداد) — لو مش موجودة بيظهر الحرف الأول */
   supervision: [
-    { roleAr: 'عميد الكلية', roleEn: 'Dean of the Faculty', nameAr: 'أ.د/أحمد عزمي', nameEn: 'Prof. Dr. Ahmed Azmy', photo: 'assets/dean_ahmed.jpg', photoUrl: 'assets/dean_ahmed.jpg', highlight: false, vip: true },
-    { roleAr: 'وكيل الكلية لشئون البيئة وخدمة المجتمع', roleEn: 'Vice Dean — Environment & Community', nameAr: 'أ.د/ريمان', nameEn: 'Prof. Dr. Riman', photo: 'assets/vice_riman.jpg', photoUrl: 'assets/vice_riman.jpg', highlight: true, vip: true },
-    { roleAr: 'الرائد الأكاديمي للفريق', roleEn: 'Academic Advisor', nameAr: 'دكتور نجاة', nameEn: 'Dr. Najat', photo: 'assets/advisor_najat.jpg', photoUrl: 'assets/advisor_najat.jpg', highlight: false, vip: true },
+    { ar: 'أ.د/أحمد عزمي', en: 'Prof. Dr. Ahmed Azmy',
+      titleAr: 'عميد كلية التجارة', titleEn: 'Dean of the Faculty of Commerce', photo: 'assets/dean_ahmed' },
+    { ar: 'أ.د/ريمان', en: 'Prof. Dr. Rayman',
+      titleAr: 'وكيل كلية التجارة لشئون البيئة وخدمة المجتمع', titleEn: 'Vice Dean for Environmental Affairs & Community Service', photo: 'assets/vice_rayman' },
+    { ar: 'دكتور نجاة', en: 'Dr. Nagat',
+      chipAr: 'الرائد الأكاديمي', chipEn: 'Academic Mentor',
+      titleAr: 'معيدة بقسم العلوم السياسية', titleEn: 'Teaching Assistant, Department of Political Science', photo: 'assets/advisor_nagat' },
   ],
 
   leadership: [
-    { roleAr: 'قائد الفريق', roleEn: 'Team Leader', nameAr: 'سمير سيد', nameEn: 'Samir Sayed', photo: 'assets/team_leader_samir.jpg', photoUrl: 'assets/team_leader_samir.jpg', ring: 'emerald', vip: true },
-    { roleAr: 'نائب قائد الفريق', roleEn: 'Co-Leader', nameAr: 'ندي محمد', nameEn: 'Nadia Mohamed', photo: 'assets/co_leader_nada.jpg', photoUrl: 'assets/co_leader_nada.jpg', ring: 'emerald', vip: true },
+    { ar: 'سمير سيد', en: 'Samir Sayed', titleAr: 'قائد الفريق', titleEn: 'Team Leader', photo: 'assets/team_leader_samir' },
+    { ar: 'ندى محمد', en: 'Nada Mohamed', titleAr: 'نائب قائد الفريق', titleEn: 'Deputy Team Leader', photo: 'assets/co_leader_nada' },
   ],
 
-  committees: [], // لجان مؤجلة حتى تشكيلها
-
-  initiatives: [
-    { titleAr: 'يوم الابتسامة العالمي', titleEn: 'World Smile Day', locationAr: 'كلية التجارة — جامعة قناة السويس', locationEn: 'Faculty of Commerce, Suez Canal University', dateAr: 'الإثنين 19 أكتوبر 2026', dateEn: 'Monday, October 19, 2026', image: 'assets/init_smile.jpg' },
-    { titleAr: 'زيارة دار المسنين', titleEn: 'Elderly Care Visit', locationAr: 'دار رعاية المسنين — السويس', locationEn: 'Elderly Care Home — Suez', dateAr: 'الخميس 22 أكتوبر 2026', dateEn: 'Thursday, October 22, 2026', image: 'assets/init_nursing.jpg' },
+  /* الحملات — image: صورتك المحلية أولًا ثم صورة احتياطية */
+  campaigns: [
+    { ar: 'يوم الابتسامة العالمي', en: 'World Smile Day',
+      dateAr: 'الإثنين 19 أكتوبر 2026', dateEn: 'Monday, 19 October 2026', day: '19', monthAr: 'أكتوبر', monthEn: 'Oct',
+      descAr: 'نشر الابتسامة والطاقة الإيجابية بين طلاب الكلية.', descEn: 'Spreading smiles and positive energy among the faculty’s students.',
+      icon: 'ph-smiley',
+      image: ['assets/init_smile', 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&h=600&fit=crop'] },
+    { ar: 'زيارة دار المسنين', en: 'Elderly Care Home Visit',
+      dateAr: 'الخميس 22 أكتوبر 2026', dateEn: 'Thursday, 22 October 2026', day: '22', monthAr: 'أكتوبر', monthEn: 'Oct',
+      descAr: 'زيارة إنسانية لإدخال البهجة على قلوب كبار السن.', descEn: 'A humane visit to bring joy to our elders.',
+      icon: 'ph-heart',
+      image: ['assets/init_nursing', 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=900&h=600&fit=crop'] },
   ],
 
-  contact: [
-    { icon: 'facebook', titleAr: 'فيسبوك', titleEn: 'Facebook', value: '@env_friends_scu', href: 'https://www.facebook.com/env_friends_scu' },
-    { icon: 'location', titleAr: 'الموقع', titleEn: 'Location', value: 'كلية التجارة — جامعة قناة السويس', href: '#' },
-  ],
+  contact: { handle: '@env_friends_scu', href: 'https://www.facebook.com/env_friends_scu' },
 
-  footer: {
-    mottoAr: 'وعي • إجراء • استدامة', mottoEn: 'Awareness • Action • Sustainability',
-    foundedAr: 'فريق أصدقاء البيئة — كلية التجارة، جامعة قناة السويس. معاً من أجل بيئة أفضل.',
-    foundedEn: 'Environment Friends — Faculty of Commerce, Suez Canal University. Together for a Better Environment.',
-    rightsAr: 'جميع الحقوق محفوظة.', rightsEn: 'All rights reserved.',
-    joinTitleAr: 'انضم إلى الفريق', joinTitleEn: 'Join the Team',
-    joinSubtitleAr: 'انضم إلينا الآن وكن جزءًا من التغيير البيئي في جامعة قناة السويس.',
-    joinSubtitleEn: 'Join us now and be part of the environmental change at Suez Canal University.',
-    joinCtaAr: 'سجّل الآن', joinCtaEn: 'Register Now', registerLink: '#registration-link',
+  i18n: {
+    brand:      { ar: 'أصدقاء البيئة', en: 'Environment Friends' },
+    brandSub:   { ar: 'كلية التجارة', en: 'Faculty of Commerce' },
+    navJoin:    { ar: 'انضم إلينا', en: 'Join Us' },
+    heroPill:   { ar: 'معاً من أجل بيئة أفضل', en: 'Together for a Better Environment' },
+    heroTitle:  { ar: 'فريق أصدقاء البيئة', en: 'Environment Friends Team' },
+    heroTitle2: { ar: 'كلية التجارة — جامعة قناة السويس', en: 'Faculty of Commerce — Suez Canal University' },
+    heroSub:    { ar: 'فريق طلابي تطوعي يعمل على نشر الوعي البيئي وتنظيم حملات التشجير وورش العمل لخدمة المجتمع الجامعي.', en: 'A student volunteer team spreading environmental awareness and organizing tree-planting campaigns and workshops for the university community.' },
+    heroBtn1:   { ar: 'انضم للفريق', en: 'Join the Team' },
+    heroBtn2:   { ar: 'اكتشف حملاتنا', en: 'Explore Campaigns' },
+    scroll:     { ar: 'اسحب لأسفل', en: 'Scroll' },
+    statsPill:  { ar: 'بأرقام', en: 'By the Numbers' },
+    statsTitle: { ar: 'أرقام تتحدث', en: 'Numbers That Speak' },
+    statsSub:   { ar: 'بداية رحلتنا — هذه الأرقام ستكبر مع كل حملة نخوضها.', en: 'Our journey is just beginning — these numbers will grow with every campaign.' },
+    aboutPill:  { ar: 'عن الفريق', en: 'About Us' },
+    aboutTitle: { ar: 'من نحن', en: 'Who We Are' },
+    aboutSub:   { ar: 'رؤية واضحة ورسالة نؤمن بها لخدمة البيئة والمجتمع.', en: 'A clear vision and a mission we believe in, for the environment and community.' },
+    readMore:   { ar: 'اقرأ المزيد', en: 'Read more' },
+    supPill:    { ar: 'الإشراف الأكاديمي', en: 'Academic Supervision' },
+    supTitle:   { ar: 'الرعاية والإشراف الأكاديمي', en: 'Patronage & Academic Supervision' },
+    supSub:     { ar: 'نخبة من أعضاء هيئة التدريس يدعمون الفريق ويشرفون على أنشطته.', en: 'Distinguished faculty members who support the team and oversee its activities.' },
+    leadPill:   { ar: 'الهيكل الإداري', en: 'Leadership' },
+    leadTitle:  { ar: 'الهيكل الإداري للفريق', en: 'Team Leadership' },
+    leadSub:    { ar: 'قيادة شابة تقود الفريق نحو بيئة أفضل.', en: 'Young leaders driving the team toward a better environment.' },
+    campPill:   { ar: 'حملاتنا', en: 'Our Campaigns' },
+    campTitle:  { ar: 'أولى حملاتنا', en: 'Our First Campaigns' },
+    campSub:    { ar: 'مواعيد حملاتنا القادمة — كن معنا من اليوم الأول.', en: 'Our upcoming campaigns — be with us from day one.' },
+    soon:       { ar: 'قريبًا', en: 'Soon' },
+    joinBadge:  { ar: 'التطوع مفتوح الآن', en: 'Volunteering is open now' },
+    joinTitle:  { ar: 'انضم إلى فريق أصدقاء البيئة', en: 'Join the Environment Friends Team' },
+    joinSub:    { ar: 'كن جزءًا من التغيير البيئي في جامعة قناة السويس.', en: 'Be part of the environmental change at Suez Canal University.' },
+    joinBtn:    { ar: 'سجّل الآن', en: 'Register Now' },
+    contactPill:  { ar: 'تواصل معنا', en: 'Contact' },
+    contactTitle: { ar: 'تواصل معنا', en: 'Get in Touch' },
+    contactSub:   { ar: 'تابعنا وراسلنا على فيسبوك — هناك كل أخبارنا.', en: 'Follow and message us on Facebook — all our news lives there.' },
+    contactFb:    { ar: 'تابعنا على فيسبوك', en: 'Follow us on Facebook' },
+    footMotto:  { ar: 'وعي • إجراء • استدامة', en: 'Awareness • Action • Sustainability' },
+    footDesc:   { ar: 'فريق أصدقاء البيئة — كلية التجارة، جامعة قناة السويس. معًا من أجل بيئة أفضل.', en: 'Environment Friends — Faculty of Commerce, Suez Canal University. Together for a better environment.' },
+    footLinks:  { ar: 'روابط سريعة', en: 'Quick Links' },
+    footFollow: { ar: 'تابعنا', en: 'Follow Us' },
+    footJoinTitle: { ar: 'جاهز تبدأ؟', en: 'Ready to start?' },
+    footJoinSub:   { ar: 'سجّل الآن وكن جزءًا من الفريق.', en: 'Register now and be part of the team.' },
+    rights:     { ar: '© 2026 أصدقاء البيئة — كلية التجارة، جامعة قناة السويس. جميع الحقوق محفوظة.', en: '© 2026 Environment Friends — Faculty of Commerce, Suez Canal University. All rights reserved.' },
+    toastSoon:  { ar: 'هذا الرابط سيكون متاحًا قريبًا', en: 'This link will be available soon' },
+    menu:       { ar: 'القائمة', en: 'Menu' },
+    themeLabel: { ar: 'تبديل الوضع الداكن', en: 'Toggle dark mode' },
+    langLabel:  { ar: 'تغيير اللغة', en: 'Change language' },
   },
 };
-
 window.CONFIG = CONFIG;
