@@ -1,0 +1,46 @@
+/* ═══ V2 — رسمي واحترافي بعناصر 3D ═══ */
+[data-lang="ar"] body,[data-lang="ar"] h1,[data-lang="ar"] h2,[data-lang="ar"] h3{font-family:'IBM Plex Sans Arabic','Cairo',sans-serif}
+:root{--r:14px}
+body{counter-reset:sec}
+/* ناف بار: شريط رسمي بدل الكبسولة */
+.header{top:0;padding:0}
+.header-inner{max-width:none;border-radius:0;border-width:0 0 1px;padding:.55rem clamp(1rem,4vw,3rem)}
+/* الهيرو 3D */
+.hero{text-align:start;place-items:center start;padding-inline:clamp(1.5rem,7vw,6rem)}
+.hero-inner{max-width:640px;margin:0}
+.hero-logos,.hero-buttons{justify-content:flex-start}
+.hero-title{font-size:clamp(2.2rem,5vw,3.8rem);letter-spacing:-.01em}
+.hero-bg{opacity:.35;animation:none}
+.hero-overlay{background:radial-gradient(ellipse at 72% 45%,rgba(26,105,41,.35),transparent 55%),linear-gradient(180deg,rgba(3,20,42,.9),rgba(5,37,73,.85) 60%,#031429)}
+.leaves{display:none}
+#globe{position:absolute;inset:0;width:100%;height:100%;z-index:2;display:block}
+.hero-inner{z-index:4}
+/* عناوين الأقسام رسمية ومرقّمة */
+.sec-head{text-align:start;max-width:none;display:grid;gap:.4rem;border-bottom:1px solid var(--border);padding-bottom:1.6rem;margin-bottom:3rem}
+.sec-head .pill{justify-self:start;background:none;border:0;box-shadow:none;padding:0;letter-spacing:.14em;text-transform:uppercase;font-size:.8rem}
+.sec-head .pill::before{counter-increment:sec;content:"0" counter(sec) " — ";font-family:var(--font-en);color:var(--accent)}
+.sec-head h2::after{margin:.8rem 0 0;width:48px;height:3px}
+.sec-head p{max-width:620px}
+/* قسم الأرقام داكن للتباين */
+#stats{color:#FCFCF9;background:linear-gradient(180deg,#031429,#052549);--text:#FCFCF9;--muted:rgba(252,252,249,.72);--border:rgba(137,197,74,.25);--surface:rgba(255,255,255,.06);--accent:#89C54A}
+#stats>.wave{color:#031429}
+#stats .stat-card{backdrop-filter:blur(10px);box-shadow:0 20px 40px -20px #000}
+#stats .stat-icon{background:var(--leaf);color:var(--navy)}
+/* بطاقات 3D */
+.tilt{transform-style:preserve-3d;will-change:transform;transition:transform .25s ease-out,box-shadow .4s}
+.tilt.hovering{transition:transform .08s linear}
+.tilt .vip-photo,.tilt .stat-icon,.tilt .about-ico,.tilt .date-badge{transform:translateZ(46px)}
+.tilt h3,.tilt h4{transform:translateZ(28px)}
+.tilt::after{content:"";position:absolute;inset:0;pointer-events:none;border-radius:inherit;background:radial-gradient(circle at var(--mx,50%) var(--my,0%),rgba(255,255,255,.22),transparent 55%);opacity:0;transition:opacity .3s}
+.tilt.hovering::after{opacity:1}
+.vip-card:hover,.camp-card:hover,.stat-card:hover,.about-card:hover,.link-card:hover{transform:none}
+.vip-card,.camp-card,.about-card,.stat-card,.link-card{border-radius:var(--r)}
+.vip-grid,.camp-grid,.about-cards,.stats-grid,.link-cards{perspective:1100px}
+/* ظهور بعمق 3D عند السكرول */
+.reveal{transform:perspective(900px) rotateX(14deg) translateY(40px);transform-origin:50% 100%}
+.reveal.in{transform:none}
+.join-glass{border-radius:var(--r);transform:perspective(1200px) rotateX(2deg)}
+.btn,.nav-cta{border-radius:10px}
+.footer-cta{border-radius:var(--r)}
+@media (max-width:900px){.hero{place-items:center;text-align:center}.hero-logos,.hero-buttons{justify-content:center}#globe{opacity:.55}}
+@media (prefers-reduced-motion:reduce){.tilt{transform:none!important}}

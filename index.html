@@ -21,8 +21,9 @@
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="v2.css" />
 <link rel="icon" type="image/png" href="./Gemini_Generated_Image_sizaexsizaexsiza-removebg-preview.png" />
 </head>
 <body>
@@ -60,6 +61,7 @@
   <div class="hero-bg" data-bg="hero"></div>
   <div class="hero-overlay"></div>
   <div class="leaves" id="leaves" aria-hidden="true"></div>
+  <canvas id="globe" aria-hidden="true"></canvas>
   <div class="hero-inner">
     <div class="hero-logos reveal">
       <img id="hero-logo-1" alt="" /><span class="logo-sep"></span><img id="hero-logo-2" alt="" />
@@ -176,5 +178,7 @@
 <script src="config.js"></script>
 <script src="icons.js"></script>
 <script src="app.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="scene.js"></script>
 </body>
 </html>
