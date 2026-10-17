@@ -1,52 +1,185 @@
 /* ════════════════════════════════════════════════════════════
-   ENVIRONMENT FRIENDS — App (Anti-Slop / Taste-Skill v2)
-   IIFE module, Phosphor icons, 80/15/5 palette, zero emoji
+   أصدقاء البيئة — app.js
+   كل المحتوى جاي من config.js. الثيم واللغة بيتطبقوا على الموقع كله.
 ════════════════════════════════════════════════════════════ */
 (() => {
   'use strict';
-  const $ = s => document.querySelector(s), $$ = s => document.querySelectorAll(s);
-  const nativeScrollTo = window.scrollTo.bind(window);
-  window.scrollTo = params => { if(typeof params === 'object' && params !== null){ nativeScrollTo(params); } else { nativeScrollTo(0, params || 0); } };
+  const C = window.CONFIG;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+  const root = document.documentElement;
+  const state = { lang: root.getAttribute('data-lang') || 'ar', theme: root.getAttribute('data-theme') || 'light', statsPlayed: false };
+  const L = (ar, en) => (state.lang === 'en' ? en : ar);
+  const T = key => (C.i18n[key] ? C.i18n[key][state.lang] : '');
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+  const safeStore = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
 
-  const state = { lang: 'ar', theme: localStorage.getItem('ef-theme') || 'light' };
-  const t = (ar, en) => state.lang === 'en' ? en : ar;
-  const monogram = s => (s || '').split(' ').map(n => n[0]).join('').slice(0,2).toUpperCase();
-  const escHtml = s => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
-  const setText = (id, html) => { const el = $(id); if(el) el.innerHTML = html; };
-  const setSrc = (id, src) => { const el = $(id); if(el) el.src = src || ''; };
+  /* ───── تحميل الصور: يجرب الصورة المحلية (بأي امتداد) ثم الاحتياطية ───── */
+  const EXT = ['.jpg', '.jpeg', '.png', '.webp'];
+  const expand = u => (/\.(jpe?g|png|webp|avif|svg)(\?|$)/i.test(u) || /^https?:/i.test(u) ? [u] : EXT.map(e => u + e));
+  const cache = new Map();
+  const probe = u => cache.get(u) || (cache.set(u, new Promise(res => { const i = new Image(); i.onload = () => res(true); i.onerror = () => res(false); i.src = u; })), cache.get(u));
+  const firstLoadable = async list => { for (const u of [].concat(list).flatMap(expand)) if (await probe(u)) return u; return null; };
 
-  /* Theme */
-  const applyHtmlState = () => { document.documentElement.classList.toggle('dark', state.theme === 'dark'); document.documentElement.setAttribute('dir', state.lang === 'ar' ? 'rtl' : 'ltr'); document.documentElement.setAttribute('lang', state.lang); };
-  const updateThemeButtons = () => { $$('button[aria-label="تغيير السمة"]').forEach(btn => { const moon = btn.querySelector('.ph-moon'); const sun = btn.querySelector('.ph-sun'); if(!moon || !sun) return; moon.style.display = state.theme === 'dark' ? 'none' : 'inline-block'; sun.style.display = state.theme === 'dark' ? 'inline-block' : 'none'; }); };
+  /* ───── الثيم واللغة ───── */
+  const applyTheme = () => {
+    root.setAttribute('data-theme', state.theme);
+    const m = $('meta[name="theme-color"]'); if (m) m.content = state.theme === 'dark' ? '#052549' : '#FCFCF9';
+    $('#theme-toggle')?.setAttribute('aria-checked', state.theme === 'dark');
+  };
+  const applyLang = () => {
+    root.setAttribute('lang', state.lang); root.setAttribute('dir', state.lang === 'ar' ? 'rtl' : 'ltr'); root.setAttribute('data-lang', state.lang);
+    document.title = L('أصدقاء البيئة — كلية التجارة | جامعة قناة السويس', 'Environment Friends — Faculty of Commerce | Suez Canal University');
+    $$('[data-i18n]').forEach(el => { el.textContent = T(el.dataset.i18n); });
+    $$('[data-i18n-aria]').forEach(el => el.setAttribute('aria-label', T(el.dataset.i18nAria)));
+    renderAll();
+  };
+  $('#theme-toggle').addEventListener('click', () => { state.theme = state.theme === 'dark' ? 'light' : 'dark'; safeStore('ef-theme', state.theme); applyTheme(); });
+  $('#lang-toggle').addEventListener('click', () => { state.lang = state.lang === 'ar' ? 'en' : 'ar'; safeStore('ef-lang', state.lang); applyLang(); });
 
-  /* Render helpers */
-  const renderNav = () => { const list = $('#nav-desktop .nav-list'); if(!list) return; list.innerHTML = ''; (CONFIG.nav[state.lang] || []).forEach(n => { const a = document.createElement('a'); a.href = n.href; a.textContent = n.label; a.addEventListener('click', () => { document.querySelector('.nav-drawer.open')?.classList.remove('open'); document.querySelector('.nav-drawer-overlay.open')?.classList.remove('open'); document.body.style.overflow = ''; }); list.appendChild(a); }); };
-  const renderStats = () => { const grid = $('#stats-grid'); if(!grid) return; grid.innerHTML = ''; CONFIG.stats.forEach((s,i) => { const card = document.createElement('div'); card.className = 'stat-card reveal'; card.style.transitionDelay = (0.05+i*0.08)+'s'; const target = parseInt(s.value.replace(/\D/g,''),10); const span = document.createElement('span'); span.className = 'stat-value'; span.setAttribute('data-target', target); span.textContent = '0'; card.innerHTML = `<div class="stat-inner">${span.outerHTML}<span class="stat-label">${escHtml(t(s.labelAr,s.labelEn))}</span></div>`; grid.appendChild(card); const el = span; let cur = 0; const step = Math.max(1, Math.floor(target/30)); const timer = setInterval(() => { cur = Math.min(cur+step, target); el.textContent = '+'+cur; if(cur>=target) clearInterval(timer); }, 40+ i*60); }); };
-  const renderAboutLinks = () => { const grid = $('#about-links'); if(!grid) return; grid.innerHTML = ''; CONFIG.officialLinks.forEach(link => { const a = document.createElement('a'); a.className = 'about-link-card reveal'; a.href = link.href; a.innerHTML = `<div class="link-card-header"><span class="link-badge">${escHtml(t(link.badgeAr,link.badgeEn))}</span><div class="link-icon"><i class="ph-bold ph-link"></i></div></div><h3 class="link-card-title">${escHtml(t(link.titleAr,link.titleEn))}</h3><p class="link-card-desc">${escHtml(t(link.descAr,link.descEn))}</p><span class="link-card-arrow">${t('اقرأ المزيد','Read more')} <i class="ph-bold ph-arrow-right"></i></span>`; grid.appendChild(a); }); };
+  /* ───── روابط فاضية → رسالة "قريبًا" ───── */
+  const toast = $('#toast'); let toastT;
+  const showToast = msg => { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('show'), 2600); };
+  const linkProps = href => (href ? `href="${esc(href)}" target="_blank" rel="noopener"` : `href="#" data-empty="1"`);
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[data-empty="1"]'); if (a) { e.preventDefault(); showToast(T('toastSoon')); }
+  });
+  const wireLinkButtons = () => $$('[data-link]').forEach(a => {
+    const href = C.links[a.dataset.link];
+    if (href) { a.href = href; a.target = '_blank'; a.rel = 'noopener'; a.removeAttribute('data-empty'); }
+    else { a.href = '#'; a.setAttribute('data-empty', '1'); a.removeAttribute('target'); }
+  });
 
-  const renderSupervision = () => { const grid = $('#supervision-grid'); if(!grid) return; grid.innerHTML = ''; CONFIG.supervision.forEach((exec,i) => { const card = document.createElement('div'); card.className = `supervision-card reveal ${exec.highlight?'highlight':''}`; card.style.transitionDelay = (0.05+i*0.08)+'s'; const has = !!exec.photo; const vipTag = (exec.vip||exec.highlight)?'<span class="supervision-badge-vip">VIP</span>':''; const photoUrl = exec.photoUrl || exec.photo; card.innerHTML = `${vipTag}<img class="supervision-photo" src="${escHtml(photoUrl)}" alt="${escHtml(exec.nameAr||exec.nameEn)}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';"/><div class="supervision-monogram" style="display:none;">${monogram(exec.nameAr||exec.nameEn)}</div><div class="supervision-info"><span class="supervision-role">${escHtml(t(exec.roleAr,exec.roleEn))}</span><h3 class="supervision-name">${escHtml(exec.nameAr||exec.nameEn)}</h3></div>`; grid.appendChild(card); }); };
-  const renderLeadership = () => { const grid = $('#leadership-grid'); if(!grid) return; grid.innerHTML = ''; CONFIG.leadership.forEach((l,i) => { const card = document.createElement('div'); card.className = 'leadership-card reveal'; card.style.transitionDelay = (0.05+i*0.08)+'s'; const has = !!l.photo; const vipTagL = l.vip?'<span class="supervision-badge-vip">VIP</span>':''; card.innerHTML = `${vipTagL}<div class="leader-photo-wrap">${has?`<img class="leader-photo" src="${escHtml(l.photo)}" alt="${escHtml(l.nameAr||l.nameEn)}" loading="lazy" />`:`<div class="leader-monogram">${monogram(l.nameAr||l.nameEn)}</div>`}</div><span class="leader-role">${escHtml(t(l.roleAr,l.roleEn))}</span><h3 class="leader-name">${escHtml(l.nameAr||l.nameEn)}</h3>`; grid.appendChild(card); }); };
-  const renderCommittees = () => { const grid = $('#committees-grid'); if(!grid) return; grid.innerHTML = ''; CONFIG.committees.forEach((c,i) => { const card = document.createElement('div'); card.className = 'committee-card reveal'; card.style.transitionDelay = (0.05+i*0.08)+'s'; const icons = {'Human Resources':'ph-bold ph-users','Public Relations':'ph-bold ph-handshake','Media & Design':'ph-bold ph-palette','Events & Logistics':'ph-bold ph-calendar-days','Eco-Awareness':'ph-bold ph-leaf'}; card.innerHTML = `<div class="committee-icon"><i class="${icons[t(c.titleAr,c.titleEn)]||'ph-bold ph-layers'}"></i></div><div class="committee-info"><h4 class="committee-title">${escHtml(t(c.titleAr,c.titleEn))}</h4><p class="committee-desc">${escHtml(t(c.descAr,c.descEn))}</p></div>`; grid.appendChild(card); }); };
-  const renderInitiatives = () => { const grid = $('#gallery-grid'); if(!grid) return; grid.innerHTML = ''; CONFIG.initiatives.forEach((init,i) => { const card = document.createElement('div'); card.className = 'initiative-card reveal'; card.style.transitionDelay = (0.05+i*0.08)+'s'; const has = !!init.image; card.innerHTML = `<div class="initiative-image-wrap"><div class="initiative-gradient"></div>${has?`<img class="initiative-image" src="${escHtml(init.image)}" alt="${escHtml(t(init.titleAr,init.titleEn))}" loading="lazy" />`:`<div class="initiative-image" style="background:linear-gradient(135deg,var(--navy-800),var(--emerald-700));display:flex;align-items:center;justify-content:center;color:#fff;font-size:.85rem;">${escHtml(t(init.titleAr,init.titleEn))}</div>`}<div class="initiative-badge"><span class="initiative-date">${escHtml(t(init.dateAr,init.dateEn))}</span><span class="initiative-location"><i class="ph-bold ph-location-dot" style="font-size:.6rem;margin-left:.35rem;"></i>${escHtml(t(init.locationAr,init.locationEn))}</span></div></div><div class="initiative-content"><h3 class="initiative-title">${escHtml(t(init.titleAr,init.titleEn))}</h3><div class="initiative-meta"><span class="initiative-count"><i class="ph-bold ph-users"></i> فريق متطوع</span></div></div>`; grid.appendChild(card); }); };
-  const renderContact = () => { const grid = $('#contact-grid'); if(!grid) return; grid.innerHTML = ''; const im = {instagram:'ph-bold ph-instagram-logo',location:'ph-bold ph-location-dot',facebook:'ph-bold ph-facebook-logo'}; CONFIG.contact.forEach(c => { const a=document.createElement('a'); a.className='contact-card reveal'; a.href=c.href||'#'; a.innerHTML=`<div class="contact-icon"><i class="${im[c.icon]||'ph-bold ph-circle'}"></i></div><div class="contact-info"><span class="contact-title">${escHtml(t(c.titleAr,c.titleEn))}</span><span class="contact-value">${escHtml(c.value)}</span></div>`; grid.appendChild(a); }); };
-  const renderFooter = () => { setText('footer-brand-main', t(CONFIG.site.nameAr,CONFIG.site.nameEn)); setText('footer-brand-sub', CONFIG.site.facultyAr); setText('footer-motto', t(CONFIG.footer.mottoAr,CONFIG.footer.mottoEn)); setText('footer-founded', t(CONFIG.footer.foundedAr,CONFIG.footer.foundedEn)); setText('footer-copyright', `© 2026 ${t(CONFIG.site.nameAr,CONFIG.site.nameEn)} — ${t(CONFIG.site.facultyAr,CONFIG.site.facultyEn)}, ${t(CONFIG.site.universityAr,CONFIG.site.universityEn)}.`); const list=$('#footer-list'); if(list){ list.innerHTML=CONFIG.nav[state.lang].map(n=>`<li><a href="${n.href}">${n.label}</a></li>`).join(''); } const cl=$('#footer-contact-list'); if(cl){ cl.innerHTML=CONFIG.contact.map(c=>`<li><a href="${c.href||'#'}"><i class="ph-bold ${im[c.icon]||'ph-circle'}"></i> ${escHtml(c.value)}</a></li>`).join(''); } setText('footer-cta-btn', `<i class="ph-bold ph-paper-plane"></i> <span>${t(CONFIG.footer.joinCtaAr,CONFIG.footer.joinCtaEn)}</span>`); };
+  /* ───── الرندر ───── */
+  const mono = s => (s || '').replace(/^(أ\.د\/|دكتور|د\/|Prof\. Dr\.|Dr\.)\s*/i, '').trim().charAt(0).toUpperCase();
+  const renderNav = () => {
+    const links = C.nav.map(n => `<a href="${n.href}" data-sec="${n.href.slice(1)}">${esc(L(n.ar, n.en))}</a>`).join('');
+    $('#nav-list').innerHTML = links; $('#drawer-list').innerHTML = links;
+    $('#footer-links').innerHTML = C.nav.map(n => `<li><a href="${n.href}">${esc(L(n.ar, n.en))}</a></li>`).join('');
+    $$('#drawer-list a').forEach(a => a.addEventListener('click', closeDrawer));
+    updateActive();
+  };
 
-  /* Init */
-  const initDrawer = () => { const mobileBtn=$('#nav-mobile-btn'), overlay=$('#nav-drawer-overlay'), drawer=$('#nav-drawer'), closeBtn=$('#drawer-close'); const open=()=>{overlay.classList.add('open');drawer.classList.add('open');document.body.style.overflow='hidden';}; const close=()=>{overlay.classList.remove('open');drawer.classList.remove('open');document.body.style.overflow='';}; mobileBtn.addEventListener('click',open); closeBtn.addEventListener('click',close); overlay.addEventListener('click',close); };
-  const initShare = () => { const modal=$('#share-modal'), close=$('#share-close'), back=$('#share-backdrop'), copy=$('#share-copy'); close.addEventListener('click',()=>{modal.classList.remove('open');document.body.style.overflow='';}); back.addEventListener('click',()=>{modal.classList.remove('open');document.body.style.overflow='';}); copy.addEventListener('click',()=>{ navigator.clipboard.writeText(window.location.href).then(()=>{ const o=copy.innerHTML; copy.innerHTML='<i class="ph-bold ph-check"></i> تم النسخ'; setTimeout(()=>copy.innerHTML=o,1800); }); }); };
+  /* عداد odometer: الأرقام بتلف وتقف على القيمة (صفر دلوقتي) */
+  const odoHTML = value => {
+    const digits = String(Math.max(0, Math.floor(value))).padStart(2, '0').split('');
+    const strip = '0123456789'.repeat(3).split('').map(d => `<span>${d}</span>`).join('');
+    return (value > 0 ? `<span class="plus">+</span>` : '') + digits.map(d => `<span class="od"><span class="od-strip" data-d="${d}">${strip}</span></span>`).join('');
+  };
+  const rollOdo = (card, instant) => $$('.od-strip', card).forEach((s, i) => {
+    const target = 20 + Number(s.dataset.d);
+    if (instant) { s.style.transition = 'none'; s.style.transform = `translateY(-${target}em)`; return; }
+    s.style.transitionDuration = (2 + i * 0.5) + 's';
+    requestAnimationFrame(() => requestAnimationFrame(() => { s.style.transform = `translateY(-${target}em)`; }));
+  });
+  const renderStats = () => {
+    $('#stats-grid').innerHTML = C.stats.map((s, i) => `
+      <div class="stat-card reveal" style="--i:${i}">
+        <div class="stat-icon"><i class="ph-bold ${s.icon}"></i></div>
+        <div class="odo">${odoHTML(s.value)}</div>
+        <span class="stat-label">${esc(L(s.ar, s.en))}</span>
+      </div>`).join('');
+    if (state.statsPlayed) $$('.stat-card').forEach(c => { c.classList.add('in'); rollOdo(c, true); });
+    else observe($$('#stats-grid .reveal'));
+  };
+  const renderAbout = () => {
+    $('#about-cards').innerHTML = C.about.map((a, i) => `
+      <article class="about-card reveal" style="--i:${i}">
+        <div class="about-ico"><i class="ph-bold ${a.icon}"></i></div>
+        <div><h3>${esc(L(a.ar, a.en))}</h3><p>${esc(L(a.textAr, a.textEn))}</p></div>
+      </article>`).join('');
+    $('#link-cards').innerHTML = C.officialLinks.map((l, i) => `
+      <a class="link-card reveal" style="--i:${i}" ${linkProps(C.links[l.linkKey])}>
+        <i class="ph-bold ${l.icon} lc-ico"></i><h4>${esc(L(l.ar, l.en))}</h4><p>${esc(L(l.descAr, l.descEn))}</p>
+        <span class="more">${esc(T('readMore'))} <i class="ph-bold ph-arrow-${state.lang === 'ar' ? 'left' : 'right'}"></i></span>
+      </a>`).join('');
+  };
+  const vipCard = (p, i) => `
+    <article class="vip-card reveal" style="--i:${i}">
+      <span class="vip-badge"><i class="ph-fill ph-crown-simple"></i>VIP</span>
+      <div class="vip-photo"><div class="vip-mono" data-photo="${esc(p.photo)}">${esc(mono(L(p.ar, p.en)))}</div></div>
+      ${p.chipAr ? `<span class="vip-chip">${esc(L(p.chipAr, p.chipEn))}</span>` : ''}
+      <h3>${esc(L(p.ar, p.en))}</h3>
+      <p class="vip-title">${esc(L(p.titleAr, p.titleEn))}</p>
+    </article>`;
+  const renderPeople = () => {
+    $('#supervision-grid').innerHTML = C.supervision.map(vipCard).join('');
+    $('#leadership-grid').innerHTML = C.leadership.map(vipCard).join('');
+    $$('.vip-mono[data-photo]').forEach(async el => {
+      const url = await firstLoadable(el.dataset.photo);
+      if (url) { const img = document.createElement('img'); img.src = url; img.alt = el.parentElement.parentElement.querySelector('h3').textContent; img.loading = 'lazy'; el.replaceWith(img); }
+    });
+  };
+  const renderCampaigns = () => {
+    $('#campaigns-grid').innerHTML = C.campaigns.map((c, i) => `
+      <article class="camp-card reveal" style="--i:${i}">
+        <div class="camp-img">
+          <div class="camp-fallback"><i class="ph-bold ${c.icon}"></i></div>
+          <div class="bgimg" data-img='${esc(JSON.stringify(c.image))}'></div>
+          <div class="date-badge"><b>${esc(c.day)}</b><span>${esc(L(c.monthAr, c.monthEn))}</span></div>
+          <span class="soon">${esc(T('soon'))}</span>
+        </div>
+        <div class="camp-body">
+          <h3>${esc(L(c.ar, c.en))}</h3>
+          <div class="camp-date"><i class="ph-bold ph-calendar-blank"></i>${esc(L(c.dateAr, c.dateEn))}</div>
+          <p>${esc(L(c.descAr, c.descEn))}</p>
+        </div>
+      </article>`).join('');
+    $$('.bgimg[data-img]').forEach(async el => { const u = await firstLoadable(JSON.parse(el.dataset.img.replace(/&quot;/g, '"'))); if (u) el.style.backgroundImage = `url("${u}")`; });
+  };
+  const renderContact = () => {
+    const a = $('#contact-fb'); a.href = C.contact.href; $('#contact-handle').textContent = C.contact.handle;
+  };
+  const renderSocials = () => {
+    $('#socials').innerHTML = C.socials.map(s => `<a ${linkProps(s.href)} aria-label="${esc(s.label)}" title="${esc(s.label)}"><i class="ph-fill ${s.icon}"></i></a>`).join('');
+  };
+  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); observe($$('.reveal:not(.in)')); }
 
-  const renderAll = () => { renderNav(); renderStats(); renderAboutLinks(); renderSupervision(); renderLeadership(); renderCommittees(); renderInitiatives(); renderContact(); renderFooter(); setText('brand-main','أصدقاء البيئة'); setText('brand-sub','كلية التجارة'); setText('btn-join',`<i class="ph-bold ph-user-plus"></i> ${t('فورم الانضمام للفريق','Team Registration Form')}`); setText('btn-explore',`<i class="ph-bold ph-eye"></i> ${t('استكشف أعمالنا','Explore Our Work')}`); setText('hero-card-title',t('فريق أصدقاء البيئة','Environment Friends Team')); setText('hero-card-sub',t('كلية التجارة — جامعة قناة السويس','Faculty of Commerce — Suez Canal University')); setText('hero-card-handle',t('@env_friends_scu','@env_friends_scu')); setText('hero-pill-text',t('معاً من أجل بيئة أفضل | جامعة قناة السويس','Together for a Better Environment | Suez Canal University')); setText('hero-title-bold',t('فريق أصدقاء البيئة','Environment Friends Team')); setText('hero-subtitle',t('فريق طلابي تطوعي يعمل على نشر الوعي البيئي، وتنظيم حملات التشجير، وتقديم ورش العمل لخدمة المجتمع الجامعي والمجتمع المحلي.','A voluntary student team working to spread environmental awareness, organize tree-planting campaigns, and deliver workshops serving the university community and the local community.')); setText('stats-pill-text',t('أرقام تتحدث','Speaking Numbers')); setText('stats-title',t('بأرقام','In Numbers')); setText('stats-desc',t('أثر فريق أصدقاء البيئة في كلية التجارة — جامعة قناة السويس.','The impact of Environment Friends in the Faculty of Commerce — Suez Canal University.')); setText('about-pill-text',t('عن الفريق','About Us')); setText('about-title',t('عن فريق أصدقاء البيئة','About Environment Friends')); setText('about-desc',t('التعرف على رؤية الفريق ورسالته وأهدافه في خدمة البيئة والاستدامة داخل كلية التجارة.','Learning about the team\'s vision, mission, and goals in serving the environment and sustainability within the Faculty of Commerce.')); setText('supervision-pill-text',t('الإشراف الأكاديمي','Academic Supervision')); setText('supervision-title',t('الرعاية والإشراف الأكاديمي','Patronage & Academic Supervision')); setText('supervision-desc',t('فريق من السادة أعضاء هيئة التدريس يشرفون على أنشطة الفريق ويرعون مسيرته داخل كلية التجارة.','A team of distinguished faculty members overseeing the team\'s activities and sponsoring its journey within the Faculty of Commerce.')); setText('leadership-pill-text',t('الهيكل القيادي','Leadership')); setText('leadership-title',t('الهيكل القيادي للفريق','Team Leadership Structure')); setText('committees-pill-text',t('اللجان','Committees')); setText('committees-title',t('لجان الفريق','Team Committees')); setText('committees-desc',t('تعرف على لجان الفريق واختر اللجنة التي ترغب في الانضمام إليها عبر فورم التسجيل.','Learn about the team committees and choose which one you wish to join through the registration form.')); setText('initiatives-pill-text',t('حملاتنا','Our Initiatives')); setText('initiatives-title',t('حملاتنا وصور من فعالياتنا','Our Initiatives & Photos from Our Events')); setText('initiatives-desc',t('لقطات من أنشطتنا البيئية، حملات التشجير، وورش العمل التي ينفذها فريق أصدقاء البيئة.','Captures from our environmental activities, tree-planting campaigns, and workshops implemented by the Environment Friends team.')); setText('contact-pill-text',t('تواصل معنا','Contact Us')); setText('contact-title',t('تواصل معنا','Contact Us')); setText('cta-badge-text',t('الانضمام مفتوح الآن','Applications Open Now')); setText('cta-title',t('انضم إلى فريق أصدقاء البيئة','Join the Environment Friends Team')); setText('cta-subtitle',t('كن جزءًا من التغيير البيئي في جامعة قناة السويس وساهم في صنع مستقبل أخضر لأجيال قادمة.','Be part of the environmental change at Suez Canal University and contribute to creating a green future for coming generations.')); setText('cta-btn-text',t('سجل الآن مجانًا','Register Now for Free')); setText('footer-cta-title',t('انضم إلى الفريق','Join the Team')); setText('footer-cta-sub',t('انضم إلينا الآن وكن جزءًا من التغيير البيئي في جامعة قناة السويس.','Join us now and be part of the environmental change at Suez Canal University.')); setText('footer-cta-btn',`<i class="ph-bold ph-paper-plane"></i> <span>${t('سجل الآن','Register Now')}</span>`); setText('nav-join-btn',t('انضم إلينا','Join Us')); setText('drawer-lang-text',state.lang==='ar'?'EN':'AR'); setText('lang-text',state.lang==='ar'?'EN':'AR'); updateThemeButtons(); applyHtmlState(); };
+  /* ───── Reveal + بدء العداد ───── */
+  const io = new IntersectionObserver(entries => entries.forEach(en => {
+    if (!en.isIntersecting) return;
+    en.target.classList.add('in'); io.unobserve(en.target);
+    if (en.target.classList.contains('stat-card')) { state.statsPlayed = true; setTimeout(() => rollOdo(en.target, false), 250); }
+  }), { threshold: 0.2, rootMargin: '0px 0px -40px 0px' });
+  function observe(list) { list.forEach(el => io.observe(el)); }
 
-  /* Theme toggle listener */
-  $('#theme-toggle')?.addEventListener('click', () => { state.theme = state.theme === 'light' ? 'dark' : 'light'; localStorage.setItem('ef-theme', state.theme); applyHtmlState(); updateThemeButtons(); });
-  $('#lang-toggle')?.addEventListener('click', () => { state.lang = state.lang === 'ar' ? 'en' : 'ar'; localStorage.setItem('ef-lang', state.lang); applyHtmlState(); renderAll(); nativeScrollTo({top:0,behavior:'smooth'}); });
-  $('#drawer-lang-toggle')?.addEventListener('click', () => { state.lang = state.lang === 'ar' ? 'en' : 'ar'; localStorage.setItem('ef-lang', state.lang); applyHtmlState(); renderAll(); });
-  $('#drawer-theme-toggle')?.addEventListener('click', () => { state.theme = state.theme === 'light' ? 'dark' : 'light'; localStorage.setItem('ef-theme', state.theme); applyHtmlState(); updateThemeButtons(); });
+  /* ───── الصور الثابتة (خلفيات + لوجوهات) ───── */
+  const setBackgrounds = () => $$('[data-bg]').forEach(async el => { const u = await firstLoadable(C.images[el.dataset.bg]); if (u) el.style.backgroundImage = `url("${u}")`; });
+  const setLogos = () => {
+    $('#brand-logo').src = C.images.ecoLogo; $('#footer-logo').src = C.images.ecoLogo;
+    $('#hero-logo-1').src = C.images.facultyEmblem; $('#hero-logo-2').src = C.images.ecoLogo;
+    $$('#brand-logo,#footer-logo,#hero-logo-1,#hero-logo-2').forEach(i => { i.alt = ''; });
+  };
 
-  /* Init */
-  document.addEventListener('DOMContentLoaded', () => { initDrawer(); initShare(); renderAll(); });
+  /* ───── أوراق متساقطة في الهيرو ───── */
+  const makeLeaves = () => {
+    const box = $('#leaves'); let html = '';
+    for (let i = 0; i < 12; i++) {
+      const left = Math.random() * 100, size = 14 + Math.random() * 22, dur = 9 + Math.random() * 9, delay = -Math.random() * 14;
+      const dx = (Math.random() * 160 - 80).toFixed(0) + 'px', rot = (Math.random() * 540 - 270).toFixed(0) + 'deg';
+      html += `<i class="ph-fill ph-leaf leaf" style="left:${left}%;font-size:${size}px;animation-duration:${dur}s;animation-delay:${delay}s;--dx:${dx};--rot:${rot}"></i>`;
+    }
+    box.innerHTML = html;
+  };
+
+  /* ───── النافبار: scroll + active ───── */
+  const header = $('#navbar');
+  const updateActive = () => {
+    const y = scrollY + 140; let cur = 'hero';
+    ['hero', 'about', 'supervision', 'leadership', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
+    if (cur === 'stats') cur = 'hero';
+    $$('.nav-list a, .drawer-list a').forEach(a => a.classList.toggle('active', a.dataset.sec === cur));
+  };
+  const onScroll = () => { header.classList.toggle('scrolled', scrollY > 60); updateActive(); };
+  addEventListener('scroll', onScroll, { passive: true });
+
+  /* ───── Drawer ───── */
+  const drawer = $('#drawer'), overlay = $('#drawer-overlay');
+  function closeDrawer() { drawer.classList.remove('open'); overlay.classList.remove('open'); document.body.style.overflow = ''; }
+  $('#nav-burger').addEventListener('click', () => { drawer.classList.add('open'); overlay.classList.add('open'); document.body.style.overflow = 'hidden'; });
+  $('#drawer-close').addEventListener('click', closeDrawer); overlay.addEventListener('click', closeDrawer);
+  addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
+
+  /* ───── تشغيل ───── */
+  setLogos(); setBackgrounds(); makeLeaves(); applyTheme(); applyLang(); onScroll();
 })();
-
-/* 5 COUNT-UP WITH INTERSECTION OBSERVER */
-const countObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if(entry.isIntersecting){ const el = entry.target; const target = parseInt(el.getAttribute('data-target')||'0',10); if(!target) return; let cur=0; const step=Math.max(1,Math.floor(target/30)); const t=setInterval(()=>{ cur=Math.min(cur+step,target); el.textContent='+'+cur; if(cur>=target)clearInterval(t); },35); countObserver.unobserve(el); } }); }, {threshold:0.4});
-document.querySelectorAll('.stat-value').forEach(el => countObserver.observe(el));
