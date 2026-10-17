@@ -54,21 +54,21 @@ ul{list-style:none}
 .nav-list{display:flex;gap:.15rem}
 .nav-list a{position:relative;font-size:.85rem;font-weight:700;padding:.45rem .8rem;border-radius:999px;color:var(--nav-text);opacity:.9;transition:all .25s}
 .nav-list a:hover{background:rgba(137,197,74,.2);opacity:1}
-.nav-list a.active{background:linear-gradient(135deg,var(--emerald),var(--leaf));color:#fff;opacity:1;box-shadow:0 6px 16px -6px rgba(26,105,41,.7)}
+.nav-list a.active{background:var(--emerald);color:#fff;opacity:1;box-shadow:0 0 0 1.5px var(--leaf),0 6px 16px -6px rgba(26,105,41,.8)}
 .nav-actions{display:flex;align-items:center;gap:.55rem;margin-inline-start:auto}
 .nav-cta{font-weight:800;font-size:.85rem;padding:.55rem 1.2rem;border-radius:999px;color:var(--navy);background:linear-gradient(135deg,var(--leaf),#B6E27F);box-shadow:0 8px 20px -8px rgba(137,197,74,.9);transition:transform .2s,box-shadow .2s;white-space:nowrap}
 .nav-cta:hover{transform:translateY(-2px);box-shadow:0 12px 24px -8px rgba(137,197,74,1)}
-.icon-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-size:1.25rem}
+.icon-btn{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;font-size:1.25rem}
 .nav-burger{display:none;color:var(--nav-text)}
 
 /* ── أزرار التبديل (لغة + ثيم) ── */
-.switch{position:relative;direction:ltr;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;align-items:center;height:40px;padding:3px;border-radius:999px;
+.switch{position:relative;direction:ltr;display:inline-grid;grid-auto-flow:column;grid-auto-columns:1fr;align-items:center;height:44px;padding:3px;border-radius:999px;
   background:rgba(255,255,255,.14);border:1.5px solid rgba(137,197,74,.75);box-shadow:0 0 0 3px rgba(137,197,74,.12);transition:all .3s;overflow:hidden;isolation:isolate}
 .header.scrolled .switch{background:var(--bg-alt);border-color:var(--accent)}
 .switch:hover{box-shadow:0 0 0 4px rgba(137,197,74,.28)}
 .switch .seg{position:relative;z-index:2;width:36px;height:100%;display:grid;place-items:center;font-size:.8rem;font-weight:900;color:var(--nav-text);transition:color .3s;font-family:var(--font-en)}
 .switch .seg.ph-fill{font-size:1.05rem}
-.switch .thumb{position:absolute;z-index:1;top:3px;bottom:3px;inset-inline-start:3px;width:36px;border-radius:999px;background:linear-gradient(135deg,var(--emerald),var(--leaf));box-shadow:0 4px 12px -2px rgba(26,105,41,.7);transition:transform .4s var(--ease)}
+.switch .thumb{position:absolute;z-index:1;top:3px;bottom:3px;inset-inline-start:3px;width:36px;border-radius:999px;background:var(--emerald);box-shadow:0 0 0 1.5px var(--leaf),0 4px 12px -2px rgba(26,105,41,.7);transition:transform .4s var(--ease)}
 [data-lang="en"] .lang-switch .thumb{transform:translateX(36px)}
 [data-theme="dark"] .theme-switch .thumb{transform:translateX(36px)}
 .lang-switch .seg:nth-child(1){color:#fff}
@@ -117,7 +117,7 @@ ul{list-style:none}
 .hero-sub{max-width:640px;margin:0 auto 2rem;color:rgba(255,255,255,.85);font-size:1.08rem}
 .hero-buttons{display:flex;gap:.9rem;justify-content:center;flex-wrap:wrap}
 .scroll-hint{position:absolute;bottom:92px;inset-inline:0;margin:auto;width:max-content;z-index:3;display:flex;flex-direction:column;align-items:center;gap:.2rem;font-size:.72rem;font-weight:700;color:rgba(255,255,255,.75);animation:bob 2s ease-in-out infinite}
-.scroll-hint i{font-size:1.1rem;color:var(--leaf)}
+.scroll-hint svg{font-size:1.1rem;color:var(--leaf)}
 @keyframes bob{50%{transform:translateY(7px)}}
 /* أوراق متساقطة بتنزل من الهيرو للقسم اللي بعده */
 .leaves{position:absolute;inset:0;z-index:2;pointer-events:none;overflow:hidden}
@@ -132,10 +132,10 @@ ul{list-style:none}
 .s-base>.wave{color:var(--bg)}.s-alt>.wave{color:var(--bg-alt)}
 .wave::before,.wave::after{content:"";position:absolute;bottom:-1px;left:0;width:200%;height:100%;background:currentColor;
   -webkit-mask:var(--wp) 0 100%/50% 100% repeat-x;mask:var(--wp) 0 100%/50% 100% repeat-x;animation:drift 16s linear infinite}
-.wave::before{opacity:.38;animation-duration:24s;transform:translateY(-14%)}
+.wave::before{opacity:.4;animation-duration:26s}
 @keyframes drift{to{transform:translateX(-50%)}}
 .wave::before{animation-name:drift2}
-@keyframes drift2{from{transform:translate(-50%,-14%)}to{transform:translate(0,-14%)}}
+@keyframes drift2{from{transform:translateX(-50%)}to{transform:translateX(0)}}
 .wave[data-wave="1"]{--wp:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 60C240 0 480 0 720 50S1200 100 1440 60V100H0Z'/%3E%3C/svg%3E")}
 .wave[data-wave="2"]{--wp:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 80C180 80 300 10 520 10S900 90 1100 90 1340 40 1440 80V100H0Z'/%3E%3C/svg%3E")}
 .wave[data-wave="3"]{--wp:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100Q180 0 360 100T720 100T1080 100T1440 100V100H0Z'/%3E%3C/svg%3E")}
@@ -173,13 +173,13 @@ ul{list-style:none}
 .link-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.25rem}
 .link-card{display:flex;flex-direction:column;gap:.5rem;padding:1.5rem;border-radius:var(--r);background:var(--surface);border:1px solid var(--border);box-shadow:var(--shadow);transition:all .3s var(--ease)}
 .link-card:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:var(--shadow-lg)}
-.link-card i.lc-ico{font-size:1.7rem;color:var(--accent)}
+.link-card .lc-ico{font-size:1.7rem;color:var(--accent)}
 .link-card h4{font-weight:800;font-size:1.05rem}
 .link-card p{color:var(--muted);font-size:.9rem;flex:1}
 .link-card .more{display:inline-flex;align-items:center;gap:.4rem;font-weight:800;color:var(--accent);font-size:.9rem;margin-top:.4rem}
-.link-card .more i{transition:transform .25s}
-.link-card:hover .more i{transform:translateX(-5px)}
-[dir="ltr"] .link-card:hover .more i{transform:translateX(5px)}
+.link-card .more svg{transition:transform .25s}
+.link-card:hover .more svg{transform:translateX(-5px)}
+[dir="ltr"] .link-card:hover .more svg{transform:translateX(5px)}
 
 /* ═════ كروت VIP ═════ */
 .vip-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem;justify-content:center}
@@ -212,7 +212,7 @@ ul{list-style:none}
 .camp-fallback{position:absolute;inset:0;display:grid;place-items:center;font-size:4rem;color:rgba(255,255,255,.4)}
 .date-badge{position:absolute;top:16px;inset-inline-start:16px;z-index:3;text-align:center;padding:.5rem .85rem;border-radius:1rem;background:var(--glass);backdrop-filter:blur(10px);border:1px solid var(--border);line-height:1.1;color:var(--text)}
 .date-badge b{display:block;font-size:1.5rem;font-weight:900;font-family:var(--font-en)}.date-badge span{font-size:.75rem;font-weight:800;color:var(--accent)}
-.soon{position:absolute;top:16px;inset-inline-end:16px;z-index:3;padding:.3rem .8rem;border-radius:999px;font-size:.78rem;font-weight:900;background:linear-gradient(135deg,var(--emerald),var(--leaf));color:#fff}
+.soon{position:absolute;top:16px;inset-inline-end:16px;z-index:3;padding:.3rem .8rem;border-radius:999px;font-size:.78rem;font-weight:900;background:var(--emerald);color:#fff;box-shadow:0 0 0 1.5px var(--leaf)}
 .camp-body{padding:1.4rem 1.6rem 1.7rem}
 .camp-body h3{font-size:1.35rem;font-weight:900}
 .camp-date{display:flex;align-items:center;gap:.4rem;color:var(--accent);font-weight:800;margin:.3rem 0 .5rem}
@@ -294,3 +294,13 @@ ul{list-style:none}
   .nav-brand img{width:36px;height:36px}
 }
 @media (max-width:420px){.brand-text{display:none}.switch .seg,.switch .thumb{width:32px}[data-lang="en"] .lang-switch .thumb,[data-theme="dark"] .theme-switch .thumb{transform:translateX(32px)}}
+
+/* ═════ Accessibility (من ui-ux-pro-max): focus واضح + skip link + أيقونات SVG ═════ */
+.ph-svg{display:inline-block;width:1em;height:1em;flex:none;vertical-align:-.125em}
+:focus{outline:none}
+:focus-visible{outline:3px solid var(--leaf);outline-offset:3px;border-radius:8px}
+.header :focus-visible,.btn:focus-visible,.nav-cta:focus-visible,.socials a:focus-visible{outline-color:var(--leaf);outline-offset:2px}
+.skip-link{position:fixed;top:-80px;inset-inline-start:16px;z-index:300;padding:.7rem 1.2rem;border-radius:999px;background:var(--navy);color:#fff;font-weight:800;border:2px solid var(--leaf);transition:top .2s}
+.skip-link:focus{top:84px}
+@media (hover:none){.vip-card:hover,.camp-card:hover,.stat-card:hover,.about-card:hover,.link-card:hover{transform:none}}
+.switch svg.seg{padding:11px 10px;box-sizing:border-box}
