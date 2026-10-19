@@ -93,3 +93,6 @@ body{counter-reset:sec}
 .soon.is-done{background:var(--navy);color:var(--leaf);box-shadow:0 0 0 1.5px var(--leaf)}
 .count{inset-block-start:auto;inset-block-end:88px;inset-inline-start:auto;inset-inline-end:14px}
 @media (max-width:720px){.lb-img{max-height:calc(100dvh - 230px)}.count{inset-block-end:76px}}
+
+.tap.later{background:var(--glass);color:var(--text);border:1px solid var(--border)}
+.tap.later svg{animation:none}
