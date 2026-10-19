@@ -17,7 +17,7 @@ const CONFIG = {
   links: {
     registrationForm: '',            // ← حط لينك فورم التقديم هنا
     facebook: 'https://www.facebook.com/env_friends_scu',
-    facultyPage: 'https://www.suez.edu.eg',
+    facultyPage: 'https://www.facebook.com/share/19zGBvni5Y/?mibextid=wwXIfr',
     teamPage: 'https://www.facebook.com/env_friends_scu',
   },
 
