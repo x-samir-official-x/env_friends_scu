@@ -141,7 +141,7 @@
           <div class="bgimg" data-img='${esc(JSON.stringify(coverOf(c) ? [coverOf(c)] : (has ? [ph[0]] : c.image)))}'></div>
           <div class="date-badge"><b>${esc(c.day)}</b><span>${esc(L(c.monthAr, c.monthEn))}</span></div>
           <span class="soon${c.done ? ' is-done' : ''}">${esc(T(c.done ? 'done' : 'soon'))}</span>
-          ${stack}
+          ${stack}${!has && !c.done ? `<span class="tap later"><i class="ph-bold ph-images"></i>${esc(T('photosAfter'))}</span>` : ''}
         </div>
         <div class="camp-body">
           <h3>${esc(L(c.ar, c.en))}</h3>
@@ -152,7 +152,24 @@
     }).join('');
     $$('.bgimg[data-img]').forEach(async el => { const u = await firstLoadable(JSON.parse(el.dataset.img.replace(/&quot;/g, '"'))); if (u) el.style.backgroundImage = `url("${u}")`; });
   };
-  const loadManifest = () => fetch('gallery.json', { cache: 'no-cache' }).then(r => (r.ok ? r.json() : {})).then(m => { manifest = m || {}; renderCampaigns(); hydrateIcons(); observe($$('.reveal:not(.in)')); }).catch(() => {});
+  /* لو الفعالية مالهاش صور في gallery.json، نقرأ فولدرها مباشرة من GitHub (الصور الجديدة تظهر لوحدها) */
+  const ghList = async c => {
+    if (!C.github || location.protocol === 'file:') return null;
+    const key = 'ef-gh-' + c.id;
+    try { const k = JSON.parse(sessionStorage.getItem(key)); if (k && Date.now() - k.t < 300000) return k.v; } catch (e) {}
+    try {
+      const r = await fetch(`https://api.github.com/repos/${C.github}/contents/${c.folder}`); if (!r.ok) return null;
+      const names = (await r.json()).filter(f => f.type === 'file' && /\.(jpe?g|png|webp)$/i.test(f.name)).map(f => f.name).sort((x, y) => x.localeCompare(y, 'en', { numeric: true }));
+      const cover = names.find(n => /^cover\./i.test(n)) || null, v = { cover, photos: names.filter(n => n !== cover) };
+      try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v })); } catch (e) {}
+      return v;
+    } catch (e) { return null; }
+  };
+  const loadManifest = async () => {
+    try { const r = await fetch('gallery.json', { cache: 'no-cache' }); manifest = r.ok ? (await r.json()) || {} : {}; } catch (e) { manifest = {}; }
+    await Promise.all(C.campaigns.filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
+    renderCampaigns(); hydrateIcons(); observe($$('.reveal:not(.in)'));
+  };
 
   /* أصوات ناعمة بـ WebAudio (من غير ملفات) */
   const sfx = (() => {

@@ -14,6 +14,9 @@ const CONFIG = {
     footer: ['assets/footer', 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1920&h=1080&fit=crop'],
   },
 
+  /* الصور الجديدة في assets/events/<id>/ بتظهر لوحدها من GitHub من غير أي تعديل في الكود */
+  github: 'x-samir-official-x/env_friends_scu',
+
   links: {
     registrationForm: '',            // ← حط لينك فورم التقديم هنا
     facebook: 'https://www.facebook.com/env_friends_scu',
@@ -143,6 +146,7 @@ const CONFIG = {
     univPill:   { ar: 'قيادة الجامعة', en: 'University Leadership' },
     univTitle:  { ar: 'قيادة الجامعة', en: 'University Leadership' },
     univSub:    { ar: 'القيادات العليا التي ترعى العمل البيئي والمجتمعي بالجامعة.', en: 'The senior leaders who support environmental and community work at the university.' },
+    photosAfter:{ ar: 'الصور بعد الفعالية', en: 'Photos after the event' },
     done:       { ar: 'تمّت بنجاح', en: 'Completed' },
     viewPhotos: { ar: 'اضغط لمشاهدة الصور', en: 'Tap to view photos' },
     photosWord: { ar: 'صور', en: 'photos' },
