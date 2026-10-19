@@ -116,6 +116,7 @@
       <p class="vip-title">${esc(L(p.titleAr, p.titleEn))}</p>
     </article>`;
   const renderPeople = () => {
+    $('#university-grid').innerHTML = C.university.map(vipCard).join('');
     $('#supervision-grid').innerHTML = C.supervision.map(vipCard).join('');
     $('#leadership-grid').innerHTML = C.leadership.map(vipCard).join('');
     $$('.vip-mono[data-photo]').forEach(async el => {
@@ -123,23 +124,96 @@
       if (url) { const img = document.createElement('img'); img.src = url; img.alt = el.parentElement.parentElement.querySelector('h3').textContent; img.loading = 'lazy'; el.replaceWith(img); }
     });
   };
+  /* ───── معرض صور الفعاليات ───── */
+  let manifest = {};
+  const photosOf = c => ((manifest[c.id] || []).map(f => `${c.folder}/${f}`)).concat(c.gallery || []);
   const renderCampaigns = () => {
-    $('#campaigns-grid').innerHTML = C.campaigns.map((c, i) => `
-      <article class="camp-card reveal" style="--i:${i}">
+    $('#campaigns-grid').innerHTML = C.campaigns.map((c, i) => {
+      const ph = photosOf(c), has = ph.length > 0;
+      const stack = has ? `<span class="stack">${ph.slice(0, 3).map((u, k) => `<span class="stack-i" style="--k:${k};background-image:url('${esc(u)}')"></span>`).join('')}</span>
+          <span class="count"><i class="ph-bold ph-images"></i>${ph.length} ${esc(T('photosWord'))}</span>
+          <span class="tap"><i class="ph-bold ph-hand-tap"></i>${esc(T('viewPhotos'))}</span>` : '';
+      return `
+      <article class="camp-card reveal${has ? ' has-gallery' : ''}" style="--i:${i}" data-id="${esc(c.id)}" ${has ? `role="button" tabindex="0" aria-label="${esc(L(c.ar, c.en))} — ${esc(T('viewPhotos'))}"` : ''}>
         <div class="camp-img">
           <div class="camp-fallback"><i class="ph-bold ${c.icon}"></i></div>
-          <div class="bgimg" data-img='${esc(JSON.stringify(c.image))}'></div>
+          <div class="bgimg" data-img='${esc(JSON.stringify(has ? [ph[0]] : c.image))}'></div>
           <div class="date-badge"><b>${esc(c.day)}</b><span>${esc(L(c.monthAr, c.monthEn))}</span></div>
-          <span class="soon">${esc(T('soon'))}</span>
+          <span class="soon${c.done ? ' is-done' : ''}">${esc(T(c.done ? 'done' : 'soon'))}</span>
+          ${stack}
         </div>
         <div class="camp-body">
           <h3>${esc(L(c.ar, c.en))}</h3>
           <div class="camp-date"><i class="ph-bold ph-calendar-blank"></i>${esc(L(c.dateAr, c.dateEn))}</div>
           <p>${esc(L(c.descAr, c.descEn))}</p>
         </div>
-      </article>`).join('');
+      </article>`;
+    }).join('');
     $$('.bgimg[data-img]').forEach(async el => { const u = await firstLoadable(JSON.parse(el.dataset.img.replace(/&quot;/g, '"'))); if (u) el.style.backgroundImage = `url("${u}")`; });
   };
+  const loadManifest = () => fetch('gallery.json', { cache: 'no-cache' }).then(r => (r.ok ? r.json() : {})).then(m => { manifest = m || {}; renderCampaigns(); hydrateIcons(); observe($$('.reveal:not(.in)')); }).catch(() => {});
+
+  /* أصوات ناعمة بـ WebAudio (من غير ملفات) */
+  const sfx = (() => {
+    let ctx, muted = false; try { muted = localStorage.getItem('ef-sound') === 'off'; } catch (e) {}
+    const ac = () => ctx || (ctx = new (window.AudioContext || window.webkitAudioContext)());
+    const tone = (f, t0, d, v) => { const c = ac(), o = c.createOscillator(), g = c.createGain(), t = c.currentTime + t0; o.frequency.value = f; g.gain.setValueAtTime(0, t); g.gain.linearRampToValueAtTime(v, t + .02); g.gain.exponentialRampToValueAtTime(.0001, t + d); o.connect(g).connect(c.destination); o.start(t); o.stop(t + d + .05); };
+    const whoosh = (d, v, f0, f1) => { const c = ac(), n = c.createBufferSource(), b = c.createBuffer(1, c.sampleRate * d, c.sampleRate), x = b.getChannelData(0); for (let i = 0; i < x.length; i++) x[i] = (Math.random() * 2 - 1) * Math.sin(Math.PI * i / x.length); n.buffer = b; const f = c.createBiquadFilter(); f.type = 'bandpass'; f.Q.value = .8; f.frequency.setValueAtTime(f0, c.currentTime); f.frequency.exponentialRampToValueAtTime(f1, c.currentTime + d); const g = c.createGain(); g.gain.value = v; n.connect(f).connect(g).connect(c.destination); n.start(); };
+    const play = fn => { if (muted) return; try { ac().resume(); fn(); } catch (e) {} };
+    return {
+      get muted() { return muted; },
+      toggle() { muted = !muted; safeStore('ef-sound', muted ? 'off' : 'on'); return muted; },
+      open: () => play(() => { whoosh(.6, .32, 350, 3000); tone(659.25, .15, .8, .07); tone(987.77, .27, .9, .06); tone(1318.5, .4, 1.1, .045); }),
+      flip: () => play(() => { whoosh(.22, .2, 900, 2400); tone(880, 0, .25, .035); }),
+      close: () => play(() => whoosh(.32, .18, 2400, 450)),
+    };
+  })();
+
+  const lb = { el: null, list: [], i: 0, from: null, title: '' };
+  const buildLb = () => {
+    const el = document.createElement('div'); el.className = 'lb'; el.id = 'lb'; el.setAttribute('role', 'dialog'); el.setAttribute('aria-modal', 'true');
+    el.innerHTML = `<div class="lb-bg"></div>
+      <div class="lb-bar"><span class="lb-title"></span><span class="lb-count" dir="ltr"></span>
+        <button class="icon-btn lb-snd" type="button"></button><button class="icon-btn lb-x" type="button"><i class="ph-bold ph-x"></i></button></div>
+      <div class="lb-stage"><span class="ghost g1"></span><span class="ghost g2"></span><img class="lb-img" alt="" />
+        <button class="icon-btn lb-nav lb-prev" type="button"><i class="ph-bold ph-caret-left"></i></button><button class="icon-btn lb-nav lb-next" type="button"><i class="ph-bold ph-caret-right"></i></button></div>
+      <div class="lb-thumbs"></div>`;
+    document.body.appendChild(el); hydrateIcons(el); lb.el = el;
+    $('.lb-x', el).onclick = closeLb; $('.lb-bg', el).onclick = closeLb;
+    $('.lb-prev', el).onclick = () => go(state.lang === 'ar' ? 1 : -1); $('.lb-next', el).onclick = () => go(state.lang === 'ar' ? -1 : 1);
+    $('.lb-snd', el).onclick = () => { sfx.toggle(); paintSnd(); };
+    let sx = null; const st = $('.lb-stage', el);
+    st.addEventListener('pointerdown', e => { sx = e.clientX; });
+    st.addEventListener('pointerup', e => { if (sx === null) return; const dx = e.clientX - sx; sx = null; if (Math.abs(dx) > 50) go((dx < 0 ? 1 : -1) * (state.lang === 'ar' ? -1 : 1)); });
+  };
+  const paintSnd = () => { const b = $('.lb-snd', lb.el); b.innerHTML = `<i class="ph-bold ph-speaker-${sfx.muted ? 'slash' : 'high'}"></i>`; b.setAttribute('aria-label', T('sound')); hydrateIcons(b); };
+  const show = (i, silent) => {
+    lb.i = (i + lb.list.length) % lb.list.length; const img = $('.lb-img', lb.el);
+    img.classList.remove('in'); void img.offsetWidth; img.src = lb.list[lb.i]; img.alt = `${lb.title} ${lb.i + 1}`; img.classList.add('in');
+    $('.lb-count', lb.el).textContent = `${lb.i + 1} / ${lb.list.length}`;
+    $$('.lb-thumbs button', lb.el).forEach((b, k) => b.classList.toggle('on', k === lb.i));
+    const nx = new Image(); nx.src = lb.list[(lb.i + 1) % lb.list.length];
+    if (!silent) sfx.flip();
+  };
+  const go = d => show(lb.i + d);
+  function openLb(c, card) {
+    if (!lb.el) buildLb(); lb.list = photosOf(c); lb.title = L(c.ar, c.en); lb.from = card; if (!lb.list.length) return;
+    const r = card.getBoundingClientRect(); lb.el.style.setProperty('--ox', (r.left + r.width / 2 - innerWidth / 2) + 'px'); lb.el.style.setProperty('--oy', (r.top + r.height / 2 - innerHeight / 2) + 'px');
+    $('.lb-title', lb.el).textContent = lb.title; $('.lb-x', lb.el).setAttribute('aria-label', T('close'));
+    $('.lb-prev', lb.el).setAttribute('aria-label', T(state.lang === 'ar' ? 'next' : 'prev')); $('.lb-next', lb.el).setAttribute('aria-label', T(state.lang === 'ar' ? 'prev' : 'next'));
+    $('.lb-thumbs', lb.el).innerHTML = lb.list.map((u, k) => `<button type="button" style="--i:${k};--n:${lb.list.length};background-image:url('${esc(u)}')" aria-label="${k + 1}"></button>`).join('');
+    $$('.lb-thumbs button', lb.el).forEach((b, k) => { b.onclick = () => show(k); });
+    lb.el.classList.remove('closing', 'open'); void lb.el.offsetWidth; lb.el.classList.add('open'); document.body.style.overflow = 'hidden';
+    paintSnd(); show(0, true); sfx.open(); $('.lb-x', lb.el).focus({ preventScroll: true });
+  }
+  function closeLb() { if (!lb.el || !lb.el.classList.contains('open')) return; sfx.close(); lb.el.classList.add('closing'); setTimeout(() => { lb.el.classList.remove('open', 'closing'); document.body.style.overflow = ''; lb.from && lb.from.focus({ preventScroll: true }); }, 380); }
+  document.addEventListener('click', e => { const card = e.target.closest('.camp-card.has-gallery'); if (card) openLb(C.campaigns.find(c => c.id === card.dataset.id), card); });
+  document.addEventListener('keydown', e => {
+    const card = e.target.closest && e.target.closest('.camp-card.has-gallery');
+    if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLb(C.campaigns.find(c => c.id === card.dataset.id), card); return; }
+    if (!lb.el || !lb.el.classList.contains('open')) return;
+    if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowRight') go(state.lang === 'ar' ? -1 : 1); else if (e.key === 'ArrowLeft') go(state.lang === 'ar' ? 1 : -1);
+  });
   const renderContact = () => {
     const a = $('#contact-fb'); a.href = C.contact.href; $('#contact-handle').textContent = C.contact.handle;
   };
@@ -179,7 +253,7 @@
   const header = $('#navbar');
   const updateActive = () => {
     const y = scrollY + 140; let cur = 'hero';
-    ['hero', 'about', 'supervision', 'leadership', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
+    ['hero', 'about', 'university', 'supervision', 'leadership', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
     if (cur === 'stats') cur = 'hero';
     $$('.nav-list a, .drawer-list a').forEach(a => a.classList.toggle('active', a.dataset.sec === cur));
   };
@@ -194,5 +268,5 @@
   addEventListener('keydown', e => { if (e.key === 'Escape') closeDrawer(); });
 
   /* ───── تشغيل ───── */
-  setLogos(); setBackgrounds(); makeLeaves(); hydrateIcons(); applyTheme(); applyLang(); onScroll();
+  setLogos(); setBackgrounds(); makeLeaves(); hydrateIcons(); applyTheme(); applyLang(); onScroll(); loadManifest();
 })();

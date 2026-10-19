@@ -33,6 +33,7 @@ const CONFIG = {
   nav: [
     { href: '#hero',        ar: 'الرئيسية',          en: 'Home' },
     { href: '#about',       ar: 'عن الفريق',         en: 'About' },
+    { href: '#university', ar: 'قيادة الجامعة', en: 'University' },
     { href: '#supervision', ar: 'الإشراف الأكاديمي', en: 'Supervision' },
     { href: '#leadership',  ar: 'الهيكل الإداري',    en: 'Leadership' },
     { href: '#campaigns',   ar: 'حملاتنا',           en: 'Campaigns' },
@@ -70,6 +71,14 @@ const CONFIG = {
       linkKey: 'facultyPage' },
   ],
 
+  /* قيادة الجامعة — أعلى مستوى في التدرج (الاسم الرسمي للقسم من i18n: univTitle) */
+  university: [
+    { ar: 'أ.د/ ناصر سعيد مندور', en: 'Prof. Dr. Nasser Said Mandour',
+      titleAr: 'رئيس الجامعة', titleEn: 'University President', photo: 'assets/univ_president' },
+    { ar: 'أ.د/ دينا', en: 'Prof. Dr. Dina',
+      titleAr: 'نائب رئيس الجامعة لشئون البيئة وخدمة المجتمع', titleEn: 'Vice President for Environmental Affairs & Community Service', photo: 'assets/univ_vp_dina' },
+  ],
+
   /* photo: مسار الصورة في assets (بدون امتداد) — لو مش موجودة بيظهر الحرف الأول */
   supervision: [
     { ar: 'أ.د/أحمد عزمي', en: 'Prof. Dr. Ahmed Azmy',
@@ -88,12 +97,14 @@ const CONFIG = {
 
   /* الحملات — image: صورتك المحلية أولًا ثم صورة احتياطية */
   campaigns: [
-    { ar: 'يوم الابتسامة العالمي', en: 'World Smile Day',
+    { id: 'smile-day', done: true, folder: 'assets/events/smile-day', gallery: [],
+      ar: 'يوم الابتسامة العالمي', en: 'World Smile Day',
       dateAr: 'الإثنين 19 أكتوبر 2026', dateEn: 'Monday, 19 October 2026', day: '19', monthAr: 'أكتوبر', monthEn: 'Oct',
       descAr: 'نشر الابتسامة والطاقة الإيجابية بين طلاب الكلية.', descEn: 'Spreading smiles and positive energy among the faculty’s students.',
       icon: 'ph-smiley',
       image: ['assets/init_smile', 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&h=600&fit=crop'] },
-    { ar: 'زيارة دار المسنين', en: 'Elderly Care Home Visit',
+    { id: 'elderly-visit', done: false, folder: 'assets/events/elderly-visit', gallery: [],
+      ar: 'زيارة دار المسنين', en: 'Elderly Care Home Visit',
       dateAr: 'الخميس 22 أكتوبر 2026', dateEn: 'Thursday, 22 October 2026', day: '22', monthAr: 'أكتوبر', monthEn: 'Oct',
       descAr: 'زيارة إنسانية لإدخال البهجة على قلوب كبار السن.', descEn: 'A humane visit to bring joy to our elders.',
       icon: 'ph-heart',
@@ -129,6 +140,16 @@ const CONFIG = {
     campPill:   { ar: 'حملاتنا', en: 'Our Campaigns' },
     campTitle:  { ar: 'أولى حملاتنا', en: 'Our First Campaigns' },
     campSub:    { ar: 'مواعيد حملاتنا القادمة — كن معنا من اليوم الأول.', en: 'Our upcoming campaigns — be with us from day one.' },
+    univPill:   { ar: 'قيادة الجامعة', en: 'University Leadership' },
+    univTitle:  { ar: 'قيادة الجامعة', en: 'University Leadership' },
+    univSub:    { ar: 'القيادات العليا التي ترعى العمل البيئي والمجتمعي بالجامعة.', en: 'The senior leaders who support environmental and community work at the university.' },
+    done:       { ar: 'تمّت بنجاح', en: 'Completed' },
+    viewPhotos: { ar: 'اضغط لمشاهدة الصور', en: 'Tap to view photos' },
+    photosWord: { ar: 'صور', en: 'photos' },
+    close:      { ar: 'إغلاق', en: 'Close' },
+    prev:       { ar: 'السابقة', en: 'Previous' },
+    next:       { ar: 'التالية', en: 'Next' },
+    sound:      { ar: 'الصوت', en: 'Sound' },
     soon:       { ar: 'قريبًا', en: 'Soon' },
     joinBadge:  { ar: 'التطوع مفتوح الآن', en: 'Volunteering is open now' },
     joinTitle:  { ar: 'انضم إلى فريق أصدقاء البيئة', en: 'Join the Environment Friends Team' },
