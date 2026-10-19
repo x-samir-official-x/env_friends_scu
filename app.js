@@ -168,7 +168,8 @@
   const loadManifest = async () => {
     try { const r = await fetch('gallery.json', { cache: 'no-cache' }); manifest = r.ok ? (await r.json()) || {} : {}; } catch (e) { manifest = {}; }
     await Promise.all(C.campaigns.filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
-    renderCampaigns(); hydrateIcons(); observe($$('.reveal:not(.in)'));
+    teamFiles = (manifest.team && manifest.team.files) || await ghNames(C.team.folder);
+    renderCampaigns(); renderTeam(); hydrateIcons(); observe($$('.reveal:not(.in)'));
   };
 
   /* أصوات ناعمة بـ WebAudio (من غير ملفات) */
@@ -232,13 +233,35 @@
     if (!lb.el || !lb.el.classList.contains('open')) return;
     if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowRight') go(state.lang === 'ar' ? -1 : 1); else if (e.key === 'ArrowLeft') go(state.lang === 'ar' ? 1 : -1);
   });
+  /* ───── أعضاء الفريق (من فولدر Team Member) ───── */
+  let teamFiles = [];
+  const ghNames = async folder => {
+    if (!C.github || location.protocol === 'file:') return [];
+    const key = 'ef-gh-team', k0 = (() => { try { return JSON.parse(sessionStorage.getItem(key)); } catch (e) { return null; } })();
+    if (k0 && Date.now() - k0.t < 300000) return k0.v;
+    try {
+      const r = await fetch(`https://api.github.com/repos/${C.github}/contents/${encodeURI(folder)}`); if (!r.ok) return [];
+      const v = (await r.json()).filter(f => f.type === 'file' && /\.(jpe?g|png|webp)$/i.test(f.name)).map(f => f.name).sort((x, y) => x.localeCompare(y, 'ar', { numeric: true }));
+      try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v })); } catch (e) {} return v;
+    } catch (e) { return []; }
+  };
+  const memberName = f => f.replace(/\.[^.]+$/, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  const renderTeam = () => {
+    const g = $('#team-grid'); if (!g) return;
+    g.innerHTML = teamFiles.length ? teamFiles.map((f, i) => `
+      <article class="member reveal" style="--i:${Math.min(i, 8)}">
+        <div class="arch"><img src="${esc(encodeURI(C.team.folder + '/' + f))}" alt="${esc(memberName(f))}" loading="lazy" decoding="async"></div>
+        <h3>${esc(memberName(f))}</h3><span class="role">${esc(L(C.team.titleAr, C.team.titleEn))}</span>
+      </article>`).join('') : `<p class="team-empty reveal">${esc(T('teamSoon'))}</p>`;
+    observe($$('#team-grid .reveal'));
+  };
   const renderContact = () => {
     const a = $('#contact-fb'); a.href = C.contact.href; $('#contact-handle').textContent = C.contact.handle;
   };
   const renderSocials = () => {
     $('#socials').innerHTML = C.socials.map(s => `<a ${linkProps(s.href)} aria-label="${esc(s.label)}" title="${esc(s.label)}"><i class="ph-fill ${s.icon}"></i></a>`).join('');
   };
-  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); hydrateIcons(); observe($$('.reveal:not(.in)')); }
+  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderTeam(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); hydrateIcons(); observe($$('.reveal:not(.in)')); }
 
   /* ───── Reveal + بدء العداد ───── */
   const io = new IntersectionObserver(entries => entries.forEach(en => {
@@ -271,7 +294,7 @@
   const header = $('#navbar');
   const updateActive = () => {
     const y = scrollY + 140; let cur = 'hero';
-    ['hero', 'about', 'university', 'supervision', 'leadership', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
+    ['hero', 'about', 'university', 'supervision', 'leadership', 'team', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
     if (cur === 'stats') cur = 'hero';
     $$('.nav-list a, .drawer-list a').forEach(a => a.classList.toggle('active', a.dataset.sec === cur));
   };

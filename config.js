@@ -39,6 +39,7 @@ const CONFIG = {
     { href: '#university', ar: 'قيادة الجامعة', en: 'University' },
     { href: '#supervision', ar: 'الإشراف الأكاديمي', en: 'Supervision' },
     { href: '#leadership',  ar: 'الهيكل الإداري',    en: 'Leadership' },
+    { href: '#team',       ar: 'فريقنا',            en: 'Team' },
     { href: '#campaigns',   ar: 'حملاتنا',           en: 'Campaigns' },
     { href: '#join',        ar: 'انضم إلينا',        en: 'Join' },
     { href: '#contact',     ar: 'تواصل معنا',        en: 'Contact' },
@@ -98,6 +99,9 @@ const CONFIG = {
     { ar: 'ندى محمد', en: 'Nada Mohamed', titleAr: 'نائب قائد الفريق', titleEn: 'Deputy Team Leader', photo: 'assets/co_leader_nada' },
   ],
 
+  /* أعضاء الفريق: صورة لكل عضو في الفولدر، واسم الملف = اسم العضو (ثنائي) */
+  team: { folder: 'assets/Team Member', titleAr: 'طالبة', titleEn: 'Student' },
+
   /* الحملات — image: صورتك المحلية أولًا ثم صورة احتياطية */
   campaigns: [
     { id: 'smile-day', done: true, folder: 'assets/events/smile-day', gallery: [],
@@ -146,6 +150,10 @@ const CONFIG = {
     univPill:   { ar: 'قيادة الجامعة', en: 'University Leadership' },
     univTitle:  { ar: 'قيادة الجامعة', en: 'University Leadership' },
     univSub:    { ar: 'القيادات العليا التي ترعى العمل البيئي والمجتمعي بالجامعة.', en: 'The senior leaders who support environmental and community work at the university.' },
+    teamPill:   { ar: 'فريقنا', en: 'Our Team' },
+    teamTitle:  { ar: 'أعضاء الفريق', en: 'Team Members' },
+    teamSub:    { ar: 'وجوه شابة متطوعة تصنع الفرق بجهدها وشغفها بالبيئة.', en: 'Young volunteers making a difference with their effort and passion for the environment.' },
+    teamSoon:   { ar: 'سيتم عرض أعضاء الفريق هنا قريبًا', en: 'Team members will appear here soon' },
     photosAfter:{ ar: 'الصور بعد الفعالية', en: 'Photos after the event' },
     done:       { ar: 'تمّت بنجاح', en: 'Completed' },
     viewPhotos: { ar: 'اضغط لمشاهدة الصور', en: 'Tap to view photos' },
