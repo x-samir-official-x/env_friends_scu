@@ -1,4 +1,8 @@
 {
+ "elderly-visit": {
+  "cover": null,
+  "photos": []
+ },
  "smile-day": {
   "cover": "cover.jpg",
   "photos": [
@@ -8,6 +12,14 @@
    "photo_2026-10-19_22-14-27.jpg",
    "photo_2026-10-19_22-14-35.jpg",
    "photo_2026-10-19_22-14-36.jpg"
+  ]
+ },
+ "team": {
+  "folder": "assets/Team Member",
+  "files": [
+   "اميره سامح.jpg",
+   "حنين هاني.jpg",
+   "هدير أيمن.jpg"
   ]
  }
 }

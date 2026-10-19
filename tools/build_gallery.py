@@ -18,5 +18,16 @@ for d in sorted(p for p in EV.glob("*") if p.is_dir()):
         if f.stem.lower() == "cover": cover = f.name
         else: files.append(f.name)
     out[d.name] = {"cover": cover, "photos": sorted(set(files), key=str.lower)}
+TEAM = ROOT / "assets" / "Team Member"
+if TEAM.is_dir():
+    tf = []
+    for f in sorted((p for p in TEAM.iterdir() if p.suffix.lower() in EXT), key=lambda p: p.name):
+        if f.stat().st_size > 350_000 or max(Image.open(f).size) > 1100:
+            im = ImageOps.exif_transpose(Image.open(f)).convert("RGB"); im.thumbnail((1100, 1100))
+            f2 = f.with_suffix(".jpg"); im.save(f2, quality=82, optimize=True)
+            if f2 != f: f.unlink()
+            f = f2
+        tf.append(f.name)
+    out["team"] = {"folder": "assets/Team Member", "files": sorted(set(tf))}
 (ROOT / "gallery.json").write_text(json.dumps(out, ensure_ascii=False, indent=1) + "\n", encoding="utf-8")
-print({k: (v['cover'], len(v['photos'])) for k, v in out.items()})
+print({k: ((v['cover'], len(v['photos'])) if 'photos' in v else len(v['files'])) for k, v in out.items()})

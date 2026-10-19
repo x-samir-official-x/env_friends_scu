@@ -168,7 +168,8 @@
   const loadManifest = async () => {
     try { const r = await fetch('gallery.json', { cache: 'no-cache' }); manifest = r.ok ? (await r.json()) || {} : {}; } catch (e) { manifest = {}; }
     await Promise.all(C.campaigns.filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
-    renderCampaigns(); hydrateIcons(); observe($$('.reveal:not(.in)'));
+    const live = await ghNames(C.team.folder); teamFiles = live.length ? live : ((manifest.team && manifest.team.files) || []);
+    renderCampaigns(); renderTeam(); hydrateIcons(); observe($$('.reveal:not(.in)'));
   };
 
   /* أصوات ناعمة بـ WebAudio (من غير ملفات) */
@@ -232,13 +233,46 @@
     if (!lb.el || !lb.el.classList.contains('open')) return;
     if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowRight') go(state.lang === 'ar' ? -1 : 1); else if (e.key === 'ArrowLeft') go(state.lang === 'ar' ? 1 : -1);
   });
+  /* ───── أعضاء الفريق (من فولدر Team Member) ───── */
+  let teamFiles = [];
+  const ghNames = async folder => {
+    if (!C.github || location.protocol === 'file:') return [];
+    const key = 'ef-gh-team', k0 = (() => { try { return JSON.parse(sessionStorage.getItem(key)); } catch (e) { return null; } })();
+    if (k0 && Date.now() - k0.t < 300000) return k0.v;
+    try {
+      const r = await fetch(`https://api.github.com/repos/${C.github}/contents/${encodeURI(folder)}`); if (!r.ok) return [];
+      const v = (await r.json()).filter(f => f.type === 'file' && /\.(jpe?g|png|webp)$/i.test(f.name)).map(f => f.name).sort((x, y) => x.localeCompare(y, 'ar', { numeric: true }));
+      try { sessionStorage.setItem(key, JSON.stringify({ t: Date.now(), v })); } catch (e) {} return v;
+    } catch (e) { return []; }
+  };
+  const memberName = f => f.replace(/\.[^.]+$/, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  let teamShown = false;
+  const hexIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('go'); teamShown = true; hexIO.unobserve(en.target); } }), { threshold: .2 });
+  const renderTeam = () => {
+    const g = $('#team-grid'); if (!g) return;
+    if (!teamFiles.length) { g.innerHTML = `<p class="team-empty">${esc(T('teamSoon'))}</p>`; return; }
+    const W = g.clientWidth || 1000, gap = 10, s = W < 620 ? 128 : 176, n = Math.max(2, Math.floor((W + gap) / (s + gap)));
+    let k = 0, row = 0, html = '';
+    while (k < teamFiles.length) {
+      const cols = row % 2 ? n - 1 : n;
+      html += `<div class="hrow" style="${row ? `margin-top:${(-(s * 1.1547 * .25) + gap / 2).toFixed(1)}px` : ''}">`;
+      for (let j = 0; j < cols; j++, k++) {
+        if (k >= teamFiles.length) { html += `<div class="hexw ghost-hex" style="--s:${s}px"></div>`; continue; }
+        const f = teamFiles[k], nm = memberName(f);
+        html += `<div class="hexw${teamShown ? ' go' : ''}" style="--s:${s}px;--i:${j}" title="${esc(nm)}"><div class="hex"><div class="hex-in"><img src="${esc(encodeURI(C.team.folder + '/' + f))}" alt="${esc(nm)}" loading="lazy" decoding="async"><div class="hex-cap"><b>${esc(nm)}</b><span>${esc(L(C.team.titleAr, C.team.titleEn))}</span></div></div></div></div>`;
+      }
+      html += '</div>'; row++;
+    }
+    g.innerHTML = html; $$('.hexw:not(.go):not(.ghost-hex)', g).forEach(el => hexIO.observe(el));
+  };
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(renderTeam, 150); });
   const renderContact = () => {
     const a = $('#contact-fb'); a.href = C.contact.href; $('#contact-handle').textContent = C.contact.handle;
   };
   const renderSocials = () => {
     $('#socials').innerHTML = C.socials.map(s => `<a ${linkProps(s.href)} aria-label="${esc(s.label)}" title="${esc(s.label)}"><i class="ph-fill ${s.icon}"></i></a>`).join('');
   };
-  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); hydrateIcons(); observe($$('.reveal:not(.in)')); }
+  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderTeam(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); hydrateIcons(); observe($$('.reveal:not(.in)')); }
 
   /* ───── Reveal + بدء العداد ───── */
   const io = new IntersectionObserver(entries => entries.forEach(en => {
@@ -271,7 +305,7 @@
   const header = $('#navbar');
   const updateActive = () => {
     const y = scrollY + 140; let cur = 'hero';
-    ['hero', 'about', 'university', 'supervision', 'leadership', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
+    ['hero', 'about', 'university', 'supervision', 'leadership', 'team', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
     if (cur === 'stats') cur = 'hero';
     $$('.nav-list a, .drawer-list a').forEach(a => a.classList.toggle('active', a.dataset.sec === cur));
   };

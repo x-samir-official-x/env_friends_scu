@@ -39,6 +39,7 @@ const CONFIG = {
     { href: '#university', ar: 'قيادة الجامعة', en: 'University' },
     { href: '#supervision', ar: 'الإشراف الأكاديمي', en: 'Supervision' },
     { href: '#leadership',  ar: 'الهيكل الإداري',    en: 'Leadership' },
+    { href: '#team',       ar: 'فريقنا',            en: 'Team' },
     { href: '#campaigns',   ar: 'حملاتنا',           en: 'Campaigns' },
     { href: '#join',        ar: 'انضم إلينا',        en: 'Join' },
     { href: '#contact',     ar: 'تواصل معنا',        en: 'Contact' },
@@ -78,7 +79,7 @@ const CONFIG = {
   university: [
     { ar: 'أ.د/ ناصر سعيد مندور', en: 'Prof. Dr. Nasser Said Mandour',
       titleAr: 'رئيس الجامعة', titleEn: 'University President', photo: 'assets/univ_president' },
-    { ar: 'أ.د/ دينا', en: 'Prof. Dr. Dina',
+    { ar: 'د/ دينا أبو المعاطي', en: 'Dr. Dina Abu El-Maaty',
       titleAr: 'نائب رئيس الجامعة لشئون البيئة وخدمة المجتمع', titleEn: 'Vice President for Environmental Affairs & Community Service', photo: 'assets/univ_vp_dina' },
   ],
 
@@ -86,9 +87,9 @@ const CONFIG = {
   supervision: [
     { ar: 'أ.د/أحمد عزمي', en: 'Prof. Dr. Ahmed Azmy',
       titleAr: 'عميد كلية التجارة', titleEn: 'Dean of the Faculty of Commerce', photo: 'assets/dean_ahmed' },
-    { ar: 'أ.د/ريمان', en: 'Prof. Dr. Rayman',
+    { ar: 'أ.د/ ريمان أحمد عبدالعال', en: 'Prof. Dr. Rayman Ahmed Abdel-Aal',
       titleAr: 'وكيل كلية التجارة لشئون البيئة وخدمة المجتمع', titleEn: 'Vice Dean for Environmental Affairs & Community Service', photo: 'assets/vice_rayman' },
-    { ar: 'دكتور نجاة', en: 'Dr. Nagat',
+    { ar: 'د/ نجاة علي عزت', en: 'Dr. Nagat Aly Ezzat',
       chipAr: 'الرائد الأكاديمي', chipEn: 'Academic Mentor',
       titleAr: 'معيدة بقسم العلوم السياسية', titleEn: 'Teaching Assistant, Department of Political Science', photo: 'assets/advisor_nagat' },
   ],
@@ -97,6 +98,9 @@ const CONFIG = {
     { ar: 'سمير سيد', en: 'Samir Sayed', titleAr: 'قائد الفريق', titleEn: 'Team Leader', photo: 'assets/team_leader_samir' },
     { ar: 'ندى محمد', en: 'Nada Mohamed', titleAr: 'نائب قائد الفريق', titleEn: 'Deputy Team Leader', photo: 'assets/co_leader_nada' },
   ],
+
+  /* أعضاء الفريق: صورة لكل عضو في الفولدر، واسم الملف = اسم العضو (ثنائي) */
+  team: { folder: 'assets/Team Member', titleAr: 'طالبة', titleEn: 'Student' },
 
   /* الحملات — image: صورتك المحلية أولًا ثم صورة احتياطية */
   campaigns: [
@@ -146,6 +150,10 @@ const CONFIG = {
     univPill:   { ar: 'قيادة الجامعة', en: 'University Leadership' },
     univTitle:  { ar: 'قيادة الجامعة', en: 'University Leadership' },
     univSub:    { ar: 'القيادات العليا التي ترعى العمل البيئي والمجتمعي بالجامعة.', en: 'The senior leaders who support environmental and community work at the university.' },
+    teamPill:   { ar: 'فريقنا', en: 'Our Team' },
+    teamTitle:  { ar: 'أعضاء الفريق', en: 'Team Members' },
+    teamSub:    { ar: 'وجوه شابة متطوعة تصنع الفرق بجهدها وشغفها بالبيئة.', en: 'Young volunteers making a difference with their effort and passion for the environment.' },
+    teamSoon:   { ar: 'سيتم عرض أعضاء الفريق هنا قريبًا', en: 'Team members will appear here soon' },
     photosAfter:{ ar: 'الصور بعد الفعالية', en: 'Photos after the event' },
     done:       { ar: 'تمّت بنجاح', en: 'Completed' },
     viewPhotos: { ar: 'اضغط لمشاهدة الصور', en: 'Tap to view photos' },
