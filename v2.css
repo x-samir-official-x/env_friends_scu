@@ -97,15 +97,20 @@ body{counter-reset:sec}
 .tap.later{background:var(--glass);color:var(--text);border:1px solid var(--border)}
 .tap.later svg{animation:none}
 
-/* ═══ قسم أعضاء الفريق: أقواس (Arch) بشكل مختلف عن كروت VIP ═══ */
-.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:2.2rem 1.5rem;align-items:start}
-.member{text-align:center}
-.member:nth-child(even){margin-top:2rem}
-.arch{position:relative;aspect-ratio:3/4;padding:5px;border-radius:999px 999px 22px 22px;background:linear-gradient(160deg,var(--leaf),var(--emerald) 55%,var(--navy));box-shadow:var(--shadow);overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s}
-.arch img{width:100%;height:100%;object-fit:cover;object-position:center 22%;border-radius:999px 999px 17px 17px;display:block;background:var(--bg-alt);transition:transform .8s var(--ease)}
-.member:hover .arch{transform:translateY(-12px) rotate(-1.5deg);box-shadow:var(--shadow-lg),0 0 0 4px rgba(137,197,74,.28)}
-.member:hover .arch img{transform:scale(1.08)}
-.member h3{margin-top:1rem;font-weight:900;font-size:1.02rem;line-height:1.35}
-.role{display:inline-block;margin-top:.35rem;padding:.15rem .85rem;border-radius:999px;font-size:.78rem;font-weight:800;color:var(--accent);background:var(--bg-alt);border:1px solid var(--border)}
-.team-empty{grid-column:1/-1;text-align:center;color:var(--muted);padding:2rem 0}
-@media (max-width:720px){.team-grid{grid-template-columns:repeat(2,1fr);gap:1.8rem 1rem}.member:nth-child(even){margin-top:1.4rem}}
+/* ═══ قسم أعضاء الفريق: خلية نحل ═══ */
+.team-grid{display:block}
+.hrow{display:flex;justify-content:center;gap:10px}
+.hexw{flex:none;width:var(--s);height:calc(var(--s)*1.1547);opacity:0;transform:scale(.55) rotate(-14deg);transition:transform .35s var(--ease),filter .35s;filter:drop-shadow(0 10px 12px rgba(5,37,73,.28))}
+.hexw.ghost-hex{visibility:hidden}
+.hexw.go{animation:hexin .8s calc(var(--i)*.08s) var(--ease) forwards}
+@keyframes hexin{to{opacity:1;transform:none}}
+.hexw.go:hover{transform:translateY(-10px) scale(1.07);z-index:3;filter:drop-shadow(0 22px 20px rgba(5,37,73,.5)) drop-shadow(0 0 14px rgba(137,197,74,.55))}
+.hex,.hex-in{clip-path:polygon(50% 0,100% 25%,100% 75%,50% 100%,0 75%,0 25%)}
+.hex{width:100%;height:100%;padding:4px;background:linear-gradient(160deg,var(--leaf),var(--emerald) 55%,var(--navy))}
+.hex-in{position:relative;width:100%;height:100%;overflow:hidden;background:var(--bg-alt)}
+.hex-in img{width:100%;height:100%;object-fit:cover;object-position:center 18%;transition:transform .8s var(--ease)}
+.hexw:hover img{transform:scale(1.12)}
+.hex-cap{position:absolute;inset:auto 0 18%;padding:1rem .4rem .4rem;text-align:center;color:#fff;background:linear-gradient(transparent,rgba(5,37,73,.94) 42%);display:flex;flex-direction:column;line-height:1.25}
+.hex-cap b{font-size:.84rem;font-weight:900}.hex-cap span{font-size:.68rem;font-weight:800;color:var(--leaf)}
+.team-empty{text-align:center;color:var(--muted);padding:2rem 0}
+@media (prefers-reduced-motion:reduce){.hexw{opacity:1;transform:none}}

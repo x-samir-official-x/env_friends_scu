@@ -79,7 +79,7 @@ const CONFIG = {
   university: [
     { ar: 'أ.د/ ناصر سعيد مندور', en: 'Prof. Dr. Nasser Said Mandour',
       titleAr: 'رئيس الجامعة', titleEn: 'University President', photo: 'assets/univ_president' },
-    { ar: 'أ.د/ دينا', en: 'Prof. Dr. Dina',
+    { ar: 'د/ دينا أبو المعاطي', en: 'Dr. Dina Abu El-Maaty',
       titleAr: 'نائب رئيس الجامعة لشئون البيئة وخدمة المجتمع', titleEn: 'Vice President for Environmental Affairs & Community Service', photo: 'assets/univ_vp_dina' },
   ],
 
@@ -87,9 +87,9 @@ const CONFIG = {
   supervision: [
     { ar: 'أ.د/أحمد عزمي', en: 'Prof. Dr. Ahmed Azmy',
       titleAr: 'عميد كلية التجارة', titleEn: 'Dean of the Faculty of Commerce', photo: 'assets/dean_ahmed' },
-    { ar: 'أ.د/ريمان', en: 'Prof. Dr. Rayman',
+    { ar: 'أ.د/ ريمان أحمد عبدالعال', en: 'Prof. Dr. Rayman Ahmed Abdel-Aal',
       titleAr: 'وكيل كلية التجارة لشئون البيئة وخدمة المجتمع', titleEn: 'Vice Dean for Environmental Affairs & Community Service', photo: 'assets/vice_rayman' },
-    { ar: 'دكتور نجاة', en: 'Dr. Nagat',
+    { ar: 'د/ نجاة علي عزت', en: 'Dr. Nagat Aly Ezzat',
       chipAr: 'الرائد الأكاديمي', chipEn: 'Academic Mentor',
       titleAr: 'معيدة بقسم العلوم السياسية', titleEn: 'Teaching Assistant, Department of Political Science', photo: 'assets/advisor_nagat' },
   ],

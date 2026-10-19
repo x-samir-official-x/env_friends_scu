@@ -168,7 +168,7 @@
   const loadManifest = async () => {
     try { const r = await fetch('gallery.json', { cache: 'no-cache' }); manifest = r.ok ? (await r.json()) || {} : {}; } catch (e) { manifest = {}; }
     await Promise.all(C.campaigns.filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
-    teamFiles = (manifest.team && manifest.team.files) || await ghNames(C.team.folder);
+    const live = await ghNames(C.team.folder); teamFiles = live.length ? live : ((manifest.team && manifest.team.files) || []);
     renderCampaigns(); renderTeam(); hydrateIcons(); observe($$('.reveal:not(.in)'));
   };
 
@@ -246,15 +246,26 @@
     } catch (e) { return []; }
   };
   const memberName = f => f.replace(/\.[^.]+$/, '').replace(/[_]+/g, ' ').replace(/\s+/g, ' ').trim();
+  let teamShown = false;
+  const hexIO = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('go'); teamShown = true; hexIO.unobserve(en.target); } }), { threshold: .2 });
   const renderTeam = () => {
     const g = $('#team-grid'); if (!g) return;
-    g.innerHTML = teamFiles.length ? teamFiles.map((f, i) => `
-      <article class="member reveal" style="--i:${Math.min(i, 8)}">
-        <div class="arch"><img src="${esc(encodeURI(C.team.folder + '/' + f))}" alt="${esc(memberName(f))}" loading="lazy" decoding="async"></div>
-        <h3>${esc(memberName(f))}</h3><span class="role">${esc(L(C.team.titleAr, C.team.titleEn))}</span>
-      </article>`).join('') : `<p class="team-empty reveal">${esc(T('teamSoon'))}</p>`;
-    observe($$('#team-grid .reveal'));
+    if (!teamFiles.length) { g.innerHTML = `<p class="team-empty">${esc(T('teamSoon'))}</p>`; return; }
+    const W = g.clientWidth || 1000, gap = 10, s = W < 620 ? 128 : 176, n = Math.max(2, Math.floor((W + gap) / (s + gap)));
+    let k = 0, row = 0, html = '';
+    while (k < teamFiles.length) {
+      const cols = row % 2 ? n - 1 : n;
+      html += `<div class="hrow" style="${row ? `margin-top:${(-(s * 1.1547 * .25) + gap / 2).toFixed(1)}px` : ''}">`;
+      for (let j = 0; j < cols; j++, k++) {
+        if (k >= teamFiles.length) { html += `<div class="hexw ghost-hex" style="--s:${s}px"></div>`; continue; }
+        const f = teamFiles[k], nm = memberName(f);
+        html += `<div class="hexw${teamShown ? ' go' : ''}" style="--s:${s}px;--i:${j}" title="${esc(nm)}"><div class="hex"><div class="hex-in"><img src="${esc(encodeURI(C.team.folder + '/' + f))}" alt="${esc(nm)}" loading="lazy" decoding="async"><div class="hex-cap"><b>${esc(nm)}</b><span>${esc(L(C.team.titleAr, C.team.titleEn))}</span></div></div></div></div>`;
+      }
+      html += '</div>'; row++;
+    }
+    g.innerHTML = html; $$('.hexw:not(.go):not(.ghost-hex)', g).forEach(el => hexIO.observe(el));
   };
+  let rz; addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(renderTeam, 150); });
   const renderContact = () => {
     const a = $('#contact-fb'); a.href = C.contact.href; $('#contact-handle').textContent = C.contact.handle;
   };
