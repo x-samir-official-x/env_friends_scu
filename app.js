@@ -126,7 +126,8 @@
   };
   /* ───── معرض صور الفعاليات ───── */
   let manifest = {};
-  const photosOf = c => ((manifest[c.id] || []).map(f => `${c.folder}/${f}`)).concat(c.gallery || []);
+  const photosOf = c => { const m = manifest[c.id], l = Array.isArray(m) ? m : ((m && m.photos) || []); return l.map(f => `${c.folder}/${f}`).concat(c.gallery || []); };
+  const coverOf = c => { const m = manifest[c.id]; return m && m.cover ? `${c.folder}/${m.cover}` : null; };
   const renderCampaigns = () => {
     $('#campaigns-grid').innerHTML = C.campaigns.map((c, i) => {
       const ph = photosOf(c), has = ph.length > 0;
@@ -137,7 +138,7 @@
       <article class="camp-card reveal${has ? ' has-gallery' : ''}" style="--i:${i}" data-id="${esc(c.id)}" ${has ? `role="button" tabindex="0" aria-label="${esc(L(c.ar, c.en))} — ${esc(T('viewPhotos'))}"` : ''}>
         <div class="camp-img">
           <div class="camp-fallback"><i class="ph-bold ${c.icon}"></i></div>
-          <div class="bgimg" data-img='${esc(JSON.stringify(has ? [ph[0]] : c.image))}'></div>
+          <div class="bgimg" data-img='${esc(JSON.stringify(coverOf(c) ? [coverOf(c)] : (has ? [ph[0]] : c.image)))}'></div>
           <div class="date-badge"><b>${esc(c.day)}</b><span>${esc(L(c.monthAr, c.monthEn))}</span></div>
           <span class="soon${c.done ? ' is-done' : ''}">${esc(T(c.done ? 'done' : 'soon'))}</span>
           ${stack}
