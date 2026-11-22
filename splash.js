@@ -1,8 +1,8 @@
-/* سبلاش سكرين: نفس الكرة الأرضية 3D بألوان فاتحة، بيظهر مرة واحدة في كل زيارة (session) */
+/* سبلاش سكرين: نفس الكرة الأرضية 3D بألوان فاتحة، بيظهر مع كل فتح أو ريفريش لمدة 5 ثواني (أو أكتر لو الصفحة لسه بتحمّل، لحد 8 ثواني) */
 (() => {
   const root = document.documentElement, sp = document.getElementById('splash');
   if (!sp || root.classList.contains('no-splash')) { sp && sp.remove(); return; }
-  const bar = document.getElementById('sp-bar'), t0 = performance.now(), MIN = 2400, MAX = 6000;  /* MIN/MAX من بداية فتح الصفحة */
+  const bar = document.getElementById('sp-bar'), t0 = performance.now(), MIN = 5000, MAX = 8000;  /* MIN/MAX من بداية فتح الصفحة */
   let raf = 0, renderer = null, zoom = 0, done = false;
 
   if (window.THREE) {
@@ -52,7 +52,6 @@
   tick();
   const finish = () => {
     if (done) return; done = true; bar.style.width = '100%';
-    try { sessionStorage.setItem('ef-splash', '1'); } catch (e) {}
     const z0 = performance.now(); (function zl(n) { zoom = Math.min(1, (n - z0) / 700); if (zoom < 1) requestAnimationFrame(zl); })(z0);
     setTimeout(() => { sp.classList.add('sp-out'); root.classList.add('no-splash'); }, 180);
     setTimeout(() => { cancelAnimationFrame(raf); try { renderer && renderer.dispose(); } catch (e) {} sp.remove(); }, 1000);
