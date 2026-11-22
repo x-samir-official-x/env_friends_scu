@@ -1,0 +1,17 @@
+{
+  "name": "أصدقاء البيئة — كلية التجارة، جامعة قناة السويس",
+  "short_name": "أصدقاء البيئة",
+  "description": "فريق أصدقاء البيئة — كلية التجارة، جامعة قناة السويس. معًا من أجل بيئة أفضل.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FCFCF9",
+  "theme_color": "#052549",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "assets/icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
