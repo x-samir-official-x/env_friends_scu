@@ -7,7 +7,7 @@ from PIL import Image, ImageOps
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 EV = ROOT / "assets" / "events"; EXT = {".jpg", ".jpeg", ".png", ".webp"}; MAXSIDE = 1600
 out = {}
-for d in sorted(p for p in EV.glob("*") if p.is_dir()):
+for d in sorted(p for p in list(EV.glob("*")) + list((ROOT / "assets" / "eco-week").glob("*")) if p.is_dir()):
     files, cover = [], None
     for f in sorted((p for p in d.iterdir() if p.suffix.lower() in EXT), key=lambda p: p.name.lower()):
         if f.stat().st_size > 450_000 or max(Image.open(f).size) > MAXSIDE:
@@ -17,7 +17,8 @@ for d in sorted(p for p in EV.glob("*") if p.is_dir()):
             f = f2
         if f.stem.lower() == "cover": cover = f.name
         else: files.append(f.name)
-    out[d.name] = {"cover": cover, "photos": sorted(set(files), key=str.lower)}
+    key = d.name if d.parent == EV else f"eco-week/{d.name}"
+    out[key] = {"cover": cover, "photos": sorted(set(files), key=str.lower)}
 TEAM = ROOT / "assets" / "Team Member"
 if TEAM.is_dir():
     tf = []

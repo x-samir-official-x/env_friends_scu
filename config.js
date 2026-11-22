@@ -41,7 +41,7 @@ const CONFIG = {
     { href: '#leadership',  ar: 'الهيكل الإداري',    en: 'Leadership' },
     { href: '#team',       ar: 'فريقنا',            en: 'Team' },
     { href: '#campaigns',   ar: 'حملاتنا',           en: 'Campaigns' },
-    { href: '#join',        ar: 'انضم إلينا',        en: 'Join' },
+    { href: '#eco-week',   ar: 'الأسبوع البيئي',    en: 'Eco Week' },
     { href: '#contact',     ar: 'تواصل معنا',        en: 'Contact' },
   ],
 
@@ -102,6 +102,21 @@ const CONFIG = {
   /* أعضاء الفريق: صورة لكل عضو في الفولدر، واسم الملف = اسم العضو (ثنائي) */
   team: { folder: 'assets/Team Member', titleAr: 'طالبة', titleEn: 'Student' },
 
+  /* الأسبوع البيئي: يوم لكل عنصر. الصور في assets/eco-week/day-N/ وبتظهر لوحدها.
+     اكتب عنوان اليوم ونبذته في titleAr / summaryAr (والإنجليزي اختياري) */
+  ecoWeek: [
+    { id: 'eco-week/day-1', date: '2026-11-22', folder: 'assets/eco-week/day-1',
+      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+    { id: 'eco-week/day-2', date: '2026-11-23', folder: 'assets/eco-week/day-2',
+      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+    { id: 'eco-week/day-3', date: '2026-11-24', folder: 'assets/eco-week/day-3',
+      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+    { id: 'eco-week/day-4', date: '2026-11-25', folder: 'assets/eco-week/day-4',
+      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+    { id: 'eco-week/day-5', date: '2026-11-26', folder: 'assets/eco-week/day-5',
+      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+  ],
+
   /* الحملات — image: صورتك المحلية أولًا ثم صورة احتياطية */
   campaigns: [
     { id: 'smile-day', done: true, folder: 'assets/events/smile-day', gallery: [],
@@ -154,6 +169,15 @@ const CONFIG = {
     teamTitle:  { ar: 'أعضاء الفريق', en: 'Team Members' },
     teamSub:    { ar: 'وجوه شابة متطوعة تصنع الفرق بجهدها وشغفها بالبيئة.', en: 'Young volunteers making a difference with their effort and passion for the environment.' },
     teamSoon:   { ar: 'سيتم عرض أعضاء الفريق هنا قريبًا', en: 'Team members will appear here soon' },
+    ecoPill:    { ar: 'الأسبوع البيئي', en: 'Environmental Week' },
+    ecoTitle:   { ar: 'الأسبوع البيئي', en: 'Environmental Week' },
+    ecoSub:     { ar: 'خمسة أيام من العمل البيئي — من الأحد 22 إلى الخميس 26 نوفمبر 2026. تابع كل يوم بصوره.', en: 'Five days of environmental action — Sunday 22 to Thursday 26 November 2026. Follow each day in photos.' },
+    ecoDay:     { ar: 'اليوم', en: 'Day' },
+    ecoToday:   { ar: 'اليوم', en: 'Today' },
+    ecoDone:    { ar: 'انتهى', en: 'Done' },
+    ecoSoon:    { ar: 'قريبًا', en: 'Upcoming' },
+    ecoPending: { ar: 'صور وتفاصيل هذا اليوم ستُضاف قريبًا.', en: 'Photos and details for this day will be added soon.' },
+    ecoMore:    { ar: 'شاهد كل الصور', en: 'View all photos' },
     photosAfter:{ ar: 'الصور بعد الفعالية', en: 'Photos after the event' },
     done:       { ar: 'تمّت بنجاح', en: 'Completed' },
     viewPhotos: { ar: 'اضغط لمشاهدة الصور', en: 'Tap to view photos' },
