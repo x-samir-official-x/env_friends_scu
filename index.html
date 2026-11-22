@@ -15,7 +15,7 @@
       var lg = localStorage.getItem('ef-lang') || 'ar';
       var d = document.documentElement;
       d.setAttribute('data-theme', th); d.setAttribute('data-lang', lg);
-      try{ if(sessionStorage.getItem('ef-splash') || matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('no-splash'); }catch(e){}
+      try{ if(matchMedia('(prefers-reduced-motion: reduce)').matches) d.classList.add('no-splash'); }catch(e){}
       d.setAttribute('lang', lg); d.setAttribute('dir', lg === 'ar' ? 'rtl' : 'ltr');
     }catch(e){}
   })();
