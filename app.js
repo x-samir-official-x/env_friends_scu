@@ -152,6 +152,44 @@
     }).join('');
     $$('.bgimg[data-img]').forEach(async el => { const u = await firstLoadable(JSON.parse(el.dataset.img.replace(/&quot;/g, '"'))); if (u) el.style.backgroundImage = `url("${u}")`; });
   };
+  /* ───── الأسبوع البيئي ───── */
+  const ecoDays = () => C.ecoWeek || [];
+  const ymd = d => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const ecoState = d => { const t = ymd(new Date()); return d.date < t ? 'past' : d.date === t ? 'today' : 'next'; };
+  const fmtDay = (iso, opt) => new Date(iso + 'T12:00:00').toLocaleDateString(state.lang === 'ar' ? 'ar-EG-u-nu-latn' : 'en-GB', opt);
+  const ordinalAr = ['الأول', 'الثاني', 'الثالث', 'الرابع', 'الخامس', 'السادس', 'السابع'];
+  const ecoLabel = (i) => state.lang === 'ar' ? `${T('ecoDay')} ${ordinalAr[i] || i + 1}` : `${T('ecoDay')} ${i + 1}`;
+  const renderEco = () => {
+    const rail = $('#eco-rail'), box = $('#eco-days'); if (!rail || !box) return;
+    const days = ecoDays(), st = days.map(ecoState), doneN = st.filter(s => s === 'past').length + (st.includes('today') ? .5 : 0);
+    rail.style.setProperty('--p', days.length > 1 ? Math.min(1, doneN / (days.length - 1)) : 0);
+    rail.innerHTML = `<span class="rail-line"><span class="rail-fill"></span></span>` + days.map((d, i) => `
+      <a class="rail-node is-${st[i]}" href="#eco-${i + 1}"><span class="dot">${st[i] === 'past' ? '<i class="ph-bold ph-check-circle"></i>' : i + 1}</span>
+        <b>${esc(fmtDay(d.date, { weekday: 'long' }))}</b><small>${esc(fmtDay(d.date, { day: 'numeric', month: 'short' }))}</small></a>`).join('');
+    box.innerHTML = days.map((d, i) => {
+      const ph = (coverOf(d) ? [coverOf(d)] : []).concat(photosOf(d)), has = ph.length > 0, s = st[i];
+      const title = L(d.titleAr, d.titleEn) || d.titleAr, sum = L(d.summaryAr, d.summaryEn) || d.summaryAr;
+      const badge = s === 'today' ? `<span class="eco-badge today"><span class="pulse-dot"></span>${esc(T('ecoToday'))}</span>` : s === 'past' ? `<span class="eco-badge done"><i class="ph-bold ph-check-circle"></i>${esc(T('ecoDone'))}</span>` : `<span class="eco-badge next"><i class="ph-bold ph-hourglass-medium"></i>${esc(T('ecoSoon'))}</span>`;
+      const shots = ph.slice(0, 4), extra = ph.length - shots.length;
+      const media = has ? `<div class="eco-mosaic n${shots.length}">${shots.map((u, k) => `<span style="background-image:url('${esc(encodeURI(u))}')">${k === shots.length - 1 && extra > 0 ? `<em dir="ltr">+${extra}</em>` : ''}</span>`).join('')}</div>`
+        : `<div class="eco-empty"><i class="ph-bold ph-camera"></i></div>`;
+      return `<article id="eco-${i + 1}" class="eco-day reveal is-${s}${has ? ' has-gallery' : ''}" style="--i:${i}" data-id="${esc(d.id)}" ${has ? `role="button" tabindex="0" aria-label="${esc(ecoLabel(i))} — ${esc(T('ecoMore'))}"` : ''}>
+        <div class="eco-num"><span>${i + 1}</span></div>
+        <div class="eco-card">
+          ${media}
+          <div class="eco-body">
+            <div class="eco-meta"><span class="eco-label">${esc(ecoLabel(i))}</span>${badge}</div>
+            <h3>${esc(title || fmtDay(d.date, { weekday: 'long', day: 'numeric', month: 'long' }))}</h3>
+            <div class="eco-date"><i class="ph-bold ph-calendar-blank"></i>${esc(fmtDay(d.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))}</div>
+            <p class="${sum ? '' : 'muted'}">${esc(sum || T('ecoPending'))}</p>
+            ${has ? `<span class="eco-more"><i class="ph-bold ph-images"></i>${esc(T('ecoMore'))} (${ph.length})</span>` : ''}
+          </div>
+        </div>
+      </article>`;
+    }).join('');
+  };
+  const findItem = id => C.campaigns.find(c => c.id === id) || ecoDays().find(d => d.id === id);
+  const lbItem = d => (C.campaigns.includes(d) ? d : { ...d, ar: (d.titleAr ? d.titleAr + ' — ' : '') + ecoLabel(ecoDays().indexOf(d)), en: (d.titleEn ? d.titleEn + ' — ' : '') + ecoLabel(ecoDays().indexOf(d)), lead: coverOf(d) });
   /* لو الفعالية مالهاش صور في gallery.json، نقرأ فولدرها مباشرة من GitHub (الصور الجديدة تظهر لوحدها) */
   const ghList = async c => {
     if (!C.github || location.protocol === 'file:') return null;
@@ -167,9 +205,9 @@
   };
   const loadManifest = async () => {
     try { const r = await fetch('gallery.json', { cache: 'no-cache' }); manifest = r.ok ? (await r.json()) || {} : {}; } catch (e) { manifest = {}; }
-    await Promise.all(C.campaigns.filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
+    await Promise.all(C.campaigns.concat(ecoDays()).filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
     const live = await ghNames(C.team.folder); teamFiles = live.length ? live : ((manifest.team && manifest.team.files) || []);
-    renderCampaigns(); renderTeam(); hydrateIcons(); observe($$('.reveal:not(.in)'));
+    renderCampaigns(); renderTeam(); renderEco(); hydrateIcons(); observe($$('.reveal:not(.in)'));
   };
 
   /* أصوات ناعمة بـ WebAudio (من غير ملفات) */
@@ -216,7 +254,7 @@
   };
   const go = d => show(lb.i + d);
   function openLb(c, card) {
-    if (!lb.el) buildLb(); lb.list = photosOf(c); lb.title = L(c.ar, c.en); lb.from = card; if (!lb.list.length) return;
+    if (!lb.el) buildLb(); lb.list = (c.lead ? [c.lead] : []).concat(photosOf(c)); lb.title = L(c.ar, c.en); lb.from = card; if (!lb.list.length) return;
     const r = card.getBoundingClientRect(); lb.el.style.setProperty('--ox', (r.left + r.width / 2 - innerWidth / 2) + 'px'); lb.el.style.setProperty('--oy', (r.top + r.height / 2 - innerHeight / 2) + 'px');
     $('.lb-title', lb.el).textContent = lb.title; $('.lb-x', lb.el).setAttribute('aria-label', T('close'));
     $('.lb-prev', lb.el).setAttribute('aria-label', T(state.lang === 'ar' ? 'next' : 'prev')); $('.lb-next', lb.el).setAttribute('aria-label', T(state.lang === 'ar' ? 'prev' : 'next'));
@@ -226,10 +264,10 @@
     paintSnd(); show(0, true); sfx.open(); $('.lb-x', lb.el).focus({ preventScroll: true });
   }
   function closeLb() { if (!lb.el || !lb.el.classList.contains('open')) return; sfx.close(); lb.el.classList.add('closing'); setTimeout(() => { lb.el.classList.remove('open', 'closing'); document.body.style.overflow = ''; lb.from && lb.from.focus({ preventScroll: true }); }, 380); }
-  document.addEventListener('click', e => { const card = e.target.closest('.camp-card.has-gallery'); if (card) openLb(C.campaigns.find(c => c.id === card.dataset.id), card); });
+  document.addEventListener('click', e => { const card = e.target.closest('.camp-card.has-gallery, .eco-day.has-gallery'); if (card) openLb(lbItem(findItem(card.dataset.id)), card); });
   document.addEventListener('keydown', e => {
-    const card = e.target.closest && e.target.closest('.camp-card.has-gallery');
-    if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLb(C.campaigns.find(c => c.id === card.dataset.id), card); return; }
+    const card = e.target.closest && e.target.closest('.camp-card.has-gallery, .eco-day.has-gallery');
+    if (card && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); openLb(lbItem(findItem(card.dataset.id)), card); return; }
     if (!lb.el || !lb.el.classList.contains('open')) return;
     if (e.key === 'Escape') closeLb(); else if (e.key === 'ArrowRight') go(state.lang === 'ar' ? -1 : 1); else if (e.key === 'ArrowLeft') go(state.lang === 'ar' ? 1 : -1);
   });
@@ -272,7 +310,7 @@
   const renderSocials = () => {
     $('#socials').innerHTML = C.socials.map(s => `<a ${linkProps(s.href)} aria-label="${esc(s.label)}" title="${esc(s.label)}"><i class="ph-fill ${s.icon}"></i></a>`).join('');
   };
-  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderTeam(); renderCampaigns(); renderContact(); renderSocials(); wireLinkButtons(); hydrateIcons(); observe($$('.reveal:not(.in)')); }
+  function renderAll() { renderNav(); renderStats(); renderAbout(); renderPeople(); renderTeam(); renderCampaigns(); renderEco(); renderContact(); renderSocials(); wireLinkButtons(); hydrateIcons(); observe($$('.reveal:not(.in)')); }
 
   /* ───── Reveal + بدء العداد ───── */
   const io = new IntersectionObserver(entries => entries.forEach(en => {
@@ -305,7 +343,7 @@
   const header = $('#navbar');
   const updateActive = () => {
     const y = scrollY + 140; let cur = 'hero';
-    ['hero', 'about', 'university', 'supervision', 'leadership', 'team', 'campaigns', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
+    ['hero', 'about', 'university', 'supervision', 'leadership', 'team', 'campaigns', 'eco-week', 'join', 'contact'].forEach(id => { const s = document.getElementById(id); if (s && s.offsetTop <= y) cur = id; });
     if (cur === 'stats') cur = 'hero';
     $$('.nav-list a, .drawer-list a').forEach(a => a.classList.toggle('active', a.dataset.sec === cur));
   };
