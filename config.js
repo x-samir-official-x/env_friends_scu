@@ -110,7 +110,7 @@ const CONFIG = {
       descAr: 'نشر الابتسامة والطاقة الإيجابية بين طلاب الكلية.', descEn: 'Spreading smiles and positive energy among the faculty’s students.',
       icon: 'ph-smiley',
       image: ['assets/init_smile', 'https://images.unsplash.com/photo-1529156069898-49953e39b3ac?w=900&h=600&fit=crop'] },
-    { id: 'elderly-visit', done: false, folder: 'assets/events/elderly-visit', gallery: [],
+    { id: 'elderly-visit', done: true, folder: 'assets/events/elderly-visit', gallery: [],
       ar: 'زيارة دار المسنين', en: 'Elderly Care Home Visit',
       dateAr: 'الخميس 22 أكتوبر 2026', dateEn: 'Thursday, 22 October 2026', day: '22', monthAr: 'أكتوبر', monthEn: 'Oct',
       descAr: 'زيارة إنسانية لإدخال البهجة على قلوب كبار السن.', descEn: 'A humane visit to bring joy to our elders.',
