@@ -178,6 +178,8 @@ const CONFIG = {
     ecoSoon:    { ar: 'قريبًا', en: 'Upcoming' },
     ecoPending: { ar: 'صور وتفاصيل هذا اليوم ستُضاف قريبًا.', en: 'Photos and details for this day will be added soon.' },
     ecoMore:    { ar: 'شاهد كل الصور', en: 'View all photos' },
+    splashTitle:{ ar: 'أصدقاء البيئة', en: 'Environment Friends' },
+    splashSub:  { ar: 'كلية التجارة — جامعة قناة السويس', en: 'Faculty of Commerce — Suez Canal University' },
     photosAfter:{ ar: 'الصور بعد الفعالية', en: 'Photos after the event' },
     done:       { ar: 'تمّت بنجاح', en: 'Completed' },
     viewPhotos: { ar: 'اضغط لمشاهدة الصور', en: 'Tap to view photos' },
