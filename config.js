@@ -106,7 +106,9 @@ const CONFIG = {
      اكتب عنوان اليوم ونبذته في titleAr / summaryAr (والإنجليزي اختياري) */
   ecoWeek: [
     { id: 'eco-week/day-1', date: '2026-11-22', folder: 'assets/eco-week/day-1',
-      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+      titleAr: 'معرض المشغولات اليدوية', titleEn: 'Handicrafts Exhibition',
+      summaryAr: 'افتتحنا الأسبوع البيئي بمعرض للمشغولات اليدوية داخل الكلية، شاركت فيه عارضات بأعمال الكروشيه والتطريز والإكسسوارات والشنط المصنوعة يدويًا ومنتجات العناية الطبيعية، في دعمٍ للمنتج المحلي والصناعات الصديقة للبيئة.',
+      summaryEn: 'We opened Environmental Week with a handicrafts exhibition at the faculty, featuring handmade crochet, embroidery, accessories, bags and natural care products, in support of local, eco-friendly craftsmanship.' },
     { id: 'eco-week/day-2', date: '2026-11-23', folder: 'assets/eco-week/day-2',
       titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
     { id: 'eco-week/day-3', date: '2026-11-24', folder: 'assets/eco-week/day-3',
