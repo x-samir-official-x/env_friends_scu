@@ -59,5 +59,4 @@
   const ready = () => setTimeout(finish, Math.max(0, MIN - performance.now()));
   if (document.readyState === 'complete') ready(); else addEventListener('load', ready);
   setTimeout(finish, Math.max(0, MAX - performance.now()));
-  sp.addEventListener('click', finish);
 })();
