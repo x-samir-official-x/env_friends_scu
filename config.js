@@ -17,8 +17,9 @@ const CONFIG = {
   /* الصور الجديدة في assets/events/<id>/ بتظهر لوحدها من GitHub من غير أي تعديل في الكود */
   github: 'x-samir-official-x/env_friends_scu',
 
-  /* فورم التقديم: Supabase (المفتاح ده publishable، آمن إنه يبقى في الموقع) */
-  supabase: { url: 'https://svvmavxbafwlayucvcui.supabase.co', key: 'sb_publishable_XXnF3fEG8FyDL4vyO2ptZA_HFj93DEh' },
+  /* فورم التقديم: Supabase — ده مفتاح anon العام، آمن إنه يبقى في الموقع (الصلاحيات محكومة من قاعدة البيانات) */
+  supabase: { url: 'https://svvmavxbafwlayucvcui.supabase.co',
+    key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN2dm1hdnhiYWZ3bGF5dWN2Y3VpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTU2OTY5MDIsImV4cCI6MjExMTI3MjkwMn0.TrFc-vcGYbqBgkW9UGYLhFUFX8Y6hZaOU0WsCzMbBNo' },
 
   links: {
     registrationForm: 'join.html',   // فورم التقديم بتاعنا (الردود بتتحفظ في Supabase)

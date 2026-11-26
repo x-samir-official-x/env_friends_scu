@@ -35,9 +35,9 @@
   .open-pill{display:inline-flex;align-items:center;gap:.55rem;padding:.35rem 1rem;border-radius:999px;background:rgba(137,197,74,.16);border:1px solid rgba(137,197,74,.6);font-weight:800;font-size:.85rem;color:var(--accent);margin-bottom:.9rem}
   .open-pill .pulse-dot{width:9px;height:9px}
   /* شريط التقدّم: بذرة بتكبر */
-  .grow{display:grid;grid-template-columns:repeat(4,1fr);position:relative;margin:0 0 1.8rem}
-  .grow::before{content:"";position:absolute;top:26px;inset-inline:12.5%;height:4px;border-radius:9px;background:var(--border)}
-  .grow .fill{position:absolute;top:26px;inset-inline-start:12.5%;height:4px;border-radius:9px;width:calc(75% * var(--p,0));background:linear-gradient(90deg,var(--emerald),var(--leaf));transition:width .7s var(--ease)}
+  .grow{display:grid;grid-template-columns:repeat(5,1fr);position:relative;margin:0 0 1.8rem}
+  .grow::before{content:"";position:absolute;top:26px;inset-inline:10%;height:4px;border-radius:9px;background:var(--border)}
+  .grow .fill{position:absolute;top:26px;inset-inline-start:10%;height:4px;border-radius:9px;width:calc(80% * var(--p,0));background:linear-gradient(90deg,var(--emerald),var(--leaf));transition:width .7s var(--ease)}
   [dir="rtl"] .grow .fill{background:linear-gradient(270deg,var(--emerald),var(--leaf))}
   .stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;text-align:center}
   .stage .bud{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:3px solid var(--border);color:var(--muted);font-size:1.5rem;box-shadow:var(--shadow);transition:all .5s var(--ease)}
@@ -103,7 +103,20 @@
   .confetti i{position:absolute;top:-6%;color:var(--leaf);animation:fallc linear forwards}
   @keyframes fallc{to{transform:translate3d(var(--dx),110vh,0) rotate(var(--r));opacity:.2}}
   .privacy{display:flex;gap:.5rem;align-items:center;justify-content:center;color:var(--muted);font-size:.8rem;margin-top:1.2rem}
-  @media (max-width:600px){.grid2{grid-template-columns:1fr}.grow .stage b{font-size:.7rem}.stage .bud{width:44px;height:44px;font-size:1.2rem}.grow::before,.grow .fill{top:21px}.nav .btn{padding:.75rem 1.1rem}.jf-top .brand small{display:none}}
+  .other{margin-top:.5rem}
+  .ups{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  .up{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.35rem;padding:1rem;border:2px dashed var(--border);border-radius:16px;cursor:pointer;transition:all .2s var(--ease);background:var(--bg)}
+  .up:hover{border-color:var(--leaf);transform:translateY(-3px)}
+  .up b{font-weight:800;font-size:.92rem}.up small{color:var(--muted);font-size:.76rem}
+  .ph-prev{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-size:2rem;color:var(--accent);background:var(--bg-alt);background-size:cover;background-position:center;overflow:hidden;margin-bottom:.3rem}
+  .ph-prev.wide{width:100%;max-width:170px;height:96px;border-radius:12px}
+  .up.has{border-style:solid;border-color:var(--emerald)}
+  .up.has .ph-prev svg{display:none}
+  .up.bad{border-color:#d9534f}.up.bad .err{display:flex;align-items:center;gap:.3rem}
+  .up .busy{font-size:.75rem;color:var(--muted)}
+  .sec-note{display:flex;gap:.5rem;align-items:flex-start;margin-top:1.1rem;padding:.8rem 1rem;border-radius:12px;background:var(--bg-alt);color:var(--muted);font-size:.85rem;line-height:1.7}
+  .sec-note svg{color:var(--accent);flex:none;margin-top:.2rem}
+  @media (max-width:600px){.ups{grid-template-columns:1fr 1fr}.ups .up:first-child{grid-column:1/-1}.grid2{grid-template-columns:1fr}.grow .stage b{font-size:.7rem}.stage .bud{width:44px;height:44px;font-size:1.2rem}.grow::before,.grow .fill{top:21px}.nav .btn{padding:.75rem 1.1rem}.jf-top .brand small{display:none}}
 </style>
 </head>
 <body>
@@ -125,7 +138,8 @@
     <div class="stage" data-s="0"><span class="bud"><i class="ph-fill ph-leaf"></i></span><b data-t="s1"></b></div>
     <div class="stage" data-s="1"><span class="bud"><i class="ph-fill ph-plant"></i></span><b data-t="s2"></b></div>
     <div class="stage" data-s="2"><span class="bud"><i class="ph-fill ph-lightbulb"></i></span><b data-t="s3"></b></div>
-    <div class="stage" data-s="3"><span class="bud"><i class="ph-fill ph-seal-check"></i></span><b data-t="s4"></b></div>
+    <div class="stage" data-s="3"><span class="bud"><i class="ph-fill ph-camera"></i></span><b data-t="s5"></b></div>
+    <div class="stage" data-s="4"><span class="bud"><i class="ph-fill ph-seal-check"></i></span><b data-t="s4"></b></div>
   </div>
 
   <form class="card" id="jf" novalidate>
@@ -144,6 +158,16 @@
           <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eEmail"></span></span></div>
       </div>
       <div class="grid2">
+        <div class="f" data-f="university"><label for="university" data-t="uni"></label>
+          <div class="in"><i class="ph-bold ph-graduation-cap ic"></i><select id="university" name="university"><option value="scu" data-t="uniScu"></option><option value="other" data-t="uniOther"></option></select></div>
+          <input id="university_other" class="other" maxlength="80" data-ph="uniPh" hidden />
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUni"></span></span></div>
+        <div class="f" data-f="faculty"><label for="faculty" data-t="fac"></label>
+          <div class="in"><i class="ph-bold ph-books ic"></i><select id="faculty" name="faculty"><option value="commerce" data-t="facCom"></option><option value="other" data-t="facOther"></option></select></div>
+          <input id="faculty_other" class="other" maxlength="80" data-ph="facPh" hidden />
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eFac"></span></span></div>
+      </div>
+      <div class="grid2">
         <div class="f" data-f="year"><label for="year" data-t="year"></label>
           <div class="in"><i class="ph-bold ph-graduation-cap ic"></i><select id="year" name="year"><option value="" data-t="pick"></option><option value="1" data-t="y1"></option><option value="2" data-t="y2"></option><option value="3" data-t="y3"></option><option value="4" data-t="y4"></option><option value="grad" data-t="yg"></option></select></div>
           <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eYear"></span></span></div>
@@ -160,6 +184,11 @@
         <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eInt"></span></span></div>
       <div class="f"><label for="skills"><span data-t="skills"></span> <span class="opt" data-t="optional"></span></label>
         <textarea id="skills" name="skills" maxlength="400" data-ph="skillsPh" style="min-height:80px"></textarea></div>
+      <div class="grid2">
+        <div class="f"><span class="lbl"><span data-t="tshirt"></span> <span class="opt" data-t="optional"></span></span><div class="segs" id="tshirt"></div></div>
+        <div class="f"><label for="facebook"><span data-t="fb"></span> <span class="opt" data-t="optional"></span></label>
+          <div class="in"><i class="ph-bold ph-user-circle ic"></i><input id="facebook" name="facebook" dir="ltr" maxlength="200" placeholder="facebook.com/…" /></div></div>
+      </div>
       <div class="f"><label for="prior_volunteering"><span data-t="prior"></span> <span class="opt" data-t="optional"></span></label>
         <textarea id="prior_volunteering" name="prior_volunteering" maxlength="400" data-ph="priorPh" style="min-height:80px"></textarea></div>
     </section>
@@ -180,8 +209,18 @@
       <div class="f"><label for="heard_from" data-t="heard"></label>
         <div class="in"><i class="ph-bold ph-chat-teardrop-text ic"></i><select id="heard_from" name="heard_from"><option value="" data-t="pick"></option><option value="facebook" data-t="hFb"></option><option value="friend" data-t="hFriend"></option><option value="event" data-t="hEvent"></option><option value="faculty" data-t="hFac"></option><option value="other" data-t="hOther"></option></select></div></div>
     </section>
-    <!-- 4 -->
+    <!-- 4: الصور -->
     <section class="step" data-step="3">
+      <h2><i class="ph-bold ph-camera"></i><span data-t="s5h"></span></h2><p class="sub" data-t="s5p"></p>
+      <div class="ups">
+        <label class="up" data-f="photo"><input type="file" accept="image/*" data-up="photo" hidden /><span class="ph-prev"><i class="ph-bold ph-user"></i></span><b data-t="upPhoto"></b><small data-t="upPhotoD"></small><span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUp"></span></span></label>
+        <label class="up" data-f="id-front"><input type="file" accept="image/*" data-up="id-front" hidden /><span class="ph-prev wide"><i class="ph-bold ph-seal-check"></i></span><b data-t="upFront"></b><small data-t="upIdD"></small><span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUp"></span></span></label>
+        <label class="up" data-f="id-back"><input type="file" accept="image/*" data-up="id-back" hidden /><span class="ph-prev wide"><i class="ph-bold ph-seal-check"></i></span><b data-t="upBack"></b><small data-t="upIdD"></small><span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUp"></span></span></label>
+      </div>
+      <p class="sec-note"><i class="ph-bold ph-shield-check"></i><span data-t="idNote"></span></p>
+    </section>
+    <!-- 5 -->
+    <section class="step" data-step="4">
       <h2><i class="ph-bold ph-shield-check"></i><span data-t="s4h"></span></h2><p class="sub" data-t="s4p"></p>
       <label class="check" data-f="agree_rules"><input type="checkbox" name="agree_rules" /><span><b data-t="c1"></b><span data-t="c1d"></span></span></label>
       <label class="check"><input type="checkbox" name="agree_photos" /><span><b data-t="c2"></b><span data-t="c2d"></span></span></label>
@@ -213,8 +252,18 @@
   const T = {
     brand:['أصدقاء البيئة','Environment Friends'], brandSub:['كلية التجارة — جامعة قناة السويس','Faculty of Commerce — SCU'], home:['الرئيسية','Home'],
     open:['التطوع مفتوح الآن','Volunteering is open now'], title:['انضم إلى أصدقاء البيئة','Join Environment Friends'],
-    intro:['أربع خطوات قصيرة، حوالي 3 دقائق، وتبدأ رحلتك معنا.','Four short steps, about 3 minutes, and your journey with us begins.'],
-    s1:['بياناتك','About you'], s2:['اهتماماتك','Interests'], s3:['وقتك ودافعك','Time & why'], s4:['الموافقة','Consent'],
+    intro:['خمس خطوات قصيرة، حوالي 4 دقائق، وتبدأ رحلتك معنا.','Five short steps, about 4 minutes, and your journey with us begins.'],
+    s1:['بياناتك','About you'], s2:['اهتماماتك','Interests'], s3:['وقتك ودافعك','Time & why'], s5:['صورك','Photos'], s4:['الموافقة','Consent'],
+    uni:['الجامعة','University'], uniScu:['جامعة قناة السويس','Suez Canal University'], uniOther:['جامعة أخرى','Another university'], uniPh:['اكتب اسم الجامعة','Write the university'],
+    fac:['الكلية','Faculty'], facCom:['كلية التجارة','Faculty of Commerce'], facOther:['كلية أخرى','Another faculty'], facPh:['اكتب اسم الكلية','Write the faculty'],
+    eUni:['اكتب اسم الجامعة','Write your university'], eFac:['اكتب اسم الكلية','Write your faculty'],
+    tshirt:['مقاس تيشيرت الفريق','Team T-shirt size'], fb:['لينك حسابك على فيسبوك','Your Facebook profile link'],
+    s5h:['صورك والبطاقة','Your photo and ID'], s5p:['صورة شخصية واضحة، وصورة البطاقة من الوش والضهر.','A clear personal photo, plus the front and back of your ID card.'],
+    upPhoto:['صورة شخصية','Personal photo'], upPhotoD:['وشك واضح، وهتظهر في صفحة الفريق لو اتقبلت','Face clearly visible; shown on the team page if accepted'],
+    upFront:['البطاقة — الوش','ID card — front'], upBack:['البطاقة — الضهر','ID card — back'], upIdD:['صورة واضحة ومقروءة','Clear and readable'],
+    eUp:['ارفع الصورة دي','Please add this photo'], eImg:['الصورة دي مش مدعومة، جرّب صورة JPG أو PNG','This image isn’t supported; try a JPG or PNG'],
+    idNote:['صور البطاقة بتتحفظ في مكان مقفول، ومحدش يقدر يفتحها غير قادة الفريق، وبتتمسح لو الطلب اترفض.','ID photos are stored privately; only team leaders can open them, and they’re deleted if the application is declined.'],
+    eFiles:['حصلت مشكلة في رفع الصور، جرّب تاني.','The photos failed to upload; please try again.'], uploading:['جارٍ رفع الصور…','Uploading photos…'],
     s1h:['خلّينا نتعرف عليك','Let’s get to know you'], s1p:['البيانات دي عشان نقدر نتواصل معاك.','We use these details to reach you.'],
     name:['الاسم الثلاثي','Full name (three parts)'], phone:['رقم الموبايل (واتساب)','Mobile number (WhatsApp)'], email:['البريد الإلكتروني','Email'],
     year:['الفرقة','Year'], pick:['اختر…','Choose…'], y1:['الفرقة الأولى','First year'], y2:['الفرقة الثانية','Second year'], y3:['الفرقة الثالثة','Third year'], y4:['الفرقة الرابعة','Fourth year'], yg:['خريج / دراسات عليا','Graduate / postgraduate'],
@@ -246,7 +295,7 @@
   const HOURS = [['1-2','1–2'],['3-5','3–5'],['6-10','6–10'],['10+','10+']];
   const DAYS = [['sat','السبت','Sat'],['sun','الأحد','Sun'],['mon','الإثنين','Mon'],['tue','الثلاثاء','Tue'],['wed','الأربعاء','Wed'],['thu','الخميس','Thu']];
   const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)], root = document.documentElement;
-  let lang = root.dataset.lang || 'ar', step = 0, sel = { interests: new Set(), days: new Set(), hours: '' };
+  let lang = root.dataset.lang || 'ar', step = 0, sel = { interests: new Set(), days: new Set(), hours: '', tshirt: '' }, files = {}; const LAST = 4;
   const t = k => (T[k] ? T[k][lang === 'en' ? 1 : 0] : k);
   const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
   const icon = (scope = document) => scope.querySelectorAll('i[class*="ph-"]').forEach(el => {
@@ -261,6 +310,7 @@
     $('#interests').innerHTML = INTERESTS.map(([v, ic, a, e]) => chip('interests', v, ic, lang === 'en' ? e : a)).join('');
     $('#hours').innerHTML = HOURS.map(([v, l]) => chip('hours', v, '', `<span dir="ltr">${l}</span>&nbsp;${lang === 'en' ? 'hrs' : 'ساعات'}`, true)).join('');
     $('#days').innerHTML = DAYS.map(([v, a, e]) => chip('days', v, '', lang === 'en' ? e : a)).join('');
+    $('#tshirt').innerHTML = ['S','M','L','XL','XXL'].map(v => `<button type="button" class="chip" data-g="tshirt" data-v="${v}" aria-pressed="${sel.tshirt === v}" dir="ltr">${v}</button>`).join('');
     icon($('#interests'));
   };
   const paint = () => {
@@ -268,7 +318,7 @@
     document.title = lang === 'en' ? 'Join Environment Friends — Application' : 'انضم إلى أصدقاء البيئة — فورم التقديم';
     $$('[data-t]').forEach(el => el.textContent = t(el.dataset.t));
     $$('[data-ph]').forEach(el => el.placeholder = t(el.dataset.ph));
-    $('#next span').textContent = t(step === 3 ? 'send' : 'next');
+    $('#next span').textContent = t(step === LAST ? 'send' : 'next');
     paintChips();
   };
   $('#lang-toggle').onclick = () => { lang = lang === 'ar' ? 'en' : 'ar'; store('ef-lang', lang); paint(); };
@@ -276,11 +326,26 @@
   document.addEventListener('click', e => {
     const c = e.target.closest('.chip'); if (!c) return;
     const g = c.dataset.g, v = c.dataset.v;
-    if (g === 'hours') { sel.hours = v; $$('#hours .chip').forEach(x => x.setAttribute('aria-pressed', x.dataset.v === v)); }
+    if (g === 'hours' || g === 'tshirt') { sel[g] = sel[g] === v && g === 'tshirt' ? '' : v; $$(`#${g} .chip`).forEach(x => x.setAttribute('aria-pressed', x.dataset.v === sel[g])); }
     else { sel[g].has(v) ? sel[g].delete(v) : sel[g].add(v); c.setAttribute('aria-pressed', sel[g].has(v)); }
     c.closest('.f') && c.closest('.f').classList.remove('bad');
   });
-  const f = $('#jf'), val = n => (f.elements[n].value || '').trim();
+  const f = $('#jf'), val = n => ((f.elements[n] || document.getElementById(n)).value || '').trim();
+  ['university', 'faculty'].forEach(k => $('#' + k).addEventListener('change', e => { const o = $('#' + k + '_other'); o.hidden = e.target.value !== 'other'; if (!o.hidden) o.focus(); }));
+  const uniVal = () => val('university') === 'other' ? val('university_other') : 'جامعة قناة السويس';
+  const facVal = () => val('faculty') === 'other' ? val('faculty_other') : 'كلية التجارة';
+  /* ضغط الصورة في المتصفح قبل الرفع */
+  const shrink = (file, max) => new Promise((ok, no) => {
+    const u = URL.createObjectURL(file), im = new Image();
+    im.onload = () => { const s = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); c.toBlob(b => b ? ok({ blob: b, url: c.toDataURL('image/jpeg', .6) }) : no(), 'image/jpeg', .85); };
+    im.onerror = () => { URL.revokeObjectURL(u); no(); }; im.src = u;
+  });
+  $$('[data-up]').forEach(inp => inp.addEventListener('change', async () => {
+    const k = inp.dataset.up, box = inp.closest('.up'), f0 = inp.files && inp.files[0]; if (!f0) return;
+    try { const r = await shrink(f0, k === 'photo' ? 1200 : 1600); files[k] = r.blob; box.querySelector('.ph-prev').style.backgroundImage = `url(${r.url})`; box.classList.add('has'); box.classList.remove('bad'); }
+    catch (e) { delete files[k]; box.classList.remove('has'); box.classList.add('bad'); box.querySelector('.err span').textContent = t('eImg'); }
+  }));
   f.addEventListener('input', e => { const b = e.target.closest('.f'); b && b.classList.remove('bad'); if (e.target.id === 'motivation') $('#mcount').textContent = e.target.value.length; });
   const normPhone = p => { let d = p.replace(/[^\d٠-٩]/g, '').replace(/[٠-٩]/g, x => '٠١٢٣٤٥٦٧٨٩'.indexOf(x)); if (d.startsWith('20') && d.length === 12) d = '0' + d.slice(2); return d; };
   const bad = (name, cond) => { const b = document.querySelector(`[data-f="${name}"]`); if (b) b.classList.toggle('bad', !!cond); return !cond; };
@@ -292,9 +357,11 @@
       ok &= bad('email', !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email')));
       ok &= bad('year', !val('year'));
       ok &= bad('department', val('department').length < 2);
+      ok &= bad('university', uniVal().length < 2); ok &= bad('faculty', facVal().length < 2);
     } else if (s === 1) ok &= bad('interests', !sel.interests.size);
     else if (s === 2) { ok &= bad('hours_per_week', !sel.hours); ok &= bad('motivation', val('motivation').length < 20); }
-    else if (s === 3) {
+    else if (s === 3) { ['photo', 'id-front', 'id-back'].forEach(k => { const b = document.querySelector(`[data-f="${k}"]`); if (!files[k]) { b.classList.add('bad'); b.querySelector('.err span').textContent = t('eUp'); ok = false; } }); }
+    else if (s === 4) {
       const a = f.elements.agree_rules.checked, d = f.elements.agree_data.checked;
       document.querySelector('[data-f="agree_rules"]').classList.toggle('bad', !a); document.querySelector('[data-f="agree_data"]').classList.toggle('bad', !d);
       $('#cerr').classList.toggle('on', !(a && d)); ok = a && d;
@@ -306,28 +373,37 @@
     $$('.step').forEach(x => x.classList.remove('on')); const el = document.querySelector(`.step[data-step="${n}"]`);
     el.style.setProperty('--dir', (dir * (lang === 'ar' ? -1 : 1) * 24) + 'px'); el.classList.add('on'); step = n;
     $$('.stage').forEach((x, i) => { x.classList.toggle('on', i === n); x.classList.toggle('done', i < n); });
-    $('#grow').style.setProperty('--p', n / 3); $('#prev').style.visibility = n ? 'visible' : 'hidden';
-    $('#next span').textContent = t(n === 3 ? 'send' : 'next'); $('#serr').classList.remove('on');
+    $('#grow').style.setProperty('--p', n / LAST); $('#prev').style.visibility = n ? 'visible' : 'hidden';
+    $('#next span').textContent = t(n === LAST ? 'send' : 'next'); $('#serr').classList.remove('on');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
   $('#prev').onclick = () => step && go(step - 1, -1);
-  $('#next').onclick = () => { if (!check(step)) return; step < 3 ? go(step + 1, 1) : send(); };
+  $('#next').onclick = () => { if (!check(step)) return; step < LAST ? go(step + 1, 1) : send(); };
   const send = async () => {
     const btn = $('#next'), C = window.CONFIG.supabase; btn.disabled = true; btn.innerHTML = `<span>${t('sending')}</span><span class="spin"></span>`;
-    const p = { full_name: val('full_name'), phone: normPhone(val('phone')), email: val('email'), year: val('year'), department: val('department'),
+    const up = (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); }));
+    try {
+      btn.querySelector('span').textContent = t('uploading');
+      for (const k of ['photo', 'id-front', 'id-back']) {
+        const r = await fetch(`${C.url}/storage/v1/object/applications/pending/${up}/${k}.jpg`, { method: 'POST', headers: { apikey: C.key, Authorization: `Bearer ${C.key}`, 'Content-Type': 'image/jpeg', 'x-upsert': 'false' }, body: files[k] });
+        if (!r.ok) throw new Error('eFiles');
+      }
+      btn.querySelector('span').textContent = t('sending');
+    } catch (e) { $('#serrt').textContent = t('eFiles'); $('#serr').classList.add('on'); btn.disabled = false; btn.innerHTML = `<span>${t('send')}</span><i class="ph-bold ph-paper-plane-tilt"></i>`; icon(btn); return; }
+    const p = { upload_id: up, university: uniVal(), faculty: facVal(), tshirt_size: sel.tshirt, facebook: val('facebook'), full_name: val('full_name'), phone: normPhone(val('phone')), email: val('email'), year: val('year'), department: val('department'),
       interests: [...sel.interests], skills: val('skills'), prior_volunteering: val('prior_volunteering'), hours_per_week: sel.hours, days: [...sel.days],
       motivation: val('motivation'), idea: val('idea'), heard_from: val('heard_from'), agree_rules: f.elements.agree_rules.checked,
       agree_photos: f.elements.agree_photos.checked, agree_data: f.elements.agree_data.checked, lang };
     try {
       const r = await fetch(`${C.url}/rest/v1/rpc/submit_application`, { method: 'POST', headers: { apikey: C.key, Authorization: `Bearer ${C.key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ p }) });
       const body = await r.json().catch(() => ({}));
-      if (!r.ok) { const m = (body && body.message) || ''; throw new Error(m.includes('duplicate_phone') ? 'eDup' : m.includes('rate_limited') ? 'eRate' : 'eNet'); }
+      if (!r.ok) { const m = (body && body.message) || ''; throw new Error(m.includes('duplicate_phone') ? 'eDup' : m.includes('rate_limited') ? 'eRate' : m.includes('missing_files') ? 'eFiles' : 'eNet'); }
       $('#refno').textContent = typeof body === 'string' ? body : '—';
       $$('.step').forEach(x => x.classList.remove('on')); $('#nav').style.display = 'none'; $('#done').classList.add('on');
       $$('.stage').forEach(x => { x.classList.remove('on'); x.classList.add('done'); }); $('#grow').style.setProperty('--p', 1);
       confetti(); window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (e) {
-      $('#serrt').textContent = t(['eDup', 'eRate'].includes(e.message) ? e.message : 'eNet'); $('#serr').classList.add('on');
+      $('#serrt').textContent = t(['eDup', 'eRate', 'eFiles'].includes(e.message) ? e.message : 'eNet'); $('#serr').classList.add('on');
       btn.disabled = false; btn.innerHTML = `<span>${t('send')}</span><i class="ph-bold ph-paper-plane-tilt"></i>`; icon(btn);
     }
   };
