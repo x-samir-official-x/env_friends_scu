@@ -23,14 +23,14 @@ const CONFIG = {
 
   links: {
     registrationForm: 'join.html',   // فورم التقديم بتاعنا (الردود بتتحفظ في Supabase)
-    facebook: 'https://www.facebook.com/env_friends_scu',
+    facebook: 'https://www.facebook.com/share/19zGBvni5Y/?mibextid=wwXIfr', // لحد ما يبقى للفريق صفحة خاصة بيه: صفحة الكلية
     facultyPage: 'https://www.facebook.com/share/19zGBvni5Y/?mibextid=wwXIfr',
-    teamPage: 'https://www.facebook.com/env_friends_scu',
+    teamPage: 'https://www.facebook.com/share/19zGBvni5Y/?mibextid=wwXIfr',
   },
 
   /* أيقونات السوشيال في الفوتر — الفاضي بيظهر "قريبًا" */
   socials: [
-    { key: 'facebook',  icon: 'ph-facebook-logo',  label: 'Facebook',  href: 'https://www.facebook.com/env_friends_scu' },
+    { key: 'facebook',  icon: 'ph-facebook-logo',  label: 'Facebook',  href: 'https://www.facebook.com/share/19zGBvni5Y/?mibextid=wwXIfr' },
     { key: 'instagram', icon: 'ph-instagram-logo', label: 'Instagram', href: '' },
     { key: 'tiktok',    icon: 'ph-tiktok-logo',    label: 'TikTok',    href: '' },
     { key: 'youtube',   icon: 'ph-youtube-logo',   label: 'YouTube',   href: '' },
@@ -76,9 +76,6 @@ const CONFIG = {
     { icon: 'ph-user-plus', ar: 'فورم الانضمام للفريق', en: 'Team Registration Form',
       descAr: 'انضم لأصدقاء البيئة وابدأ رحلتك في العمل التطوعي.', descEn: 'Join Environment Friends and start your volunteering journey.',
       linkKey: 'registrationForm' },
-    { icon: 'ph-facebook-logo', ar: 'صفحة الفريق الرسمية', en: 'Official Team Page',
-      descAr: 'تابع أخبار الفريق وحملاته أولًا بأول.', descEn: 'Follow the team’s news and campaigns as they happen.',
-      linkKey: 'teamPage' },
     { icon: 'ph-buildings', ar: 'صفحة كلية التجارة', en: 'Faculty of Commerce',
       descAr: 'الصفحة الرسمية للكلية — أخبار أكاديمية وفعاليات.', descEn: 'The faculty’s official page — academic news and events.',
       linkKey: 'facultyPage' },
@@ -160,7 +157,7 @@ const CONFIG = {
       image: ['assets/init_nursing', 'https://images.unsplash.com/photo-1581579438747-1dc8d17bbce4?w=900&h=600&fit=crop'] },
   ],
 
-  contact: { handle: '@env_friends_scu', href: 'https://www.facebook.com/env_friends_scu' },
+  contact: { handle: 'صفحة كلية التجارة', href: 'https://www.facebook.com/share/19zGBvni5Y/?mibextid=wwXIfr' },
 
   i18n: {
     brand:      { ar: 'أصدقاء البيئة', en: 'Environment Friends' },

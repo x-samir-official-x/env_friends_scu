@@ -1,0 +1,19 @@
+# تشغيل يومي صغير: بينادي دالة الصيانة على Supabase.
+# - بيمسح الصور اللي اترفعت ومالهاش طلب بعد 24 ساعة.
+# - وبيمنع Supabase المجاني إنه يوقف المشروع لو مفيش زيارات أسبوع.
+# المفتاح ده هو مفتاح anon العام اللي موجود أصلًا في config.js (مش سر).
+name: supabase-keepalive
+on:
+  schedule:
+    - cron: "41 2 * * *"
+  workflow_dispatch:
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Call daily-maintenance
+        run: |
+          KEY=$(curl -fsSL "https://raw.githubusercontent.com/${GITHUB_REPOSITORY}/${GITHUB_SHA}/config.js" | grep -o "key: '[^']*'" | head -1 | cut -d"'" -f2)
+          curl -fsS -X POST "https://svvmavxbafwlayucvcui.supabase.co/functions/v1/daily-maintenance" \
+            -H "apikey: $KEY" -H "Authorization: Bearer $KEY" -H "Content-Type: application/json" -d '{}'
