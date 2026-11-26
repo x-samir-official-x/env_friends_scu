@@ -127,8 +127,16 @@ const CONFIG = {
         summaryAr: 'شارك أعضاء هيئة التدريس الفريقَ في زراعة شتلات جديدة بحديقة الكلية، ثم زرنا معرض الفنان مجدي حسن في مبنى 2، حيث شرح لنا لوحاته الزيتية ولوحاته المرسومة على الجلد، وما تحمله من ملامح الحياة المصرية.',
         summaryEn: 'Faculty members joined the team to plant new seedlings in the faculty garden, then we visited artist Magdy Hassan’s exhibition in Building 2, where he walked us through his oil paintings and his works drawn on leather, each carrying scenes of Egyptian life.' },
     ] },
-    { id: 'eco-week/day-5', date: '2026-11-26', folder: 'assets/eco-week/day-5',
-      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+    { date: '2026-11-26', parts: [
+      { id: 'eco-week/day-5', folder: 'assets/eco-week/day-5',
+        titleAr: 'زيارة معرض فن الأوريجامي', titleEn: 'A Visit to a 3D Origami Exhibition',
+        summaryAr: 'زرنا ركن فنان يصنع من الورق المطوي مجسّمات ملوّنة: بجعات وطيور وأسماك وسلال وأزهار وحوامل أقلام، وشرح لنا بنفسه كيف تتحوّل قطع الورق الصغيرة إلى قطع فنية، في مثال حيّ على الإبداع بخامات بسيطة.',
+        summaryEn: 'We visited an artist who folds paper into colourful 3D figures: swans, birds, fish, baskets, flowers and pen holders. He showed us himself how small pieces of paper become works of art, a living example of creativity with simple materials.' },
+      { id: 'eco-week/day-5-seminar', folder: 'assets/eco-week/day-5-seminar',
+        titleAr: 'ندوة «التغيرات المناخية: من الوعي البيئي إلى المشاركة المجتمعية»', titleEn: 'Seminar: "Climate Change: From Environmental Awareness to Community Participation"',
+        summaryAr: 'اختتمنا الأسبوع البيئي بندوة قدّمها أ.م.د/ باسم المغربي، أستاذ العلوم السياسية المساعد بجامعة قناة السويس والمدرب الدولي المعتمد من منظمة العمل الدولية، عن التغيرات المناخية وجهود مصر في مواجهتها، وكيف ينتقل الطالب من الوعي البيئي إلى المشاركة الفعلية في مجتمعه.',
+        summaryEn: 'We closed Environmental Week with a seminar by Assoc. Prof. Bassem El-Maghraby, Assistant Professor of Political Science at Suez Canal University and an ILO-certified international trainer, on climate change, Egypt’s efforts to tackle it, and how students can move from environmental awareness to real participation in their community.' },
+    ] },
   ],
 
   /* الحملات — image: صورتك المحلية أولًا ثم صورة احتياطية */
