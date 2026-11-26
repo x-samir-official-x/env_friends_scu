@@ -254,5 +254,10 @@ html:not(.no-splash) body{overflow:hidden}
 <script src="vendor/three.min.js"></script>
 <script src="scene.js"></script>
 <script src="splash.js"></script>
+<script>
+  /* مدخل سري للإدارة: 5 ضغطات ورا بعض على لوجو الفوتر */
+  (function(){ var n = 0, t; var el = document.getElementById('footer-logo'); if (!el) return;
+    el.addEventListener('click', function(){ n++; clearTimeout(t); t = setTimeout(function(){ n = 0; }, 1500); if (n >= 5) location.href = 'admin.html'; }); })();
+</script>
 </body>
 </html>

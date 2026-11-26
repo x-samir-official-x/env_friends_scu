@@ -14,6 +14,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css" />
 <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+<link rel="manifest" href="admin.webmanifest" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="إدارة الفريق" />
 <style>
   body{min-height:100vh;background:radial-gradient(ellipse at 85% -10%,rgba(137,197,74,.18),transparent 55%),var(--bg);font-family:var(--font-ar)}
   .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:.8rem;padding:.7rem clamp(1rem,4vw,2.5rem);background:var(--glass);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
@@ -119,6 +124,7 @@
 <body>
 <header class="top">
   <a class="brand" href="index.html"><img src="assets/splash-logo.png" alt="" /><span>أصدقاء البيئة<small>لوحة الإدارة</small></span></a>
+  <button class="ib" id="inst" type="button" hidden><i class="ph-bold ph-download-simple"></i><span>ثبّتها على موبايلك</span></button>
   <button class="ib" id="theme" type="button" aria-label="الوضع الليلي"><i class="ph-bold ph-moon"></i></button>
   <button class="ib" id="out" type="button" hidden><i class="ph-bold ph-sign-out"></i><span>خروج</span></button>
 </header>
@@ -359,6 +365,19 @@
     const csv = '﻿' + [cols.map(c => q(c[1])).join(','), ...list.map(r => cols.map(([k]) => q(val(r, k))).join(','))].join('\r\n');
     const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = `طلبات-التطوع-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
   };
+
+  /* ---------- تثبيت اللوحة كأيقونة على الموبايل ---------- */
+  const standalone = matchMedia('(display-mode: standalone)').matches || navigator.standalone;
+  const ios = /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  let deferred = null;
+  addEventListener('beforeinstallprompt', e => { e.preventDefault(); deferred = e; if (!standalone) $('#inst').hidden = false; });
+  if (ios && !standalone) $('#inst').hidden = false;
+  $('#inst').onclick = async () => {
+    if (deferred) { deferred.prompt(); const r = await deferred.userChoice; if (r.outcome === 'accepted') $('#inst').hidden = true; deferred = null; return; }
+    if (ios) { const t = $('#toast'); t.textContent = 'من Safari: دوس زرار المشاركة ⬆️ وبعدين «إضافة إلى الشاشة الرئيسية»'; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 7000); return; }
+    toast('من قايمة المتصفح ⋮ اختار «تثبيت التطبيق» أو «إضافة إلى الشاشة الرئيسية»');
+  };
+  addEventListener('appinstalled', () => { $('#inst').hidden = true; toast('اتثبتت — هتلاقيها على الشاشة الرئيسية'); });
 
   /* ---------- التشغيل ---------- */
   const boot = async () => {
