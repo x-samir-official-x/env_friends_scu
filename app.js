@@ -166,19 +166,24 @@
     rail.innerHTML = `<span class="rail-line"><span class="rail-fill"></span></span>` + days.map((d, i) => `
       <a class="rail-node is-${st[i]}" href="#eco-${i + 1}"><span class="dot">${st[i] === 'past' ? '<i class="ph-bold ph-check-circle"></i>' : i + 1}</span>
         <b>${esc(fmtDay(d.date, { weekday: 'long' }))}</b><small>${esc(fmtDay(d.date, { day: 'numeric', month: 'short' }))}</small></a>`).join('');
+    /* يوم ممكن يبقى فيه أكتر من نشاط: parts في config.js، كل جزء بكارت ومعرض لوحده */
     box.innerHTML = days.map((d, i) => {
-      const ph = (coverOf(d) ? [coverOf(d)] : []).concat(photosOf(d)), has = ph.length > 0, s = st[i];
-      const title = L(d.titleAr, d.titleEn) || d.titleAr, sum = L(d.summaryAr, d.summaryEn) || d.summaryAr;
+      const parts = d.parts && d.parts.length ? d.parts : [d], n = parts.length, s = st[i];
+      return parts.map((p0, k) => {
+      const p = { ...p0, date: d.date };
+      const ph = (coverOf(p) ? [coverOf(p)] : []).concat(photosOf(p)), has = ph.length > 0;
+      const title = L(p.titleAr, p.titleEn) || p.titleAr, sum = L(p.summaryAr, p.summaryEn) || p.summaryAr;
+      const label = ecoLabel(i) + (n > 1 ? ` · ${k + 1}/${n}` : '');
       const badge = s === 'today' ? `<span class="eco-badge today"><span class="pulse-dot"></span>${esc(T('ecoToday'))}</span>` : s === 'past' ? `<span class="eco-badge done"><i class="ph-bold ph-check-circle"></i>${esc(T('ecoDone'))}</span>` : `<span class="eco-badge next"><i class="ph-bold ph-hourglass-medium"></i>${esc(T('ecoSoon'))}</span>`;
       const shots = ph.slice(0, 4), extra = ph.length - shots.length;
-      const media = has ? `<div class="eco-mosaic n${shots.length}">${shots.map((u, k) => `<span style="background-image:url('${esc(encodeURI(u))}')">${k === shots.length - 1 && extra > 0 ? `<em dir="ltr">+${extra}</em>` : ''}</span>`).join('')}</div>`
+      const media = has ? `<div class="eco-mosaic n${shots.length}">${shots.map((u, q) => `<span style="background-image:url('${esc(encodeURI(u))}')">${q === shots.length - 1 && extra > 0 ? `<em dir="ltr">+${extra}</em>` : ''}</span>`).join('')}</div>`
         : `<div class="eco-empty"><i class="ph-bold ph-camera"></i></div>`;
-      return `<article id="eco-${i + 1}" class="eco-day reveal is-${s}${has ? ' has-gallery' : ''}" style="--i:${i}" data-id="${esc(d.id)}" ${has ? `role="button" tabindex="0" aria-label="${esc(ecoLabel(i))} — ${esc(T('ecoMore'))}"` : ''}>
-        <div class="eco-num"><span>${i + 1}</span></div>
+      return `<article id="eco-${i + 1}${k ? '-' + (k + 1) : ''}" class="eco-day reveal is-${s}${k ? ' is-part' : ''}${has ? ' has-gallery' : ''}" style="--i:${i}" data-id="${esc(p.id)}" ${has ? `role="button" tabindex="0" aria-label="${esc(label)} — ${esc(T('ecoMore'))}"` : ''}>
+        <div class="eco-num"><span>${k ? '' : i + 1}</span></div>
         <div class="eco-card">
           ${media}
           <div class="eco-body">
-            <div class="eco-meta"><span class="eco-label">${esc(ecoLabel(i))}</span>${badge}</div>
+            <div class="eco-meta"><span class="eco-label">${esc(label)}</span>${badge}</div>
             <h3>${esc(title || fmtDay(d.date, { weekday: 'long', day: 'numeric', month: 'long' }))}</h3>
             <div class="eco-date"><i class="ph-bold ph-calendar-blank"></i>${esc(fmtDay(d.date, { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }))}</div>
             <p class="${sum ? '' : 'muted'}">${esc(sum || T('ecoPending'))}</p>
@@ -186,10 +191,13 @@
           </div>
         </div>
       </article>`;
+      }).join('');
     }).join('');
   };
-  const findItem = id => C.campaigns.find(c => c.id === id) || ecoDays().find(d => d.id === id);
-  const lbItem = d => (C.campaigns.includes(d) ? d : { ...d, ar: (d.titleAr ? d.titleAr + ' — ' : '') + ecoLabel(ecoDays().indexOf(d)), en: (d.titleEn ? d.titleEn + ' — ' : '') + ecoLabel(ecoDays().indexOf(d)), lead: coverOf(d) });
+  /* كل الأنشطة (الأيام وأجزائها) في قايمة واحدة، كل عنصر عارف رقم يومه */
+  const ecoItems = () => ecoDays().flatMap((d, i) => (d.parts && d.parts.length ? d.parts : [d]).map(p => ({ ...p, date: d.date, _i: i })));
+  const findItem = id => C.campaigns.find(c => c.id === id) || ecoItems().find(d => d.id === id);
+  const lbItem = d => (C.campaigns.includes(d) ? d : { ...d, ar: (d.titleAr ? d.titleAr + ' — ' : '') + ecoLabel(d._i), en: (d.titleEn ? d.titleEn + ' — ' : '') + ecoLabel(d._i), lead: coverOf(d) });
   /* لو الفعالية مالهاش صور في gallery.json، نقرأ فولدرها مباشرة من GitHub (الصور الجديدة تظهر لوحدها) */
   const ghList = async c => {
     if (!C.github || location.protocol === 'file:') return null;
@@ -205,7 +213,7 @@
   };
   const loadManifest = async () => {
     try { const r = await fetch('gallery.json', { cache: 'no-cache' }); manifest = r.ok ? (await r.json()) || {} : {}; } catch (e) { manifest = {}; }
-    await Promise.all(C.campaigns.concat(ecoDays()).filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
+    await Promise.all(C.campaigns.concat(ecoItems()).filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
     const live = await ghNames(C.team.folder); teamFiles = live.length ? live : ((manifest.team && manifest.team.files) || []);
     renderCampaigns(); renderTeam(); renderEco(); hydrateIcons(); observe($$('.reveal:not(.in)'));
   };

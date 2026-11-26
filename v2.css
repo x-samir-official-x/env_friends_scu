@@ -175,3 +175,8 @@ body{counter-reset:sec}
 
 .nav-list a{white-space:nowrap;padding-inline:.65rem}
 @media (max-width:1319px){.nav-desktop,.nav-cta{display:none}.nav-burger{display:grid}}
+
+/* جزء تاني في نفس اليوم: نقطة صغيرة على الخط بدل الرقم */
+.eco-day.is-part{margin-top:-.6rem}
+.eco-day.is-part .eco-num span{width:16px;height:16px;margin:16px;border-width:3px;background:var(--leaf);border-color:var(--emerald)}
+@media (max-width:720px){.eco-day.is-part .eco-num span{width:14px;height:14px;margin:11px}}
