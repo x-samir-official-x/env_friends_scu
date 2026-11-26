@@ -116,7 +116,7 @@ body{counter-reset:sec}
 @media (prefers-reduced-motion:reduce){.hexw{opacity:1;transform:none}}
 
 /* ═══ الأسبوع البيئي: شريط أيام + تايم لاين ═══ */
-.eco-rail{position:relative;display:grid;grid-template-columns:repeat(5,1fr);margin:0 auto 3.2rem;max-width:860px;--p:0}
+.eco-rail{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;margin:0 auto 3.2rem;max-width:860px;--p:0}
 .rail-line{position:absolute;top:22px;inset-inline:10%;height:4px;border-radius:9px;background:var(--border)}
 .rail-fill{position:absolute;inset-block:0;inset-inline-start:0;width:calc(var(--p)*100%);border-radius:inherit;background:linear-gradient(90deg,var(--emerald),var(--leaf));transition:width 1.2s var(--ease)}
 [dir="rtl"] .rail-fill{background:linear-gradient(270deg,var(--emerald),var(--leaf))}
@@ -162,7 +162,7 @@ body{counter-reset:sec}
 .eco-body p.muted{color:var(--muted);font-style:italic}
 .eco-more{margin-top:.4rem;display:inline-flex;align-items:center;gap:.4rem;font-weight:900;color:var(--accent);font-size:.9rem}
 @media (max-width:720px){
-  .eco-rail{grid-template-columns:repeat(5,1fr);margin-bottom:2.4rem}
+  .eco-rail{margin-bottom:2.4rem}
   .rail-node .dot{width:38px;height:38px;font-size:.9rem}.rail-line{top:17px}
   .rail-node b{font-size:.72rem}.rail-node small{font-size:.66rem}
   .eco-days::before{inset-inline-start:17px}
@@ -175,3 +175,8 @@ body{counter-reset:sec}
 
 .nav-list a{white-space:nowrap;padding-inline:.65rem}
 @media (max-width:1319px){.nav-desktop,.nav-cta{display:none}.nav-burger{display:grid}}
+
+/* جزء تاني في نفس اليوم: نقطة صغيرة على الخط بدل الرقم */
+.eco-day.is-part{margin-top:-.6rem}
+.eco-day.is-part .eco-num span{width:16px;height:16px;margin:16px;border-width:3px;background:var(--leaf);border-color:var(--emerald)}
+@media (max-width:720px){.eco-day.is-part .eco-num span{width:14px;height:14px;margin:11px}}

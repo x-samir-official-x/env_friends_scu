@@ -46,11 +46,15 @@ const CONFIG = {
   ],
 
   /* الأرقام — كلها صفر دلوقتي، عدّل value مع الوقت */
+  /* auto: الرقم بيتحسب لوحده من الموقع
+       'activities' = الحملات اللي done + أنشطة الأسبوع البيئي اللي ليها صور
+       'members'    = الهيكل الإداري + صور فولدر Team Member
+     من غير auto: الرقم بيتكتب يدوي في value */
   stats: [
-    { value: 0, icon: 'ph-calendar-check', ar: 'حملة منفّذة',  en: 'Campaigns Done' },
-    { value: 0, icon: 'ph-users-three',    ar: 'عضو متطوع',    en: 'Volunteers' },
-    { value: 0, icon: 'ph-clock',          ar: 'ساعة تطوع',    en: 'Volunteer Hours' },
-    { value: 0, icon: 'ph-heart',          ar: 'مستفيد',       en: 'Beneficiaries' },
+    { auto: 'activities', icon: 'ph-calendar-check', ar: 'نشاط منفّذ',  en: 'Activities Done' },
+    { auto: 'members',    icon: 'ph-users-three',    ar: 'عضو متطوع',  en: 'Volunteers' },
+    { value: 0,           icon: 'ph-clock',          ar: 'ساعة تطوع',  en: 'Volunteer Hours' },
+    { value: 0,           icon: 'ph-heart',          ar: 'مستفيد',     en: 'Beneficiaries' },
   ],
 
   about: [
@@ -109,16 +113,30 @@ const CONFIG = {
       titleAr: 'معرض المشغولات اليدوية', titleEn: 'Handicrafts Exhibition',
       summaryAr: 'افتتحنا الأسبوع البيئي بمعرض للمشغولات اليدوية داخل الكلية، شاركت فيه عارضات بأعمال الكروشيه والتطريز والإكسسوارات والشنط المصنوعة يدويًا ومنتجات العناية الطبيعية، في دعمٍ للمنتج المحلي والصناعات الصديقة للبيئة.',
       summaryEn: 'We opened Environmental Week with a handicrafts exhibition at the faculty, featuring handmade crochet, embroidery, accessories, bags and natural care products, in support of local, eco-friendly craftsmanship.' },
-    { id: 'eco-week/day-2', date: '2026-11-23', folder: 'assets/eco-week/day-2',
-      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
     { id: 'eco-week/day-3', date: '2026-11-24', folder: 'assets/eco-week/day-3',
       titleAr: 'مبادرة «بيئتنا خضراء مستدامة»', titleEn: '"Our Environment: Green & Sustainable" Initiative',
       summaryAr: 'ندوة توعوية مع إدارة شئون البيئة ووحدة تنظيم المخلفات بمحافظة الإسماعيلية، قدّمتها الباحثتان د/ مروة عبد الكريم ود/ شيماء سيد، بإدارة م/ مروة الخولي. تناولت أهداف التنمية المستدامة ورؤية مصر 2030 وبُعدها البيئي، من مواجهة تغيّر المناخ إلى إدارة المخلفات، مع مسابقات وفيديوهات ومطويات عن قواعد حماية البيئة الأربعة: ترشيد، تشجير، تدوير، وتوعية. وعلى هامشها ورشة عمل حوّل فيها الطلاب الكرتون والبلاستيك والورق إلى منتجات نافعة.',
       summaryEn: 'An awareness seminar with the Ismailia Governorate Environmental Affairs Department and Waste Management Unit, led by researchers Dr. Marwa Abdel Karim and Dr. Shaimaa Sayed, under director Eng. Marwa El-Khouly. It covered the Sustainable Development Goals and the environmental pillar of Egypt Vision 2030, from climate action to waste management, with quizzes, videos and leaflets on the four rules of protecting the environment: conserve, plant, recycle and raise awareness. Alongside it, a hands-on workshop turned cardboard, plastic and paper into useful products.' },
-    { id: 'eco-week/day-4', date: '2026-11-25', folder: 'assets/eco-week/day-4',
-      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
-    { id: 'eco-week/day-5', date: '2026-11-26', folder: 'assets/eco-week/day-5',
-      titleAr: '', titleEn: '', summaryAr: '', summaryEn: '' },
+    { date: '2026-11-25', parts: [
+      { id: 'eco-week/day-4', folder: 'assets/eco-week/day-4',
+        titleAr: 'إعادة تدوير الإطارات', titleEn: 'Upcycling Old Tyres',
+        summaryAr: 'حوّلنا إطارات السيارات القديمة إلى قطع ملوّنة تزيّن حديقة الكلية، فلوّنها أعضاء الفريق بالأخضر والأحمر والأصفر والبنفسجي ورسموا عليها وجوهًا مبتسمة، وشاركتنا الدكتورة الرسم، في رسالة بسيطة: المخلفات ممكن تتحول إلى جمال بدل ما تلوّث البيئة.',
+        summaryEn: 'We turned old car tyres into colourful pieces that brighten the faculty garden: team members painted them green, red, yellow and purple and added smiling faces, with the doctor joining in, to show that waste can become beauty instead of pollution.' },
+      { id: 'eco-week/day-4-planting', folder: 'assets/eco-week/day-4-planting',
+        titleAr: 'التشجير وزيارة معرض الفنان مجدي حسن', titleEn: 'Tree Planting & a Visit to Artist Magdy Hassan’s Exhibition',
+        summaryAr: 'شارك أعضاء هيئة التدريس الفريقَ في زراعة شتلات جديدة بحديقة الكلية، ثم زرنا معرض الفنان مجدي حسن في مبنى 2، حيث شرح لنا لوحاته الزيتية ولوحاته المرسومة على الجلد، وما تحمله من ملامح الحياة المصرية.',
+        summaryEn: 'Faculty members joined the team to plant new seedlings in the faculty garden, then we visited artist Magdy Hassan’s exhibition in Building 2, where he walked us through his oil paintings and his works drawn on leather, each carrying scenes of Egyptian life.' },
+    ] },
+    { date: '2026-11-26', parts: [
+      { id: 'eco-week/day-5', folder: 'assets/eco-week/day-5',
+        titleAr: 'زيارة معرض فن الأوريجامي', titleEn: 'A Visit to a 3D Origami Exhibition',
+        summaryAr: 'زرنا ركن فنان يصنع من الورق المطوي مجسّمات ملوّنة: بجعات وطيور وأسماك وسلال وأزهار وحوامل أقلام، وشرح لنا بنفسه كيف تتحوّل قطع الورق الصغيرة إلى قطع فنية، في مثال حيّ على الإبداع بخامات بسيطة.',
+        summaryEn: 'We visited an artist who folds paper into colourful 3D figures: swans, birds, fish, baskets, flowers and pen holders. He showed us himself how small pieces of paper become works of art, a living example of creativity with simple materials.' },
+      { id: 'eco-week/day-5-seminar', folder: 'assets/eco-week/day-5-seminar',
+        titleAr: 'ندوة «التغيرات المناخية: من الوعي البيئي إلى المشاركة المجتمعية»', titleEn: 'Seminar: "Climate Change: From Environmental Awareness to Community Participation"',
+        summaryAr: 'اختتمنا الأسبوع البيئي بندوة قدّمها أ.م.د/ باسم المغربي، أستاذ العلوم السياسية المساعد بجامعة قناة السويس والمدرب الدولي المعتمد من منظمة العمل الدولية، عن التغيرات المناخية وجهود مصر في مواجهتها، وكيف ينتقل الطالب من الوعي البيئي إلى المشاركة الفعلية في مجتمعه.',
+        summaryEn: 'We closed Environmental Week with a seminar by Assoc. Prof. Bassem El-Maghraby, Assistant Professor of Political Science at Suez Canal University and an ILO-certified international trainer, on climate change, Egypt’s efforts to tackle it, and how students can move from environmental awareness to real participation in their community.' },
+    ] },
   ],
 
   /* الحملات — image: صورتك المحلية أولًا ثم صورة احتياطية */
@@ -175,7 +193,7 @@ const CONFIG = {
     teamSoon:   { ar: 'سيتم عرض أعضاء الفريق هنا قريبًا', en: 'Team members will appear here soon' },
     ecoPill:    { ar: 'الأسبوع البيئي', en: 'Environmental Week' },
     ecoTitle:   { ar: 'الأسبوع البيئي', en: 'Environmental Week' },
-    ecoSub:     { ar: 'خمسة أيام من العمل البيئي — من الأحد 22 إلى الخميس 26 نوفمبر 2026. تابع كل يوم بصوره.', en: 'Five days of environmental action — Sunday 22 to Thursday 26 November 2026. Follow each day in photos.' },
+    ecoSub:     { ar: 'أربعة أيام من العمل البيئي — من الأحد 22 إلى الخميس 26 نوفمبر 2026. تابع كل يوم بصوره.', en: 'Four days of environmental action — Sunday 22 to Thursday 26 November 2026. Follow each day in photos.' },
     ecoDay:     { ar: 'اليوم', en: 'Day' },
     ecoToday:   { ar: 'اليوم', en: 'Today' },
     ecoDone:    { ar: 'انتهى', en: 'Done' },
