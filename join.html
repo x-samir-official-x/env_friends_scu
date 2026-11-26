@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>انضم إلى أصدقاء البيئة — فورم التقديم</title>
+<meta name="description" content="قدّم للانضمام إلى فريق أصدقاء البيئة — كلية التجارة، جامعة قناة السويس." />
+<meta name="theme-color" content="#052549" />
+<script>
+  (function(){ try{
+    var th = localStorage.getItem('ef-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    var lg = localStorage.getItem('ef-lang') || 'ar', d = document.documentElement;
+    d.setAttribute('data-theme', th); d.setAttribute('data-lang', lg); d.setAttribute('lang', lg); d.setAttribute('dir', lg === 'ar' ? 'rtl' : 'ltr');
+  }catch(e){} })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;600;700&family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<link rel="stylesheet" href="v2.css" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+<link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png" />
+<link rel="manifest" href="manifest.webmanifest" />
+<style>
+  body{min-height:100vh;background:radial-gradient(ellipse at 85% -10%,rgba(137,197,74,.22),transparent 55%),radial-gradient(ellipse at 0% 110%,rgba(26,105,41,.16),transparent 50%),var(--bg)}
+  .jf-top{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:.8rem;padding:.7rem clamp(1rem,4vw,2.5rem);background:var(--glass);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+  .jf-top .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;margin-inline-end:auto}
+  .jf-top .brand img{width:42px;height:42px;border-radius:50%;background:var(--ivory);padding:3px}
+  .jf-top .brand small{display:block;font-size:.72rem;color:var(--muted);font-weight:700}
+  .jf-top .back{display:inline-flex;align-items:center;gap:.4rem;font-weight:800;font-size:.88rem;color:var(--accent)}
+  .jf-wrap{max-width:760px;margin:0 auto;padding:2.2rem 1.2rem 4rem}
+  .jf-head{text-align:center;margin-bottom:1.6rem}
+  .jf-head h1{font-size:clamp(1.7rem,4.5vw,2.4rem);font-weight:900;line-height:1.25}
+  .jf-head p{color:var(--muted);margin-top:.4rem}
+  .open-pill{display:inline-flex;align-items:center;gap:.55rem;padding:.35rem 1rem;border-radius:999px;background:rgba(137,197,74,.16);border:1px solid rgba(137,197,74,.6);font-weight:800;font-size:.85rem;color:var(--accent);margin-bottom:.9rem}
+  .open-pill .pulse-dot{width:9px;height:9px}
+  /* شريط التقدّم: بذرة بتكبر */
+  .grow{display:grid;grid-template-columns:repeat(5,1fr);position:relative;margin:0 0 1.8rem}
+  .grow::before{content:"";position:absolute;top:26px;inset-inline:10%;height:4px;border-radius:9px;background:var(--border)}
+  .grow .fill{position:absolute;top:26px;inset-inline-start:10%;height:4px;border-radius:9px;width:calc(80% * var(--p,0));background:linear-gradient(90deg,var(--emerald),var(--leaf));transition:width .7s var(--ease)}
+  [dir="rtl"] .grow .fill{background:linear-gradient(270deg,var(--emerald),var(--leaf))}
+  .stage{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:.35rem;text-align:center}
+  .stage .bud{width:54px;height:54px;border-radius:50%;display:grid;place-items:center;background:var(--surface);border:3px solid var(--border);color:var(--muted);font-size:1.5rem;box-shadow:var(--shadow);transition:all .5s var(--ease)}
+  .stage b{font-size:.8rem;font-weight:800;color:var(--muted)}
+  .stage.done .bud{background:var(--emerald);border-color:var(--leaf);color:#fff}
+  .stage.on .bud{background:var(--leaf);border-color:var(--emerald);color:var(--navy);transform:scale(1.12);box-shadow:0 0 0 7px rgba(137,197,74,.22),var(--shadow)}
+  .stage.on b,.stage.done b{color:var(--text)}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow-lg);padding:clamp(1.3rem,4vw,2.2rem);overflow:hidden}
+  .step{display:none}.step.on{display:block;animation:stepin .5s var(--ease) both}
+  @keyframes stepin{from{opacity:0;transform:translateX(var(--dir,24px))}}
+  .step h2{font-size:1.3rem;font-weight:900;display:flex;align-items:center;gap:.5rem;margin-bottom:.2rem}
+  .step h2 svg{color:var(--accent)}
+  .step .sub{color:var(--muted);font-size:.92rem;margin-bottom:1.3rem}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .f{display:flex;flex-direction:column;gap:.35rem;margin-bottom:1rem}
+  .f label,.f .lbl{font-weight:800;font-size:.92rem}
+  .f label .opt{font-weight:600;color:var(--muted);font-size:.8rem}
+  .in{position:relative}
+  .in svg.ic{position:absolute;inset-inline-start:.85rem;top:50%;translate:0 -50%;color:var(--muted);font-size:1.1rem;pointer-events:none}
+  .in input,.in select{padding-inline-start:2.6rem}
+  input,select,textarea{width:100%;font:inherit;color:var(--text);background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:.8rem .9rem;transition:border-color .2s,box-shadow .2s;min-height:48px}
+  textarea{min-height:110px;resize:vertical;line-height:1.7}
+  input:focus,select:focus,textarea:focus{outline:none;border-color:var(--leaf);box-shadow:0 0 0 4px rgba(137,197,74,.22)}
+  .f.bad input,.f.bad select,.f.bad textarea{border-color:#d9534f;box-shadow:0 0 0 3px rgba(217,83,79,.15)}
+  .err{display:none;color:#d9534f;font-size:.8rem;font-weight:700}
+  .f.bad .err{display:flex;align-items:center;gap:.3rem}
+  .count{font-size:.75rem;color:var(--muted);text-align:end;font-family:var(--font-en)}
+  .chips{display:flex;flex-wrap:wrap;gap:.55rem}
+  .chip{display:inline-flex;align-items:center;gap:.45rem;padding:.6rem 1rem;border-radius:999px;border:1.5px solid var(--border);background:var(--bg);font-weight:700;font-size:.9rem;cursor:pointer;user-select:none;transition:all .2s var(--ease);min-height:44px}
+  .chip svg{font-size:1.1rem;color:var(--accent)}
+  .chip:hover{border-color:var(--leaf);transform:translateY(-2px)}
+  .chip[aria-pressed="true"]{background:var(--emerald);border-color:var(--emerald);color:#fff}
+  .chip[aria-pressed="true"] svg{color:var(--leaf)}
+  .segs{display:grid;grid-template-columns:repeat(auto-fit,minmax(90px,1fr));gap:.5rem}
+  .segs .chip{justify-content:center;border-radius:12px}
+  .check{display:flex;gap:.75rem;align-items:flex-start;padding:.9rem 1rem;border:1.5px solid var(--border);border-radius:14px;margin-bottom:.7rem;cursor:pointer;transition:border-color .2s}
+  .check:hover{border-color:var(--leaf)}
+  .check input{width:22px;height:22px;min-height:0;flex:none;margin-top:.15rem;accent-color:var(--emerald)}
+  .check span{font-size:.92rem;line-height:1.7}
+  .check span b{display:block;font-weight:800}
+  .check.bad{border-color:#d9534f}
+  .nav{display:flex;gap:.8rem;margin-top:1.5rem;align-items:center}
+  .nav .btn{border-radius:12px}
+  .nav .back-btn{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+  .nav .grow1{margin-inline-start:auto}
+  .btn[disabled]{opacity:.6;pointer-events:none}
+  .spin{width:18px;height:18px;border-radius:50%;border:3px solid rgba(5,37,73,.25);border-top-color:var(--navy);animation:sp .8s linear infinite}
+  @keyframes sp{to{transform:rotate(360deg)}}
+  .alert{display:none;gap:.5rem;align-items:center;padding:.8rem 1rem;border-radius:12px;background:rgba(217,83,79,.1);color:#c9302c;font-weight:700;font-size:.9rem;margin-top:1rem}
+  .alert.on{display:flex}
+  [data-theme="dark"] .alert{color:#ff8a85}
+  /* شاشة النجاح */
+  .done-screen{display:none;text-align:center;padding:1rem 0}
+  .done-screen.on{display:block;animation:stepin .6s var(--ease) both}
+  .tree{width:120px;height:120px;margin:0 auto 1rem;border-radius:50%;display:grid;place-items:center;font-size:3.6rem;color:#fff;background:linear-gradient(135deg,var(--emerald),var(--leaf));box-shadow:0 0 0 12px rgba(137,197,74,.18),0 24px 40px -18px rgba(26,105,41,.8);animation:pop .8s cubic-bezier(.2,1.4,.4,1) both}
+  @keyframes pop{from{transform:scale(.3);opacity:0}}
+  .done-screen h2{font-size:1.6rem;font-weight:900;margin-bottom:.4rem}
+  .done-screen p{color:var(--muted);max-width:480px;margin:0 auto}
+  .refbox{display:inline-flex;flex-direction:column;gap:.2rem;margin:1.3rem auto;padding:.9rem 1.6rem;border-radius:16px;border:2px dashed var(--leaf);background:var(--bg-alt)}
+  .refbox small{color:var(--muted);font-weight:700}
+  .refbox b{font-family:var(--font-en);font-size:1.6rem;letter-spacing:.08em;color:var(--accent)}
+  .confetti{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+  .confetti i{position:absolute;top:-6%;color:var(--leaf);animation:fallc linear forwards}
+  @keyframes fallc{to{transform:translate3d(var(--dx),110vh,0) rotate(var(--r));opacity:.2}}
+  .privacy{display:flex;gap:.5rem;align-items:center;justify-content:center;color:var(--muted);font-size:.8rem;margin-top:1.2rem}
+  .other{margin-top:.5rem}
+  .ups{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+  .up{display:flex;flex-direction:column;align-items:center;text-align:center;gap:.35rem;padding:1rem;border:2px dashed var(--border);border-radius:16px;cursor:pointer;transition:all .2s var(--ease);background:var(--bg)}
+  .up:hover{border-color:var(--leaf);transform:translateY(-3px)}
+  .up b{font-weight:800;font-size:.92rem}.up small{color:var(--muted);font-size:.76rem}
+  .ph-prev{width:96px;height:96px;border-radius:50%;display:grid;place-items:center;font-size:2rem;color:var(--accent);background:var(--bg-alt);background-size:cover;background-position:center;overflow:hidden;margin-bottom:.3rem}
+  .ph-prev.wide{width:100%;max-width:170px;height:96px;border-radius:12px}
+  .up.has{border-style:solid;border-color:var(--emerald)}
+  .up.has .ph-prev svg{display:none}
+  .up.bad{border-color:#d9534f}.up.bad .err{display:flex;align-items:center;gap:.3rem}
+  .up .busy{font-size:.75rem;color:var(--muted)}
+  .sec-note{display:flex;gap:.5rem;align-items:flex-start;margin-top:1.1rem;padding:.8rem 1rem;border-radius:12px;background:var(--bg-alt);color:var(--muted);font-size:.85rem;line-height:1.7}
+  .sec-note svg{color:var(--accent);flex:none;margin-top:.2rem}
+  @media (max-width:600px){.ups{grid-template-columns:1fr 1fr}.ups .up:first-child{grid-column:1/-1}.grid2{grid-template-columns:1fr}.grow .stage b{font-size:.7rem}.stage .bud{width:44px;height:44px;font-size:1.2rem}.grow::before,.grow .fill{top:21px}.nav .btn{padding:.75rem 1.1rem}.jf-top .brand small{display:none}}
+</style>
+</head>
+<body>
+<header class="jf-top">
+  <a class="brand" href="index.html"><img src="assets/splash-logo.png" alt="" /><span><span data-t="brand"></span><small data-t="brandSub"></small></span></a>
+  <button class="switch lang-switch" id="lang-toggle" type="button"><span class="seg">ع</span><span class="seg">EN</span><span class="thumb"></span></button>
+  <button class="switch theme-switch" id="theme-toggle" type="button"><i class="ph-fill ph-sun seg"></i><i class="ph-fill ph-moon seg"></i><span class="thumb"></span></button>
+  <a class="back" href="index.html"><i class="ph-bold ph-house"></i><span data-t="home"></span></a>
+</header>
+
+<main class="jf-wrap">
+  <div class="jf-head">
+    <span class="open-pill"><span class="pulse-dot"></span><span data-t="open"></span></span>
+    <h1 data-t="title"></h1>
+    <p data-t="intro"></p>
+  </div>
+
+  <div class="grow" id="grow"><span class="fill"></span>
+    <div class="stage" data-s="0"><span class="bud"><i class="ph-fill ph-leaf"></i></span><b data-t="s1"></b></div>
+    <div class="stage" data-s="1"><span class="bud"><i class="ph-fill ph-plant"></i></span><b data-t="s2"></b></div>
+    <div class="stage" data-s="2"><span class="bud"><i class="ph-fill ph-lightbulb"></i></span><b data-t="s3"></b></div>
+    <div class="stage" data-s="3"><span class="bud"><i class="ph-fill ph-camera"></i></span><b data-t="s5"></b></div>
+    <div class="stage" data-s="4"><span class="bud"><i class="ph-fill ph-seal-check"></i></span><b data-t="s4"></b></div>
+  </div>
+
+  <form class="card" id="jf" novalidate>
+    <!-- 1 -->
+    <section class="step on" data-step="0">
+      <h2><i class="ph-bold ph-user-circle"></i><span data-t="s1h"></span></h2><p class="sub" data-t="s1p"></p>
+      <div class="f" data-f="full_name"><label for="full_name" data-t="name"></label>
+        <div class="in"><i class="ph-bold ph-user ic"></i><input id="full_name" name="full_name" autocomplete="name" maxlength="80" /></div>
+        <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eName"></span></span></div>
+      <div class="grid2">
+        <div class="f" data-f="phone"><label for="phone" data-t="phone"></label>
+          <div class="in"><i class="ph-bold ph-phone ic"></i><input id="phone" name="phone" inputmode="tel" autocomplete="tel" dir="ltr" placeholder="01xxxxxxxxx" maxlength="16" /></div>
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="ePhone"></span></span></div>
+        <div class="f" data-f="email"><label for="email" data-t="email"></label>
+          <div class="in"><i class="ph-bold ph-envelope-simple ic"></i><input id="email" name="email" type="email" inputmode="email" autocomplete="email" dir="ltr" maxlength="120" /></div>
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eEmail"></span></span></div>
+      </div>
+      <div class="grid2">
+        <div class="f" data-f="university"><label for="university" data-t="uni"></label>
+          <div class="in"><i class="ph-bold ph-graduation-cap ic"></i><select id="university" name="university"><option value="scu" data-t="uniScu"></option><option value="other" data-t="uniOther"></option></select></div>
+          <input id="university_other" class="other" maxlength="80" data-ph="uniPh" hidden />
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUni"></span></span></div>
+        <div class="f" data-f="faculty"><label for="faculty" data-t="fac"></label>
+          <div class="in"><i class="ph-bold ph-books ic"></i><select id="faculty" name="faculty"><option value="commerce" data-t="facCom"></option><option value="other" data-t="facOther"></option></select></div>
+          <input id="faculty_other" class="other" maxlength="80" data-ph="facPh" hidden />
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eFac"></span></span></div>
+      </div>
+      <div class="grid2">
+        <div class="f" data-f="year"><label for="year" data-t="year"></label>
+          <div class="in"><i class="ph-bold ph-graduation-cap ic"></i><select id="year" name="year"><option value="" data-t="pick"></option><option value="1" data-t="y1"></option><option value="2" data-t="y2"></option><option value="3" data-t="y3"></option><option value="4" data-t="y4"></option><option value="grad" data-t="yg"></option></select></div>
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eYear"></span></span></div>
+        <div class="f" data-f="department"><label for="department" data-t="dept"></label>
+          <div class="in"><i class="ph-bold ph-books ic"></i><input id="department" name="department" maxlength="60" data-ph="deptPh" /></div>
+          <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eDept"></span></span></div>
+      </div>
+    </section>
+    <!-- 2 -->
+    <section class="step" data-step="1">
+      <h2><i class="ph-bold ph-plant"></i><span data-t="s2h"></span></h2><p class="sub" data-t="s2p"></p>
+      <div class="f" data-f="interests"><span class="lbl" data-t="interests"></span>
+        <div class="chips" id="interests"></div>
+        <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eInt"></span></span></div>
+      <div class="f"><label for="skills"><span data-t="skills"></span> <span class="opt" data-t="optional"></span></label>
+        <textarea id="skills" name="skills" maxlength="400" data-ph="skillsPh" style="min-height:80px"></textarea></div>
+      <div class="grid2">
+        <div class="f"><span class="lbl"><span data-t="tshirt"></span> <span class="opt" data-t="optional"></span></span><div class="segs" id="tshirt"></div></div>
+        <div class="f"><label for="facebook"><span data-t="fb"></span> <span class="opt" data-t="optional"></span></label>
+          <div class="in"><i class="ph-bold ph-user-circle ic"></i><input id="facebook" name="facebook" dir="ltr" maxlength="200" placeholder="facebook.com/…" /></div></div>
+      </div>
+      <div class="f"><label for="prior_volunteering"><span data-t="prior"></span> <span class="opt" data-t="optional"></span></label>
+        <textarea id="prior_volunteering" name="prior_volunteering" maxlength="400" data-ph="priorPh" style="min-height:80px"></textarea></div>
+    </section>
+    <!-- 3 -->
+    <section class="step" data-step="2">
+      <h2><i class="ph-bold ph-lightbulb"></i><span data-t="s3h"></span></h2><p class="sub" data-t="s3p"></p>
+      <div class="f" data-f="hours_per_week"><span class="lbl" data-t="hours"></span>
+        <div class="segs" id="hours"></div>
+        <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eHours"></span></span></div>
+      <div class="f"><span class="lbl"><span data-t="days"></span> <span class="opt" data-t="optional"></span></span>
+        <div class="segs" id="days"></div></div>
+      <div class="f" data-f="motivation"><label for="motivation" data-t="why"></label>
+        <textarea id="motivation" name="motivation" maxlength="800" data-ph="whyPh"></textarea>
+        <div class="count"><span id="mcount">0</span> / 800</div>
+        <span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eWhy"></span></span></div>
+      <div class="f"><label for="idea"><span data-t="idea"></span> <span class="opt" data-t="optional"></span></label>
+        <textarea id="idea" name="idea" maxlength="800" data-ph="ideaPh" style="min-height:80px"></textarea></div>
+      <div class="f"><label for="heard_from" data-t="heard"></label>
+        <div class="in"><i class="ph-bold ph-chat-teardrop-text ic"></i><select id="heard_from" name="heard_from"><option value="" data-t="pick"></option><option value="facebook" data-t="hFb"></option><option value="friend" data-t="hFriend"></option><option value="event" data-t="hEvent"></option><option value="faculty" data-t="hFac"></option><option value="other" data-t="hOther"></option></select></div></div>
+    </section>
+    <!-- 4: الصور -->
+    <section class="step" data-step="3">
+      <h2><i class="ph-bold ph-camera"></i><span data-t="s5h"></span></h2><p class="sub" data-t="s5p"></p>
+      <div class="ups">
+        <label class="up" data-f="photo"><input type="file" accept="image/*" data-up="photo" hidden /><span class="ph-prev"><i class="ph-bold ph-user"></i></span><b data-t="upPhoto"></b><small data-t="upPhotoD"></small><span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUp"></span></span></label>
+        <label class="up" data-f="id-front"><input type="file" accept="image/*" data-up="id-front" hidden /><span class="ph-prev wide"><i class="ph-bold ph-seal-check"></i></span><b data-t="upFront"></b><small data-t="upIdD"></small><span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUp"></span></span></label>
+        <label class="up" data-f="id-back"><input type="file" accept="image/*" data-up="id-back" hidden /><span class="ph-prev wide"><i class="ph-bold ph-seal-check"></i></span><b data-t="upBack"></b><small data-t="upIdD"></small><span class="err"><i class="ph-bold ph-warning-circle"></i><span data-t="eUp"></span></span></label>
+      </div>
+      <p class="sec-note"><i class="ph-bold ph-shield-check"></i><span data-t="idNote"></span></p>
+    </section>
+    <!-- 5 -->
+    <section class="step" data-step="4">
+      <h2><i class="ph-bold ph-shield-check"></i><span data-t="s4h"></span></h2><p class="sub" data-t="s4p"></p>
+      <label class="check" data-f="agree_rules"><input type="checkbox" name="agree_rules" /><span><b data-t="c1"></b><span data-t="c1d"></span></span></label>
+      <label class="check"><input type="checkbox" name="agree_photos" /><span><b data-t="c2"></b><span data-t="c2d"></span></span></label>
+      <label class="check" data-f="agree_data"><input type="checkbox" name="agree_data" /><span><b data-t="c3"></b><span data-t="c3d"></span></span></label>
+      <div class="alert" id="cerr"><i class="ph-bold ph-warning-circle"></i><span data-t="eAgree"></span></div>
+    </section>
+
+    <div class="done-screen" id="done">
+      <div class="tree"><i class="ph-fill ph-plant"></i></div>
+      <h2 data-t="okH"></h2><p data-t="okP"></p>
+      <div class="refbox"><small data-t="ref"></small><b id="refno" dir="ltr">—</b></div>
+      <div><a class="btn btn-primary" href="index.html"><i class="ph-bold ph-house"></i><span data-t="home"></span></a></div>
+    </div>
+
+    <div class="alert" id="serr"><i class="ph-bold ph-warning-circle"></i><span id="serrt"></span></div>
+    <div class="nav" id="nav">
+      <button type="button" class="btn back-btn" id="prev"><i class="ph-bold ph-arrow-right" id="prevIc"></i><span data-t="prev"></span></button>
+      <button type="button" class="btn btn-primary grow1" id="next"><span data-t="next"></span><i class="ph-bold ph-arrow-left" id="nextIc"></i></button>
+    </div>
+  </form>
+  <p class="privacy"><i class="ph-bold ph-shield-check"></i><span data-t="privacy"></span></p>
+</main>
+<div class="confetti" id="confetti"></div>
+
+<script src="config.js"></script>
+<script src="icons.js"></script>
+<script>
+(() => {
+  const T = {
+    brand:['أصدقاء البيئة','Environment Friends'], brandSub:['كلية التجارة — جامعة قناة السويس','Faculty of Commerce — SCU'], home:['الرئيسية','Home'],
+    open:['التطوع مفتوح الآن','Volunteering is open now'], title:['انضم إلى أصدقاء البيئة','Join Environment Friends'],
+    intro:['خمس خطوات قصيرة، حوالي 4 دقائق، وتبدأ رحلتك معنا.','Five short steps, about 4 minutes, and your journey with us begins.'],
+    s1:['بياناتك','About you'], s2:['اهتماماتك','Interests'], s3:['وقتك ودافعك','Time & why'], s5:['صورك','Photos'], s4:['الموافقة','Consent'],
+    uni:['الجامعة','University'], uniScu:['جامعة قناة السويس','Suez Canal University'], uniOther:['جامعة أخرى','Another university'], uniPh:['اكتب اسم الجامعة','Write the university'],
+    fac:['الكلية','Faculty'], facCom:['كلية التجارة','Faculty of Commerce'], facOther:['كلية أخرى','Another faculty'], facPh:['اكتب اسم الكلية','Write the faculty'],
+    eUni:['اكتب اسم الجامعة','Write your university'], eFac:['اكتب اسم الكلية','Write your faculty'],
+    tshirt:['مقاس تيشيرت الفريق','Team T-shirt size'], fb:['لينك حسابك على فيسبوك','Your Facebook profile link'],
+    s5h:['صورك والبطاقة','Your photo and ID'], s5p:['صورة شخصية واضحة، وصورة البطاقة الشخصية (الرقم القومي) من الوش والضهر.','A clear personal photo, plus the front and back of your national ID card.'],
+    upPhoto:['صورة شخصية','Personal photo'], upPhotoD:['وشك واضح، وهتظهر في صفحة الفريق لو اتقبلت','Face clearly visible; shown on the team page if accepted'],
+    upFront:['البطاقة الشخصية — الوش','ID card — front'], upBack:['البطاقة الشخصية — الضهر','ID card — back'], upIdD:['صورة واضحة والبيانات مقروءة','Clear, with readable details'],
+    eUp:['ارفع الصورة دي','Please add this photo'], eImg:['الصورة دي مش مدعومة، جرّب صورة JPG أو PNG','This image isn’t supported; try a JPG or PNG'],
+    idNote:['صور البطاقة بتتحفظ في مكان مقفول، ومحدش يقدر يفتحها غير قادة الفريق، وبتتمسح لو الطلب اترفض.','ID photos are stored privately; only team leaders can open them, and they’re deleted if the application is declined.'],
+    eFiles:['حصلت مشكلة في رفع الصور، جرّب تاني.','The photos failed to upload; please try again.'], uploading:['جارٍ رفع الصور…','Uploading photos…'],
+    s1h:['خلّينا نتعرف عليك','Let’s get to know you'], s1p:['البيانات دي عشان نقدر نتواصل معاك.','We use these details to reach you.'],
+    name:['الاسم الثلاثي','Full name (three parts)'], phone:['رقم الموبايل (واتساب)','Mobile number (WhatsApp)'], email:['البريد الإلكتروني','Email'],
+    year:['الفرقة','Year'], pick:['اختر…','Choose…'], y1:['الفرقة الأولى','First year'], y2:['الفرقة الثانية','Second year'], y3:['الفرقة الثالثة','Third year'], y4:['الفرقة الرابعة','Fourth year'], yg:['خريج / دراسات عليا','Graduate / postgraduate'],
+    dept:['الشعبة أو القسم','Division or department'], deptPh:['مثال: محاسبة، إدارة أعمال، English','e.g. Accounting, Business, English'],
+    s2h:['عايز تشارك في إيه؟','What would you like to do?'], s2p:['اختار كل اللي يناسبك، وتقدر تختار أكتر من حاجة.','Pick everything that fits you; you can pick several.'],
+    interests:['مجالات الاهتمام','Areas of interest'], skills:['مهارات عندك','Your skills'], skillsPh:['تصميم، تصوير، كتابة، تقديم، تنظيم…','Design, photography, writing, presenting, organising…'],
+    prior:['اتطوعت قبل كده؟ فين؟','Volunteered before? Where?'], priorPh:['اكتب اسم الفريق أو المبادرة باختصار','Briefly name the team or initiative'],
+    s3h:['وقتك ودافعك','Your time and your why'], s3p:['مش مطلوب وقت كبير، المهم الالتزام.','It’s not about a lot of time, it’s about commitment.'],
+    hours:['تقدر تدّي الفريق كام ساعة في الأسبوع؟','How many hours a week can you give?'], days:['الأيام المناسبة ليك','Days that suit you'],
+    why:['ليه عايز تنضم لأصدقاء البيئة؟','Why do you want to join?'], whyPh:['سطرين أو تلاتة عن دافعك…','Two or three lines about your motivation…'],
+    idea:['عندك فكرة مبادرة؟','Got an initiative idea?'], ideaPh:['فكرة تحب ننفذها مع بعض','An idea you’d like us to do together'],
+    heard:['عرفتنا منين؟','How did you hear about us?'], hFb:['فيسبوك','Facebook'], hFriend:['صديق','A friend'], hEvent:['فعالية من فعالياتنا','One of our events'], hFac:['الكلية','The faculty'], hOther:['حاجة تانية','Other'],
+    s4h:['آخر خطوة','Last step'], s4p:['راجع الموافقات دي قبل الإرسال.','Please review these before sending.'],
+    c1:['أوافق على لوائح الفريق','I agree to the team’s rules'], c1d:['الالتزام بالمواعيد واحترام الزملاء وروح العمل الجماعي.','Being on time, respecting teammates and working as a team.'],
+    c2:['أوافق على ظهوري في صور الأنشطة','I agree to appear in activity photos'], c2d:['على موقع الفريق وصفحاته، وده اختياري.','On the team’s website and pages. Optional.'],
+    c3:['أوافق على استخدام بياناتي للتواصل','I agree to my data being used to contact me'], c3d:['بخصوص الفريق وأنشطته فقط، ومش هتتشارك مع أي جهة.','About the team and its activities only; never shared.'],
+    optional:['(اختياري)','(optional)'], prev:['السابق','Back'], next:['التالي','Next'], send:['إرسال الطلب','Send application'], sending:['جارٍ الإرسال…','Sending…'],
+    eName:['اكتب اسمك الثلاثي','Please write your full name'], ePhone:['اكتب رقم موبايل مصري صحيح (11 رقم يبدأ بـ 01)','Enter a valid Egyptian mobile (11 digits, starts with 01)'],
+    eEmail:['اكتب بريد إلكتروني صحيح','Enter a valid email'], eYear:['اختر الفرقة','Choose your year'], eDept:['اكتب الشعبة أو القسم','Write your division or department'],
+    eInt:['اختار مجال واحد على الأقل','Choose at least one area'], eHours:['اختار عدد الساعات','Choose the hours'], eWhy:['اكتب دافعك في 20 حرف على الأقل','Write at least 20 characters'],
+    eAgree:['لازم توافق على لوائح الفريق واستخدام البيانات للتواصل','Please accept the team rules and contact consent'],
+    eDup:['الرقم ده متقدّم بيه قبل كده، وطلبك لسه بيتراجع.','This number has already applied; that application is under review.'],
+    eRate:['فيه ضغط كبير دلوقتي، جرّب تاني بعد دقيقة.','Too many requests right now, please try again in a minute.'],
+    eNet:['حصلت مشكلة في الإرسال، اتأكد من النت وجرّب تاني.','Something went wrong; check your connection and try again.'],
+    okH:['طلبك وصل! 🌱','Application received! 🌱'], okP:['شكرًا إنك اخترت تكون جزء من أصدقاء البيئة. هنراجع طلبك ونتواصل معاك على واتساب قريبًا.','Thank you for choosing to be part of Environment Friends. We’ll review it and reach you on WhatsApp soon.'],
+    ref:['رقم طلبك','Your reference'], privacy:['بياناتك محفوظة بأمان، ومحدش يقدر يشوفها غير قادة الفريق.','Your data is stored securely and only team leaders can see it.'],
+  };
+  const INTERESTS = [['planting','plant','التشجير','Tree planting'],['recycling','recycle','إعادة التدوير','Recycling'],['awareness','megaphone','التوعية والندوات','Awareness & seminars'],['community','hand-heart','الزيارات والحملات المجتمعية','Community visits'],['media','camera','التصوير والميديا','Photography & media'],['design','palette','التصميم','Design'],['content','pencil-line','كتابة المحتوى','Content writing'],['events','calendar-star','تنظيم الفعاليات','Event organising']];
+  const HOURS = [['1-2','1–2'],['3-5','3–5'],['6-10','6–10'],['10+','10+']];
+  const DAYS = [['sat','السبت','Sat'],['sun','الأحد','Sun'],['mon','الإثنين','Mon'],['tue','الثلاثاء','Tue'],['wed','الأربعاء','Wed'],['thu','الخميس','Thu']];
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)], root = document.documentElement;
+  let lang = root.dataset.lang || 'ar', step = 0, sel = { interests: new Set(), days: new Set(), hours: '', tshirt: '' }, files = {}; const LAST = 4;
+  const t = k => (T[k] ? T[k][lang === 'en' ? 1 : 0] : k);
+  const store = (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} };
+  const icon = (scope = document) => scope.querySelectorAll('i[class*="ph-"]').forEach(el => {
+    const fill = el.classList.contains('ph-fill'), name = [...el.classList].find(c => /^ph-/.test(c) && c !== 'ph-fill' && c !== 'ph-bold');
+    const body = (window.ICONS || {})[(fill ? 'fill/' : 'bold/') + (name || '').slice(3)]; if (!body) return;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', '0 0 256 256'); svg.setAttribute('fill', 'currentColor'); svg.setAttribute('aria-hidden', 'true');
+    svg.setAttribute('class', 'ph-svg ' + [...el.classList].filter(c => !/^ph-(bold|fill)$/.test(c) && !(c === name)).join(' ') + (['ph-sun','ph-moon'].includes(name) ? ' ' + name : '') + (el.id ? '' : ''));
+    if (el.id) svg.id = el.id; svg.innerHTML = body; el.replaceWith(svg);
+  });
+  const chip = (group, v, ic, label, single) => `<button type="button" class="chip" data-g="${group}" data-v="${v}" aria-pressed="${single ? sel.hours === v : sel[group].has(v)}">${ic ? `<i class="ph-bold ph-${ic}"></i>` : ''}${label}</button>`;
+  const paintChips = () => {
+    $('#interests').innerHTML = INTERESTS.map(([v, ic, a, e]) => chip('interests', v, ic, lang === 'en' ? e : a)).join('');
+    $('#hours').innerHTML = HOURS.map(([v, l]) => chip('hours', v, '', `<span dir="ltr">${l}</span>&nbsp;${lang === 'en' ? 'hrs' : 'ساعات'}`, true)).join('');
+    $('#days').innerHTML = DAYS.map(([v, a, e]) => chip('days', v, '', lang === 'en' ? e : a)).join('');
+    $('#tshirt').innerHTML = ['S','M','L','XL','XXL'].map(v => `<button type="button" class="chip" data-g="tshirt" data-v="${v}" aria-pressed="${sel.tshirt === v}" dir="ltr">${v}</button>`).join('');
+    icon($('#interests'));
+  };
+  const paint = () => {
+    root.lang = lang; root.dir = lang === 'ar' ? 'rtl' : 'ltr'; root.dataset.lang = lang;
+    document.title = lang === 'en' ? 'Join Environment Friends — Application' : 'انضم إلى أصدقاء البيئة — فورم التقديم';
+    $$('[data-t]').forEach(el => el.textContent = t(el.dataset.t));
+    $$('[data-ph]').forEach(el => el.placeholder = t(el.dataset.ph));
+    $('#next span').textContent = t(step === LAST ? 'send' : 'next');
+    paintChips();
+  };
+  $('#lang-toggle').onclick = () => { lang = lang === 'ar' ? 'en' : 'ar'; store('ef-lang', lang); paint(); };
+  $('#theme-toggle').onclick = () => { const th = root.dataset.theme === 'dark' ? 'light' : 'dark'; root.dataset.theme = th; store('ef-theme', th); };
+  document.addEventListener('click', e => {
+    const c = e.target.closest('.chip'); if (!c) return;
+    const g = c.dataset.g, v = c.dataset.v;
+    if (g === 'hours' || g === 'tshirt') { sel[g] = sel[g] === v && g === 'tshirt' ? '' : v; $$(`#${g} .chip`).forEach(x => x.setAttribute('aria-pressed', x.dataset.v === sel[g])); }
+    else { sel[g].has(v) ? sel[g].delete(v) : sel[g].add(v); c.setAttribute('aria-pressed', sel[g].has(v)); }
+    c.closest('.f') && c.closest('.f').classList.remove('bad');
+  });
+  const f = $('#jf'), val = n => ((f.elements[n] || document.getElementById(n)).value || '').trim();
+  ['university', 'faculty'].forEach(k => $('#' + k).addEventListener('change', e => { const o = $('#' + k + '_other'); o.hidden = e.target.value !== 'other'; if (!o.hidden) o.focus(); }));
+  const uniVal = () => val('university') === 'other' ? val('university_other') : 'جامعة قناة السويس';
+  const facVal = () => val('faculty') === 'other' ? val('faculty_other') : 'كلية التجارة';
+  /* ضغط الصورة في المتصفح قبل الرفع */
+  const shrink = (file, max) => new Promise((ok, no) => {
+    const u = URL.createObjectURL(file), im = new Image();
+    im.onload = () => { const s = Math.min(1, max / Math.max(im.width, im.height)), c = document.createElement('canvas'); c.width = Math.round(im.width * s); c.height = Math.round(im.height * s);
+      c.getContext('2d').drawImage(im, 0, 0, c.width, c.height); URL.revokeObjectURL(u); c.toBlob(b => b ? ok({ blob: b, url: c.toDataURL('image/jpeg', .6) }) : no(), 'image/jpeg', .85); };
+    im.onerror = () => { URL.revokeObjectURL(u); no(); }; im.src = u;
+  });
+  $$('[data-up]').forEach(inp => inp.addEventListener('change', async () => {
+    const k = inp.dataset.up, box = inp.closest('.up'), f0 = inp.files && inp.files[0]; if (!f0) return;
+    try { const r = await shrink(f0, k === 'photo' ? 1200 : 1600); files[k] = r.blob; box.querySelector('.ph-prev').style.backgroundImage = `url(${r.url})`; box.classList.add('has'); box.classList.remove('bad'); }
+    catch (e) { delete files[k]; box.classList.remove('has'); box.classList.add('bad'); box.querySelector('.err span').textContent = t('eImg'); }
+  }));
+  f.addEventListener('input', e => { const b = e.target.closest('.f'); b && b.classList.remove('bad'); if (e.target.id === 'motivation') $('#mcount').textContent = e.target.value.length; });
+  const normPhone = p => { let d = p.replace(/[^\d٠-٩]/g, '').replace(/[٠-٩]/g, x => '٠١٢٣٤٥٦٧٨٩'.indexOf(x)); if (d.startsWith('20') && d.length === 12) d = '0' + d.slice(2); return d; };
+  const bad = (name, cond) => { const b = document.querySelector(`[data-f="${name}"]`); if (b) b.classList.toggle('bad', !!cond); return !cond; };
+  const check = s => {
+    let ok = true;
+    if (s === 0) {
+      ok &= bad('full_name', val('full_name').split(/\s+/).filter(Boolean).length < 3 || val('full_name').length < 5);
+      ok &= bad('phone', !/^01[0125]\d{8}$/.test(normPhone(val('phone'))));
+      ok &= bad('email', !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(val('email')));
+      ok &= bad('year', !val('year'));
+      ok &= bad('department', val('department').length < 2);
+      ok &= bad('university', uniVal().length < 2); ok &= bad('faculty', facVal().length < 2);
+    } else if (s === 1) ok &= bad('interests', !sel.interests.size);
+    else if (s === 2) { ok &= bad('hours_per_week', !sel.hours); ok &= bad('motivation', val('motivation').length < 20); }
+    else if (s === 3) { ['photo', 'id-front', 'id-back'].forEach(k => { const b = document.querySelector(`[data-f="${k}"]`); if (!files[k]) { b.classList.add('bad'); b.querySelector('.err span').textContent = t('eUp'); ok = false; } }); }
+    else if (s === 4) {
+      const a = f.elements.agree_rules.checked, d = f.elements.agree_data.checked;
+      document.querySelector('[data-f="agree_rules"]').classList.toggle('bad', !a); document.querySelector('[data-f="agree_data"]').classList.toggle('bad', !d);
+      $('#cerr').classList.toggle('on', !(a && d)); ok = a && d;
+    }
+    if (!ok) { const first = document.querySelector(`.step[data-step="${s}"] .bad`); first && first.scrollIntoView({ behavior: 'smooth', block: 'center' }); }
+    return !!ok;
+  };
+  const go = (n, dir) => {
+    $$('.step').forEach(x => x.classList.remove('on')); const el = document.querySelector(`.step[data-step="${n}"]`);
+    el.style.setProperty('--dir', (dir * (lang === 'ar' ? -1 : 1) * 24) + 'px'); el.classList.add('on'); step = n;
+    $$('.stage').forEach((x, i) => { x.classList.toggle('on', i === n); x.classList.toggle('done', i < n); });
+    $('#grow').style.setProperty('--p', n / LAST); $('#prev').style.visibility = n ? 'visible' : 'hidden';
+    $('#next span').textContent = t(n === LAST ? 'send' : 'next'); $('#serr').classList.remove('on');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+  $('#prev').onclick = () => step && go(step - 1, -1);
+  $('#next').onclick = () => { if (!check(step)) return; step < LAST ? go(step + 1, 1) : send(); };
+  const send = async () => {
+    const btn = $('#next'), C = window.CONFIG.supabase; btn.disabled = true; btn.innerHTML = `<span>${t('sending')}</span><span class="spin"></span>`;
+    const up = (crypto.randomUUID ? crypto.randomUUID() : 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => { const r = Math.random() * 16 | 0; return (c === 'x' ? r : (r & 3 | 8)).toString(16); }));
+    try {
+      btn.querySelector('span').textContent = t('uploading');
+      for (const k of ['photo', 'id-front', 'id-back']) {
+        const r = await fetch(`${C.url}/storage/v1/object/applications/pending/${up}/${k}.jpg`, { method: 'POST', headers: { apikey: C.key, Authorization: `Bearer ${C.key}`, 'Content-Type': 'image/jpeg', 'x-upsert': 'false' }, body: files[k] });
+        if (!r.ok) throw new Error('eFiles');
+      }
+      btn.querySelector('span').textContent = t('sending');
+    } catch (e) { $('#serrt').textContent = t('eFiles'); $('#serr').classList.add('on'); btn.disabled = false; btn.innerHTML = `<span>${t('send')}</span><i class="ph-bold ph-paper-plane-tilt"></i>`; icon(btn); return; }
+    const p = { upload_id: up, university: uniVal(), faculty: facVal(), tshirt_size: sel.tshirt, facebook: val('facebook'), full_name: val('full_name'), phone: normPhone(val('phone')), email: val('email'), year: val('year'), department: val('department'),
+      interests: [...sel.interests], skills: val('skills'), prior_volunteering: val('prior_volunteering'), hours_per_week: sel.hours, days: [...sel.days],
+      motivation: val('motivation'), idea: val('idea'), heard_from: val('heard_from'), agree_rules: f.elements.agree_rules.checked,
+      agree_photos: f.elements.agree_photos.checked, agree_data: f.elements.agree_data.checked, lang };
+    try {
+      const r = await fetch(`${C.url}/rest/v1/rpc/submit_application`, { method: 'POST', headers: { apikey: C.key, Authorization: `Bearer ${C.key}`, 'Content-Type': 'application/json' }, body: JSON.stringify({ p }) });
+      const body = await r.json().catch(() => ({}));
+      if (!r.ok) { const m = (body && body.message) || ''; throw new Error(m.includes('duplicate_phone') ? 'eDup' : m.includes('rate_limited') ? 'eRate' : m.includes('missing_files') ? 'eFiles' : 'eNet'); }
+      $('#refno').textContent = typeof body === 'string' ? body : '—';
+      $$('.step').forEach(x => x.classList.remove('on')); $('#nav').style.display = 'none'; $('#done').classList.add('on');
+      $$('.stage').forEach(x => { x.classList.remove('on'); x.classList.add('done'); }); $('#grow').style.setProperty('--p', 1);
+      confetti(); window.scrollTo({ top: 0, behavior: 'smooth' });
+    } catch (e) {
+      $('#serrt').textContent = t(['eDup', 'eRate', 'eFiles'].includes(e.message) ? e.message : 'eNet'); $('#serr').classList.add('on');
+      btn.disabled = false; btn.innerHTML = `<span>${t('send')}</span><i class="ph-bold ph-paper-plane-tilt"></i>`; icon(btn);
+    }
+  };
+  const confetti = () => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const box = $('#confetti'); box.innerHTML = Array.from({ length: 26 }, () => `<i class="ph-fill ph-leaf" style="left:${Math.random() * 100}%;font-size:${14 + Math.random() * 20}px;animation-duration:${2.5 + Math.random() * 2.5}s;animation-delay:${Math.random() * .8}s;--dx:${(Math.random() * 200 - 100) | 0}px;--r:${(Math.random() * 720 - 360) | 0}deg"></i>`).join('');
+    icon(box); setTimeout(() => box.innerHTML = '', 6000);
+  };
+  paint(); icon(); go(0, 1);
+  /* أسهم الأزرار تتبع اتجاه اللغة */
+  const st = document.createElement('style'); st.textContent = '[dir="ltr"] #prev svg,[dir="ltr"] #next svg{transform:scaleX(-1)}'; document.head.appendChild(st);
+})();
+</script>
+</body>
+</html>

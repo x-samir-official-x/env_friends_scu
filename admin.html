@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>لوحة الإدارة — أصدقاء البيئة</title>
+<meta name="robots" content="noindex, nofollow" />
+<meta name="theme-color" content="#052549" />
+<script>
+  (function(){ try{ var th = localStorage.getItem('ef-theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); document.documentElement.setAttribute('data-theme', th); document.documentElement.setAttribute('data-lang', 'ar'); }catch(e){} })();
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css" />
+<link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png" />
+<style>
+  body{min-height:100vh;background:radial-gradient(ellipse at 85% -10%,rgba(137,197,74,.18),transparent 55%),var(--bg);font-family:var(--font-ar)}
+  .top{position:sticky;top:0;z-index:40;display:flex;align-items:center;gap:.8rem;padding:.7rem clamp(1rem,4vw,2.5rem);background:var(--glass);backdrop-filter:blur(18px);border-bottom:1px solid var(--border)}
+  .top .brand{display:flex;align-items:center;gap:.6rem;font-weight:900;margin-inline-end:auto}
+  .top .brand img{width:40px;height:40px;border-radius:50%;background:var(--ivory);padding:3px}
+  .top .brand small{display:block;font-size:.72rem;color:var(--muted);font-weight:700}
+  .ib{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;height:40px;padding:0 .9rem;border-radius:12px;border:1px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-weight:800;font-size:.86rem;cursor:pointer;transition:all .2s var(--ease)}
+  .ib:hover{border-color:var(--accent);color:var(--accent)}
+  .ib svg{width:18px;height:18px}
+  .wrap{max-width:1180px;margin:0 auto;padding:1.5rem clamp(1rem,4vw,2.5rem) 4rem}
+  [hidden]{display:none!important}
+  .view{display:none}.view.on{display:block;animation:up .4s var(--ease)}
+  @keyframes up{from{opacity:0;transform:translateY(10px)}}
+  /* login */
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:22px;box-shadow:var(--shadow);padding:clamp(1.3rem,4vw,2.2rem)}
+  .login{max-width:420px;margin:6vh auto 0}
+  .login h1{font-size:1.45rem;font-weight:900;display:flex;gap:.5rem;align-items:center}
+  .login h1 svg{width:28px;height:28px;color:var(--accent)}
+  .login p.sub{color:var(--muted);margin:.3rem 0 1.2rem;font-size:.92rem}
+  label.l{display:block;font-weight:800;font-size:.88rem;margin:.9rem 0 .35rem}
+  input.in,select.in,textarea.in{width:100%;height:48px;padding:0 .9rem;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);color:var(--text);font:inherit;font-size:.95rem;outline:none;transition:border-color .2s}
+  textarea.in{height:auto;min-height:84px;padding:.7rem .9rem;resize:vertical}
+  .in:focus{border-color:var(--accent)}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;height:48px;padding:0 1.3rem;border:0;border-radius:14px;font:inherit;font-weight:900;cursor:pointer;background:linear-gradient(135deg,var(--emerald),#2b8a3e);color:#fff;box-shadow:0 10px 24px -10px rgba(26,105,41,.7);transition:transform .2s var(--ease)}
+  .btn:hover{transform:translateY(-2px)}.btn:disabled{opacity:.6;cursor:wait;transform:none}
+  .btn.full{width:100%;margin-top:1.3rem}
+  .btn svg{width:18px;height:18px}
+  .links{display:flex;justify-content:space-between;gap:1rem;margin-top:1rem;font-size:.85rem;font-weight:700}
+  .links button{background:none;border:0;color:var(--accent);font:inherit;cursor:pointer;padding:0}
+  .msg{display:none;margin-top:1rem;padding:.75rem 1rem;border-radius:12px;font-size:.88rem;font-weight:700;line-height:1.7}
+  .msg.on{display:block}.msg.err{background:rgba(217,83,79,.1);color:#c9302c}.msg.ok{background:rgba(137,197,74,.16);color:var(--accent)}
+  [data-theme="dark"] .msg.err{color:#ff8a85}
+  /* dashboard */
+  .head{display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.2rem}
+  .head h1{font-size:clamp(1.4rem,3vw,1.9rem);font-weight:900}
+  .head p{color:var(--muted);font-size:.9rem}
+  .stats{display:grid;grid-template-columns:repeat(5,1fr);gap:.8rem;margin-bottom:1.2rem}
+  .st{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:.9rem 1rem;cursor:pointer;text-align:start;font:inherit;color:var(--text);transition:all .2s var(--ease)}
+  .st:hover{transform:translateY(-2px)}
+  .st[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px rgba(137,197,74,.25)}
+  .st b{display:block;font-size:1.7rem;font-weight:900;font-family:var(--font-en);line-height:1.1}
+  .st span{font-size:.82rem;color:var(--muted);font-weight:800}
+  .st i,.st svg.dot{display:none}
+  .st[data-s="new"] b{color:#2f7de1}.st[data-s="reviewing"] b{color:#d89b12}.st[data-s="accepted"] b{color:var(--accent)}.st[data-s="rejected"] b{color:#d9534f}
+  .tools{display:flex;gap:.7rem;margin-bottom:1rem;flex-wrap:wrap}
+  .search{flex:1;min-width:220px;position:relative}
+  .search svg{position:absolute;inset-inline-start:.85rem;top:50%;transform:translateY(-50%);width:18px;height:18px;color:var(--muted)}
+  .search input{padding-inline-start:2.5rem}
+  .list{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:.9rem}
+  .app{display:flex;gap:.85rem;align-items:center;padding:.9rem;background:var(--surface);border:1px solid var(--border);border-radius:18px;cursor:pointer;text-align:start;font:inherit;color:var(--text);transition:all .2s var(--ease)}
+  .app:hover{transform:translateY(-3px);box-shadow:var(--shadow);border-color:rgba(137,197,74,.5)}
+  .av{width:58px;height:58px;flex:none;border-radius:50%;background:var(--bg-alt) center/cover;display:grid;place-items:center;color:var(--accent);font-weight:900;font-size:1.2rem}
+  .app .t{min-width:0;flex:1}
+  .app b{display:block;font-weight:900;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .app small{display:block;color:var(--muted);font-size:.78rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .badge{display:inline-flex;align-items:center;height:24px;padding:0 .6rem;border-radius:99px;font-size:.72rem;font-weight:900;margin-top:.35rem}
+  .b-new{background:rgba(47,125,225,.13);color:#2f7de1}.b-reviewing{background:rgba(216,155,18,.15);color:#b98207}
+  .b-accepted{background:rgba(137,197,74,.2);color:var(--accent)}.b-rejected{background:rgba(217,83,79,.13);color:#d9534f}
+  .empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-weight:700}
+  .empty svg{width:48px;height:48px;color:var(--accent);display:block;margin:0 auto .6rem}
+  /* drawer */
+  .ov{position:fixed;inset:0;z-index:80;background:rgba(3,18,38,.55);backdrop-filter:blur(4px);display:none}
+  .ov.on{display:block;animation:fade .25s}
+  @keyframes fade{from{opacity:0}}
+  .dr{position:fixed;z-index:90;top:0;bottom:0;inset-inline-end:0;width:min(640px,100%);background:var(--bg);box-shadow:var(--shadow-lg);overflow:auto;transform:translateX(-105%);transition:transform .35s var(--ease)}
+  [dir="rtl"] .dr{transform:translateX(-105%)}
+  .dr.on{transform:none}
+  .dr-h{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:.8rem;padding:1rem 1.2rem;background:var(--glass);backdrop-filter:blur(14px);border-bottom:1px solid var(--border)}
+  .dr-h .av{width:52px;height:52px}
+  .dr-h h2{font-size:1.15rem;font-weight:900;margin-inline-end:auto}
+  .dr-h h2 small{display:block;font-size:.76rem;color:var(--muted);font-family:var(--font-en);font-weight:700}
+  .dr-b{padding:1.2rem}
+  .sec{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1rem}
+  .sec h3{font-size:.92rem;font-weight:900;margin-bottom:.6rem;display:flex;gap:.4rem;align-items:center}
+  .sec h3 svg{width:18px;height:18px;color:var(--accent)}
+  .kv{display:grid;grid-template-columns:130px 1fr;gap:.45rem .8rem;font-size:.9rem}
+  .kv dt{color:var(--muted);font-weight:800}.kv dd{font-weight:700;word-break:break-word;white-space:pre-wrap}
+  .pics{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem}
+  .pic{aspect-ratio:1;border-radius:12px;background:var(--bg-alt) center/cover;border:1px solid var(--border);cursor:zoom-in;position:relative;overflow:hidden}
+  .pic span{position:absolute;inset-inline:0;bottom:0;padding:.3rem;font-size:.7rem;font-weight:800;text-align:center;background:rgba(5,37,73,.7);color:#fff}
+  .pic.gone{cursor:default;display:grid;place-items:center;color:var(--muted);font-size:.75rem;font-weight:700;text-align:center;padding:.5rem}
+  .acts{display:flex;flex-wrap:wrap;gap:.5rem}
+  .sb{flex:1;min-width:110px;height:44px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font:inherit;font-weight:900;font-size:.86rem;cursor:pointer;transition:all .2s}
+  .sb[aria-pressed="true"]{color:#fff;border-color:transparent}
+  .sb[data-s="new"][aria-pressed="true"]{background:#2f7de1}.sb[data-s="reviewing"][aria-pressed="true"]{background:#d89b12}
+  .sb[data-s="accepted"][aria-pressed="true"]{background:var(--emerald)}.sb[data-s="rejected"][aria-pressed="true"]{background:#d9534f}
+  .confirm{display:none;margin-top:.8rem;padding:.9rem;border-radius:12px;background:rgba(217,83,79,.08);border:1px solid rgba(217,83,79,.3);font-size:.88rem;font-weight:700;line-height:1.7}
+  .confirm.on{display:block}
+  .confirm .row{display:flex;gap:.5rem;margin-top:.6rem}
+  .btn.red{background:#d9534f;box-shadow:none;height:42px}
+  .quick{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:.8rem}
+  .chips{display:flex;flex-wrap:wrap;gap:.35rem}
+  .chips span{padding:.15rem .6rem;border-radius:99px;background:var(--bg-alt);font-size:.8rem;font-weight:800}
+  .lb{position:fixed;inset:0;z-index:120;background:rgba(0,0,0,.85);display:none;place-items:center;padding:1rem;cursor:zoom-out}
+  .lb.on{display:grid}.lb img{max-width:100%;max-height:92vh;border-radius:10px}
+  .spin{width:18px;height:18px;border:2.5px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+  @keyframes sp{to{transform:rotate(1turn)}}
+  .toast{position:fixed;bottom:1.2rem;left:50%;transform:translate(-50%,150%);z-index:130;padding:.75rem 1.2rem;border-radius:14px;background:var(--navy);color:#fff;font-weight:800;font-size:.9rem;box-shadow:var(--shadow-lg);transition:transform .3s var(--ease)}
+  .toast.on{transform:translate(-50%,0)}
+  @media (max-width:760px){.stats{grid-template-columns:repeat(2,1fr)}.stats .st:first-child{grid-column:1/-1}.kv{grid-template-columns:1fr}.kv dt{margin-top:.3rem}.top .ib span{display:none}}
+</style>
+</head>
+<body>
+<header class="top">
+  <a class="brand" href="index.html"><img src="assets/splash-logo.png" alt="" /><span>أصدقاء البيئة<small>لوحة الإدارة</small></span></a>
+  <button class="ib" id="theme" type="button" aria-label="الوضع الليلي"><i class="ph-bold ph-moon"></i></button>
+  <button class="ib" id="out" type="button" hidden><i class="ph-bold ph-sign-out"></i><span>خروج</span></button>
+</header>
+
+<main class="wrap">
+  <!-- دخول -->
+  <section class="view" id="v-login">
+    <div class="card login">
+      <h1><i class="ph-fill ph-lock-key"></i><span id="lt">دخول الإدارة</span></h1>
+      <p class="sub" id="ls">للقادة بس — ادخل بإيميلك وكلمة السر.</p>
+      <form id="lf" novalidate>
+        <div id="f-email"><label class="l" for="em">الإيميل</label><input class="in" id="em" type="email" dir="ltr" autocomplete="username" required /></div>
+        <div id="f-pass"><label class="l" for="pw">كلمة السر</label><input class="in" id="pw" type="password" dir="ltr" autocomplete="current-password" minlength="8" required /></div>
+        <div id="f-pass2" hidden><label class="l" for="pw2">اكتب كلمة السر تاني</label><input class="in" id="pw2" type="password" dir="ltr" autocomplete="new-password" /></div>
+        <button class="btn full" id="lb" type="submit"><span>دخول</span></button>
+      </form>
+      <div class="links" id="lk"><button type="button" data-m="signup">أول مرة؟ اعمل كلمة سر</button><button type="button" data-m="reset">نسيت كلمة السر</button></div>
+      <div class="msg" id="lm"></div>
+    </div>
+  </section>
+
+  <!-- مش أدمن -->
+  <section class="view" id="v-denied">
+    <div class="card login" style="text-align:center">
+      <h1 style="justify-content:center"><i class="ph-fill ph-warning-circle"></i>الحساب ده مش من الإدارة</h1>
+      <p class="sub" id="dn"></p>
+      <button class="btn" type="button" onclick="document.getElementById('out').click()"><i class="ph-bold ph-sign-out"></i>خروج</button>
+    </div>
+  </section>
+
+  <!-- اللوحة -->
+  <section class="view" id="v-dash">
+    <div class="head">
+      <div><h1>طلبات التطوع</h1><p id="who"></p></div>
+      <div style="display:flex;gap:.5rem"><button class="ib" id="reload" type="button"><i class="ph-bold ph-arrows-clockwise"></i><span>تحديث</span></button><button class="ib" id="csv" type="button"><i class="ph-bold ph-file-csv"></i><span>تصدير Excel</span></button></div>
+    </div>
+    <div class="stats" id="stats"></div>
+    <div class="tools">
+      <div class="search"><i class="ph-bold ph-magnifying-glass"></i><input class="in" id="q" placeholder="دوّر بالاسم أو الموبايل أو الكلية أو رقم الطلب" /></div>
+    </div>
+    <div class="list" id="list"></div>
+  </section>
+</main>
+
+<div class="ov" id="ov"></div>
+<aside class="dr" id="dr" aria-hidden="true"></aside>
+<div class="lb" id="lbx"><img alt="" /></div>
+<div class="toast" id="toast"></div>
+
+<script src="vendor/supabase.js"></script>
+<script src="config.js"></script>
+<script src="icons.js"></script>
+<script>
+(() => {
+  const $ = s => document.querySelector(s), $$ = s => [...document.querySelectorAll(s)];
+  const esc = s => String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const icon = (scope = document) => scope.querySelectorAll('i[class*="ph-"]').forEach(el => {
+    const fill = el.classList.contains('ph-fill'), name = [...el.classList].find(c => /^ph-/.test(c) && c !== 'ph-fill' && c !== 'ph-bold');
+    const body = (window.ICONS || {})[(fill ? 'fill/' : 'bold/') + (name || '').slice(3)]; if (!body) return;
+    const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg'); svg.setAttribute('viewBox', '0 0 256 256'); svg.setAttribute('fill', 'currentColor'); svg.setAttribute('aria-hidden', 'true'); svg.innerHTML = body; el.replaceWith(svg);
+  });
+  const toast = m => { const t = $('#toast'); t.textContent = m; t.classList.add('on'); clearTimeout(toast.h); toast.h = setTimeout(() => t.classList.remove('on'), 2600); };
+
+  const root = document.documentElement;
+  const themeIcon = () => { $('#theme').innerHTML = `<i class="ph-bold ph-${root.dataset.theme === 'dark' ? 'sun' : 'moon'}"></i>`; icon($('#theme')); };
+  $('#theme').onclick = () => { root.dataset.theme = root.dataset.theme === 'dark' ? 'light' : 'dark'; try { localStorage.setItem('ef-theme', root.dataset.theme); } catch (e) {} themeIcon(); };
+  themeIcon(); icon();
+
+  const C = window.CONFIG.supabase;
+  const sb = window.supabase.createClient(C.url, C.key, { auth: { persistSession: true, detectSessionInUrl: true, flowType: 'implicit' } });
+  const BACK = location.href.split('#')[0].split('?')[0];
+
+  const ST = { new: 'جديد', reviewing: 'تحت المراجعة', accepted: 'مقبول', rejected: 'مرفوض' };
+  const YEAR = { 1: 'الفرقة الأولى', 2: 'الفرقة الثانية', 3: 'الفرقة الثالثة', 4: 'الفرقة الرابعة', grad: 'خريج' };
+  const INT = { planting: 'التشجير', recycling: 'إعادة التدوير', awareness: 'التوعية والندوات', community: 'الزيارات المجتمعية', media: 'التصوير والميديا', design: 'التصميم', content: 'كتابة المحتوى', events: 'تنظيم الفعاليات' };
+  const DAY = { sat: 'السبت', sun: 'الأحد', mon: 'الإثنين', tue: 'الثلاثاء', wed: 'الأربعاء', thu: 'الخميس' };
+  const fmtDate = d => new Date(d).toLocaleString('ar-EG', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+
+  const show = v => { $$('.view').forEach(x => x.classList.toggle('on', x.id === 'v-' + v)); $('#out').hidden = v === 'login'; };
+
+  /* ---------- الدخول ---------- */
+  let mode = 'login';
+  const MODES = {
+    login: { t: 'دخول الإدارة', s: 'للقادة بس — ادخل بإيميلك وكلمة السر.', b: 'دخول', pass: true, pass2: false, email: true },
+    signup: { t: 'أول مرة', s: 'اعمل كلمة سر لإيميلك (لازم يكون متسجل كإدارة). هيوصلك إيميل تأكيد.', b: 'اعمل الحساب', pass: true, pass2: true, email: true },
+    reset: { t: 'نسيت كلمة السر', s: 'اكتب إيميلك وهنبعتلك لينك تعمل بيه كلمة سر جديدة.', b: 'ابعت اللينك', pass: false, pass2: false, email: true },
+    newpass: { t: 'كلمة سر جديدة', s: 'اكتب كلمة السر الجديدة (8 حروف على الأقل).', b: 'احفظ', pass: true, pass2: true, email: false }
+  };
+  const setMode = m => {
+    mode = m; const c = MODES[m];
+    $('#lt').textContent = c.t; $('#ls').textContent = c.s; $('#lb').innerHTML = `<span>${c.b}</span>`;
+    $('#f-email').hidden = !c.email; $('#f-pass').hidden = !c.pass; $('#f-pass2').hidden = !c.pass2;
+    $('#pw').autocomplete = m === 'login' ? 'current-password' : 'new-password';
+    $('#lk').innerHTML = m === 'login' ? '<button type="button" data-m="signup">أول مرة؟ اعمل كلمة سر</button><button type="button" data-m="reset">نسيت كلمة السر</button>' : m === 'newpass' ? '' : '<button type="button" data-m="login">رجوع للدخول</button>';
+    msg('');
+  };
+  const msg = (t, ok) => { const m = $('#lm'); m.textContent = t; m.className = 'msg' + (t ? ' on ' + (ok ? 'ok' : 'err') : ''); };
+  $('#lk').addEventListener('click', e => { const b = e.target.closest('[data-m]'); if (b) setMode(b.dataset.m); });
+  const ERR = m => /Invalid login/i.test(m) ? 'الإيميل أو كلمة السر غلط.' : /not confirmed/i.test(m) ? 'لسه ما أكدتش الإيميل — افتح رسالة التأكيد ودوس على اللينك.' : /already registered/i.test(m) ? 'الإيميل ده عامل حساب قبل كده — ادخل على طول أو اختار «نسيت كلمة السر».' : /rate limit|security purposes/i.test(m) ? 'استنى شوية وجرّب تاني.' : /at least|weak/i.test(m) ? 'كلمة السر ضعيفة — خليها 8 حروف أو أكتر.' : 'حصلت مشكلة: ' + m;
+
+  $('#lf').addEventListener('submit', async e => {
+    e.preventDefault();
+    const em = $('#em').value.trim().toLowerCase(), pw = $('#pw').value, pw2 = $('#pw2').value, c = MODES[mode];
+    if (c.email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) return msg('اكتب إيميل صحيح.');
+    if (c.pass && pw.length < 8) return msg('كلمة السر لازم تبقى 8 حروف على الأقل.');
+    if (c.pass2 && pw !== pw2) return msg('كلمتين السر مش زي بعض.');
+    const b = $('#lb'); b.disabled = true; b.innerHTML = '<span class="spin"></span>';
+    try {
+      if (mode === 'login') { const { error } = await sb.auth.signInWithPassword({ email: em, password: pw }); if (error) throw error; msg(''); $('#pw').value = ''; await boot(); }
+      else if (mode === 'signup') {
+        const { data, error } = await sb.auth.signUp({ email: em, password: pw, options: { emailRedirectTo: BACK } }); if (error) throw error;
+        if (!data.session) { setMode('login'); $('#em').value = em; msg('تمام! بعتنالك إيميل تأكيد على ' + em + ' — افتحه ودوس على اللينك، وبعدها ادخل من هنا.', true); }
+      } else if (mode === 'reset') {
+        const { error } = await sb.auth.resetPasswordForEmail(em, { redirectTo: BACK }); if (error) throw error;
+        msg('لو الإيميل ده عنده حساب، هيوصله لينك دلوقتي. افتحه من نفس الجهاز.', true);
+      } else if (mode === 'newpass') {
+        const { error } = await sb.auth.updateUser({ password: pw }); if (error) throw error;
+        toast('اتحفظت كلمة السر الجديدة'); history.replaceState(null, '', BACK); await boot();
+      }
+    } catch (err) { msg(ERR(err.message || '')); }
+    b.disabled = false; if (mode !== 'newpass' || $('#v-login').classList.contains('on')) b.innerHTML = `<span>${MODES[mode].b}</span>`;
+  });
+  $('#out').onclick = async () => { await sb.auth.signOut(); rows = []; closeDr(); setMode('login'); show('login'); };
+
+  /* ---------- البيانات ---------- */
+  let rows = [], filter = 'all', me = '', thumbs = {};
+  const load = async () => {
+    $('#list').innerHTML = '<div class="empty">جارٍ التحميل…</div>';
+    const { data, error } = await sb.from('applications').select('*').order('created_at', { ascending: false });
+    if (error) { $('#list').innerHTML = `<div class="empty">مقدرناش نجيب الطلبات: ${esc(error.message)}</div>`; return; }
+    rows = data || [];
+    const paths = rows.map(r => r.photo_path).filter(p => p && !thumbs[p]);
+    if (paths.length) { const { data: s } = await sb.storage.from('applications').createSignedUrls(paths, 3600); (s || []).forEach(x => { if (x.signedUrl) thumbs[x.path] = x.signedUrl; }); }
+    render();
+  };
+  const initials = n => (n || '؟').trim().split(/\s+/).slice(0, 2).map(w => w[0]).join(' ');
+  const av = r => r.photo_path && thumbs[r.photo_path] ? `<span class="av" style="background-image:url('${thumbs[r.photo_path]}')"></span>` : `<span class="av">${esc(initials(r.full_name))}</span>`;
+  const match = r => { const q = $('#q').value.trim().toLowerCase(); return !q || [r.full_name, r.phone, r.email, r.faculty, r.university, r.department, r.ref].some(x => (x || '').toLowerCase().includes(q)); };
+  const render = () => {
+    const cnt = { all: rows.length, new: 0, reviewing: 0, accepted: 0, rejected: 0 }; rows.forEach(r => cnt[r.status]++);
+    $('#stats').innerHTML = [['all', 'كل الطلبات'], ...Object.entries(ST)].map(([k, l]) => `<button class="st" type="button" data-s="${k}" aria-pressed="${filter === k}"><b>${cnt[k] || 0}</b><span>${l}</span></button>`).join('');
+    const list = rows.filter(r => (filter === 'all' || r.status === filter) && match(r));
+    $('#list').innerHTML = list.length ? list.map(r => `<button class="app" type="button" data-id="${r.id}">${av(r)}<span class="t"><b>${esc(r.full_name)}</b><small>${esc(r.faculty || '')} · ${esc(YEAR[r.year] || '')}</small><small dir="ltr" style="text-align:end">${esc(r.ref)} · ${fmtDate(r.created_at)}</small><span class="badge b-${r.status}">${ST[r.status]}</span></span></button>`).join('')
+      : `<div class="empty" style="grid-column:1/-1"><i class="ph-bold ph-tray"></i>${rows.length ? 'مفيش طلبات بالشكل ده' : 'لسه مفيش طلبات — أول ما حد يقدّم هيظهر هنا'}</div>`;
+    icon($('#list'));
+  };
+  $('#stats').addEventListener('click', e => { const b = e.target.closest('.st'); if (b) { filter = b.dataset.s; render(); } });
+  $('#q').addEventListener('input', render);
+  $('#reload').onclick = () => load();
+  $('#list').addEventListener('click', e => { const b = e.target.closest('.app'); if (b) openDr(+b.dataset.id); });
+
+  /* ---------- تفاصيل الطلب ---------- */
+  let cur = null;
+  const closeDr = () => { $('#dr').classList.remove('on'); $('#ov').classList.remove('on'); $('#dr').setAttribute('aria-hidden', 'true'); cur = null; };
+  $('#ov').onclick = closeDr; document.addEventListener('keydown', e => { if (e.key === 'Escape') { if ($('#lbx').classList.contains('on')) $('#lbx').classList.remove('on'); else closeDr(); } });
+  $('#lbx').onclick = () => $('#lbx').classList.remove('on');
+  const kv = pairs => `<dl class="kv">${pairs.filter(([, v]) => v !== '' && v != null).map(([k, v]) => `<dt>${k}</dt><dd>${v}</dd>`).join('')}</dl>`;
+  const wa = p => 'https://wa.me/2' + p;
+
+  const openDr = async id => {
+    const r = rows.find(x => x.id === id); if (!r) return; cur = r;
+    const files = [['photo_path', 'الصورة الشخصية'], ['id_front_path', 'البطاقة — وش'], ['id_back_path', 'البطاقة — ضهر']];
+    const have = files.map(([k]) => r[k]).filter(Boolean); let urls = {};
+    if (have.length) { const { data } = await sb.storage.from('applications').createSignedUrls(have, 900); (data || []).forEach(x => { if (x.signedUrl) urls[x.path] = x.signedUrl; }); }
+    const fb = r.facebook ? (/^https?:\/\//.test(r.facebook) ? r.facebook : 'https://' + r.facebook) : '';
+    $('#dr').innerHTML = `
+      <div class="dr-h">${av(r)}<h2>${esc(r.full_name)}<small>${esc(r.ref)} · ${fmtDate(r.created_at)}</small></h2><button class="ib" type="button" id="x" aria-label="إغلاق"><i class="ph-bold ph-x"></i></button></div>
+      <div class="dr-b">
+        <div class="sec"><h3><i class="ph-bold ph-seal-check"></i>حالة الطلب</h3>
+          <div class="acts">${Object.entries(ST).map(([k, l]) => `<button class="sb" type="button" data-s="${k}" aria-pressed="${r.status === k}">${l}</button>`).join('')}</div>
+          <div class="confirm" id="cf">الرفض هيمسح الصورة الشخصية وصور البطاقة نهائيًا (عشان خصوصية المتقدم)، وبيانات الطلب نفسها هتفضل. متأكد؟
+            <div class="row"><button class="btn red" type="button" id="cfy">أيوه، ارفض وامسح الصور</button><button class="ib" type="button" id="cfn">لأ</button></div></div>
+          ${r.reviewed_by ? `<p style="margin-top:.6rem;font-size:.78rem;color:var(--muted);font-weight:700">آخر تعديل: ${esc(r.reviewed_by)} · ${fmtDate(r.reviewed_at)}</p>` : ''}
+          <div class="quick">
+            <a class="ib" href="${wa(r.phone)}" target="_blank" rel="noopener"><i class="ph-bold ph-whatsapp-logo"></i>واتساب</a>
+            <a class="ib" href="tel:${esc(r.phone)}"><i class="ph-bold ph-phone"></i>اتصال</a>
+            <a class="ib" href="mailto:${esc(r.email)}"><i class="ph-bold ph-envelope-simple"></i>إيميل</a>
+            ${fb ? `<a class="ib" href="${esc(fb)}" target="_blank" rel="noopener"><i class="ph-bold ph-facebook-logo"></i>فيسبوك</a>` : ''}
+            ${r.status === 'accepted' && r.photo_path ? `<button class="ib" type="button" id="dl"><i class="ph-bold ph-download-simple"></i>صورة لصفحة الفريق</button>` : ''}
+          </div>
+        </div>
+        <div class="sec"><h3><i class="ph-bold ph-identification-card"></i>الصور</h3>
+          <div class="pics">${files.map(([k, l]) => r[k] && urls[r[k]] ? `<div class="pic" data-u="${urls[r[k]]}" style="background-image:url('${urls[r[k]]}')"><span>${l}</span></div>` : `<div class="pic gone">${l}<br>${r.status === 'rejected' ? 'اتمسحت' : 'مش موجودة'}</div>`).join('')}</div>
+        </div>
+        <div class="sec"><h3><i class="ph-bold ph-user"></i>البيانات</h3>${kv([
+          ['الموبايل', `<span dir="ltr">${esc(r.phone)}</span>`], ['الإيميل', `<span dir="ltr">${esc(r.email)}</span>`],
+          ['الجامعة', esc(r.university)], ['الكلية', esc(r.faculty)], ['الفرقة', esc(YEAR[r.year] || r.year)], ['الشعبة / القسم', esc(r.department)],
+          ['مقاس التيشيرت', esc(r.tshirt_size || '')]])}</div>
+        <div class="sec"><h3><i class="ph-bold ph-leaf"></i>الاهتمامات والوقت</h3>${kv([
+          ['الاهتمامات', `<span class="chips">${(r.interests || []).map(x => `<span>${esc(INT[x] || x)}</span>`).join('')}</span>`],
+          ['ساعات في الأسبوع', `<span dir="ltr">${esc(r.hours_per_week)}</span>`], ['الأيام المناسبة', esc((r.days || []).map(d => DAY[d] || d).join('، '))],
+          ['المهارات', esc(r.skills || '')], ['تطوع قبل كده', esc(r.prior_volunteering || '')]])}</div>
+        <div class="sec"><h3><i class="ph-bold ph-lightbulb"></i>الدافع والأفكار</h3>${kv([
+          ['ليه عايز ينضم', esc(r.motivation)], ['فكرة مبادرة', esc(r.idea || '')], ['عرف عننا منين', esc(r.heard_from || '')],
+          ['موافق على التصوير', r.agree_photos ? 'أيوه' : 'لأ']])}</div>
+        <div class="sec"><h3><i class="ph-bold ph-note-pencil"></i>ملاحظات الإدارة</h3>
+          <textarea class="in" id="nt" maxlength="1000" placeholder="مثلاً: اتكلمنا معاه، ميعاد المقابلة…">${esc(r.notes || '')}</textarea>
+          <button class="btn" type="button" id="ns" style="margin-top:.6rem;height:42px">احفظ الملاحظة</button></div>
+      </div>`;
+    icon($('#dr'));
+    $('#dr').classList.add('on'); $('#ov').classList.add('on'); $('#dr').setAttribute('aria-hidden', 'false'); $('#dr').scrollTop = 0;
+    $('#x').onclick = closeDr;
+    $$('#dr .pic[data-u]').forEach(p => p.onclick = () => { $('#lbx img').src = p.dataset.u; $('#lbx').classList.add('on'); });
+    $$('#dr .sb').forEach(b => b.onclick = () => b.dataset.s === 'rejected' && r.status !== 'rejected' ? $('#cf').classList.add('on') : setStatus(r, b.dataset.s));
+    $('#cfn').onclick = () => $('#cf').classList.remove('on');
+    $('#cfy').onclick = () => setStatus(r, 'rejected');
+    $('#ns').onclick = () => save(r, { notes: $('#nt').value.trim() || null }, 'اتحفظت الملاحظة');
+    if ($('#dl')) $('#dl').onclick = async () => {
+      const { data, error } = await sb.storage.from('applications').download(r.photo_path); if (error) return toast('مقدرناش ننزل الصورة');
+      const a = document.createElement('a'); a.href = URL.createObjectURL(data); a.download = r.full_name.trim().split(/\s+/).slice(0, 2).join(' ') + '.jpg'; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      toast('نزّلناها باسمه — ارفعها في فولدر Team Member');
+    };
+  };
+
+  const save = async (r, patch, okMsg) => {
+    patch.reviewed_by = me; patch.reviewed_at = new Date().toISOString();
+    const { data, error } = await sb.from('applications').update(patch).eq('id', r.id).select().single();
+    if (error) { toast('ما اتحفظش: ' + error.message); return false; }
+    Object.assign(r, data); render(); toast(okMsg); return true;
+  };
+  const setStatus = async (r, s) => {
+    if (s === r.status) return;
+    const patch = { status: s };
+    if (s === 'rejected') {
+      const paths = [r.photo_path, r.id_front_path, r.id_back_path].filter(Boolean);
+      if (paths.length) { const { error } = await sb.storage.from('applications').remove(paths); if (error) return toast('مقدرناش نمسح الصور: ' + error.message); }
+      Object.assign(patch, { photo_path: null, id_front_path: null, id_back_path: null });
+    }
+    if (await save(r, patch, 'الحالة دلوقتي: ' + ST[s])) openDr(r.id);
+  };
+
+  /* ---------- تصدير ---------- */
+  $('#csv').onclick = () => {
+    const cols = [['ref', 'رقم الطلب'], ['created_at', 'التاريخ'], ['status', 'الحالة'], ['full_name', 'الاسم'], ['phone', 'الموبايل'], ['email', 'الإيميل'], ['university', 'الجامعة'], ['faculty', 'الكلية'], ['year', 'الفرقة'], ['department', 'القسم'], ['interests', 'الاهتمامات'], ['hours_per_week', 'ساعات/أسبوع'], ['days', 'الأيام'], ['tshirt_size', 'التيشيرت'], ['facebook', 'فيسبوك'], ['skills', 'المهارات'], ['prior_volunteering', 'تطوع سابق'], ['motivation', 'الدافع'], ['idea', 'فكرة'], ['heard_from', 'عرف منين'], ['notes', 'ملاحظات']];
+    const val = (r, k) => k === 'status' ? ST[r[k]] : k === 'year' ? (YEAR[r[k]] || r[k]) : k === 'interests' ? (r[k] || []).map(x => INT[x] || x).join('، ') : k === 'days' ? (r[k] || []).map(x => DAY[x] || x).join('، ') : k === 'created_at' ? new Date(r[k]).toLocaleString('en-GB') : (r[k] ?? '');
+    const q = v => { v = String(v); if (/^[=+\-@]/.test(v)) v = "'" + v; return '"' + v.replace(/"/g, '""') + '"'; };
+    const list = rows.filter(r => (filter === 'all' || r.status === filter) && match(r));
+    const csv = '﻿' + [cols.map(c => q(c[1])).join(','), ...list.map(r => cols.map(([k]) => q(val(r, k))).join(','))].join('\r\n');
+    const a = document.createElement('a'); a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' })); a.download = `طلبات-التطوع-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+  };
+
+  /* ---------- التشغيل ---------- */
+  const boot = async () => {
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) { show('login'); return; }
+    me = session.user.email;
+    const { data: ok } = await sb.rpc('is_admin');
+    if (!ok) { $('#dn').textContent = `انت داخل بـ ${me}، والإيميل ده مش متسجل في الإدارة.`; show('denied'); return; }
+    $('#who').textContent = 'داخل بـ ' + me; show('dash'); load();
+  };
+  let recovering = /type=recovery/.test(location.hash);
+  sb.auth.onAuthStateChange((ev) => { if (ev === 'PASSWORD_RECOVERY') { recovering = true; setMode('newpass'); show('login'); } });
+  setMode('login');
+  if (/error_description=/.test(location.hash)) { const p = new URLSearchParams(location.hash.slice(1)); show('login'); msg(/expired/i.test(p.get('error_description') || '') ? 'اللينك ده خلص — اطلب لينك جديد.' : 'اللينك مش شغال: ' + p.get('error_description')); history.replaceState(null, '', BACK); }
+  else setTimeout(() => { if (recovering) { setMode('newpass'); show('login'); } else { if (/access_token=/.test(location.hash)) history.replaceState(null, '', BACK); boot(); } }, 150);
+})();
+</script>
+</body>
+</html>
