@@ -187,3 +187,10 @@ body{counter-reset:sec}
 .footer-bottom .admin-link{display:inline-flex;align-items:center;gap:.35rem;margin-top:.6rem;font-size:.78rem;font-weight:700;color:rgba(255,255,255,.55);transition:color .2s}
 .footer-bottom .admin-link:hover{color:#89C54A}
 .footer-bottom .admin-link svg{width:14px;height:14px}
+/* زرار لوحة التحكم في المنيو بار */
+.nav-admin{display:inline-flex;align-items:center;gap:.4rem;height:40px;padding:0 .85rem;border-radius:10px;font-weight:800;font-size:.82rem;white-space:nowrap;color:#FCFCF9;border:1.5px solid rgba(252,252,249,.22);background:rgba(252,252,249,.08);transition:border-color .2s,color .2s,transform .2s}
+.nav-admin:hover{border-color:#89C54A;color:#89C54A;transform:translateY(-2px)}
+.nav-admin svg{width:17px;height:17px}
+@media (max-width:1319px){.nav-admin{width:40px;padding:0;justify-content:center}.nav-admin span{display:none}}
+.drawer-list .drawer-admin{display:flex;align-items:center;gap:.5rem;margin-top:.4rem;border-top:1px solid var(--border);border-radius:0 0 1rem 1rem;padding-top:1rem}
+.drawer-list .drawer-admin svg{width:18px;height:18px}

@@ -67,7 +67,9 @@
   const mono = s => (s || '').replace(/^(أ\.د\/|دكتور|د\/|Prof\. Dr\.|Dr\.)\s*/i, '').trim().charAt(0).toUpperCase();
   const renderNav = () => {
     const links = C.nav.map(n => `<a href="${n.href}" data-sec="${n.href.slice(1)}">${esc(L(n.ar, n.en))}</a>`).join('');
-    $('#nav-list').innerHTML = links; $('#drawer-list').innerHTML = links;
+    $('#nav-list').innerHTML = links;
+    $('#drawer-list').innerHTML = links + `<a href="admin.html" class="drawer-admin"><i class="ph-bold ph-lock-key"></i>${esc(L('لوحة التحكم', 'Dashboard'))}</a>`;
+    hydrateIcons($('#drawer-list'));
     $('#footer-links').innerHTML = C.nav.map(n => `<li><a href="${n.href}">${esc(L(n.ar, n.en))}</a></li>`).join('');
     $$('#drawer-list a').forEach(a => a.addEventListener('click', closeDrawer));
     updateActive();
