@@ -53,13 +53,13 @@
   /* ───── روابط فاضية → رسالة "قريبًا" ───── */
   const toast = $('#toast'); let toastT;
   const showToast = msg => { toast.textContent = msg; toast.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => toast.classList.remove('show'), 2600); };
-  const linkProps = href => (href ? `href="${esc(href)}" target="_blank" rel="noopener"` : `href="#" data-empty="1"`);
+  const linkProps = href => (href ? `href="${esc(href)}"${/^https?:/i.test(href) ? ' target="_blank" rel="noopener"' : ''}` : `href="#" data-empty="1"`);
   document.addEventListener('click', e => {
     const a = e.target.closest('a[data-empty="1"]'); if (a) { e.preventDefault(); showToast(T('toastSoon')); }
   });
   const wireLinkButtons = () => $$('[data-link]').forEach(a => {
     const href = C.links[a.dataset.link];
-    if (href) { a.href = href; a.target = '_blank'; a.rel = 'noopener'; a.removeAttribute('data-empty'); }
+    if (href) { a.href = href; if (/^https?:/i.test(href)) { a.target = '_blank'; a.rel = 'noopener'; } else a.removeAttribute('target'); a.removeAttribute('data-empty'); }
     else { a.href = '#'; a.setAttribute('data-empty', '1'); a.removeAttribute('target'); }
   });
 
@@ -91,6 +91,7 @@
     try {
       if (s.auto === 'activities') return C.campaigns.filter(c => c.done).length + ecoItems().filter(hasPhotos).length;
       if (s.auto === 'members') return (C.leadership || []).length + teamFiles.length;
+      if (s.auto === 'hours' || s.auto === 'beneficiaries') return C.campaigns.concat(ecoItems()).reduce((n, x) => n + (Number(x[s.auto]) || 0), 0);
     } catch (e) {}
     return Number(s.value) || 0;
   };
