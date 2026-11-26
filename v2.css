@@ -180,3 +180,5 @@ body{counter-reset:sec}
 .eco-day.is-part{margin-top:-.6rem}
 .eco-day.is-part .eco-num span{width:16px;height:16px;margin:16px;border-width:3px;background:var(--leaf);border-color:var(--emerald)}
 @media (max-width:720px){.eco-day.is-part .eco-num span{width:14px;height:14px;margin:11px}}
+/* خلية النحل على الموبايل: شريط الاسم أصغر وأوطى عشان ما يغطيش الوش */
+@media (max-width:620px){.hex-cap{inset-block-end:15%;padding:.55rem .3rem .15rem;background:linear-gradient(transparent,rgba(5,37,73,.92) 35%)}.hex-cap b{font-size:.74rem}.hex-cap span{font-size:.6rem}}
