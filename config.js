@@ -46,11 +46,15 @@ const CONFIG = {
   ],
 
   /* الأرقام — كلها صفر دلوقتي، عدّل value مع الوقت */
+  /* auto: الرقم بيتحسب لوحده من الموقع
+       'activities' = الحملات اللي done + أنشطة الأسبوع البيئي اللي ليها صور
+       'members'    = الهيكل الإداري + صور فولدر Team Member
+     من غير auto: الرقم بيتكتب يدوي في value */
   stats: [
-    { value: 0, icon: 'ph-calendar-check', ar: 'حملة منفّذة',  en: 'Campaigns Done' },
-    { value: 0, icon: 'ph-users-three',    ar: 'عضو متطوع',    en: 'Volunteers' },
-    { value: 0, icon: 'ph-clock',          ar: 'ساعة تطوع',    en: 'Volunteer Hours' },
-    { value: 0, icon: 'ph-heart',          ar: 'مستفيد',       en: 'Beneficiaries' },
+    { auto: 'activities', icon: 'ph-calendar-check', ar: 'نشاط منفّذ',  en: 'Activities Done' },
+    { auto: 'members',    icon: 'ph-users-three',    ar: 'عضو متطوع',  en: 'Volunteers' },
+    { value: 0,           icon: 'ph-clock',          ar: 'ساعة تطوع',  en: 'Volunteer Hours' },
+    { value: 0,           icon: 'ph-heart',          ar: 'مستفيد',     en: 'Beneficiaries' },
   ],
 
   about: [

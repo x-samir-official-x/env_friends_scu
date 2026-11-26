@@ -75,7 +75,7 @@
 
   /* عداد odometer: الأرقام بتلف وتقف على القيمة (صفر دلوقتي) */
   const odoHTML = value => {
-    const digits = String(Math.max(0, Math.floor(value))).padStart(2, '0').split('');
+    const digits = String(Math.max(0, Math.floor(value))).split('');
     const strip = '0123456789'.repeat(3).split('').map(d => `<span>${d}</span>`).join('');
     return (value > 0 ? `<span class="plus">+</span>` : '') + digits.map(d => `<span class="od"><span class="od-strip" data-d="${d}">${strip}</span></span>`).join('');
   };
@@ -85,14 +85,23 @@
     s.style.transitionDuration = (2 + i * 0.5) + 's';
     requestAnimationFrame(() => requestAnimationFrame(() => { s.style.transform = `translateY(-${target}em)`; }));
   });
-  const renderStats = () => {
+  /* العدادات المربوطة بالموقع */
+  const hasPhotos = x => { const m = (typeof manifest !== 'undefined' && manifest[x.id]) || null; return !!(m && ((m.photos && m.photos.length) || m.cover || (Array.isArray(m) && m.length))); };
+  const statValue = s => {
+    try {
+      if (s.auto === 'activities') return C.campaigns.filter(c => c.done).length + ecoItems().filter(hasPhotos).length;
+      if (s.auto === 'members') return (C.leadership || []).length + teamFiles.length;
+    } catch (e) {}
+    return Number(s.value) || 0;
+  };
+  const renderStats = (animate) => {
     $('#stats-grid').innerHTML = C.stats.map((s, i) => `
       <div class="stat-card reveal" style="--i:${i}">
         <div class="stat-icon"><i class="ph-bold ${s.icon}"></i></div>
-        <div class="odo">${odoHTML(s.value)}</div>
+        <div class="odo">${odoHTML(statValue(s))}</div>
         <span class="stat-label">${esc(L(s.ar, s.en))}</span>
       </div>`).join('');
-    if (state.statsPlayed) $$('.stat-card').forEach(c => { c.classList.add('in'); rollOdo(c, true); });
+    if (state.statsPlayed) $$('.stat-card').forEach(c => { c.classList.add('in'); rollOdo(c, !animate); });
     else observe($$('#stats-grid .reveal'));
   };
   const renderAbout = () => {
@@ -215,7 +224,7 @@
     try { const r = await fetch('gallery.json', { cache: 'no-cache' }); manifest = r.ok ? (await r.json()) || {} : {}; } catch (e) { manifest = {}; }
     await Promise.all(C.campaigns.concat(ecoItems()).filter(c => !(manifest[c.id] && (manifest[c.id].photos || manifest[c.id]).length)).map(async c => { const v = await ghList(c); if (v && v.photos.length) manifest[c.id] = v; }));
     const live = await ghNames(C.team.folder); teamFiles = live.length ? live : ((manifest.team && manifest.team.files) || []);
-    renderCampaigns(); renderTeam(); renderEco(); hydrateIcons(); observe($$('.reveal:not(.in)'));
+    renderCampaigns(); renderTeam(); renderEco(); renderStats(true); hydrateIcons(); observe($$('.reveal:not(.in)'));
   };
 
   /* أصوات ناعمة بـ WebAudio (من غير ملفات) */
